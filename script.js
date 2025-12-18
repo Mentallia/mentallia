@@ -78,7 +78,34 @@ function updateSlider(slider) {
   // Position horizontale
   label.style.left = `${percentage}%`;
 }
+let currentStep = 0;
+const steps = document.querySelectorAll('.step');
 
+function nextStep() {
+
+  // Cacher l'étape actuelle
+  steps[currentStep].classList.remove('active');
+
+  currentStep++;
+
+  // Si on arrive à la dernière étape
+  if (currentStep >= steps.length - 1) {
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('resultBtn').style.display = 'block';
+  }
+
+  // Afficher la nouvelle étape
+  steps[currentStep].classList.add('active');
+
+  updateProgressBar();
+}
+
+function updateProgressBar() {
+  const progress = ((currentStep + 1) / steps.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+}
+
+// Initialisation
 window.onload = function () {
   updateProgressBar();
   const sliders = document.querySelectorAll('.slider');
