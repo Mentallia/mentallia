@@ -142,18 +142,60 @@
   <!-- AXE 3 -->
   <div class="step">
     <h2>Gestion du stress et des émotions</h2>
-
+  <br/>
+<div class="scale">
+    <span>Jamais</span>
+    <span>Rarement</span>
+    <span>Parfois</span>
+    <span>Souvent</span>
+    <span>Toujours</span>
+</div>
+<br/>
+<div class="question">
   <label>Avant une compétition, je me sens calme et concentré(e).</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="stress">
+    <div class="slider-container">
+    <input
+      type="range"
+      min="1"
+      max="5"
+      value="3"
+      class="slider"
+      data-theme="stress"
+      oninput="updateSlider(this)"
+    >
+    <div class="slider-label">Parfois</div>
+    </div><br/>
 
   <label>Quand je suis stressé()e, je sais comment me calmer et être performant(e) dans mon activité / mon travail.</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="stress">
+    <div class="slider-container">
+    <input
+      type="range"
+      min="1"
+      max="5"
+      value="3"
+      class="slider"
+      data-theme="stress"
+      oninput="updateSlider(this)"
+    >
+    <div class="slider-label">Parfois</div>
+    </div><br/>
 
   <label>Quand j'ai très envie de réussir, je parviens à gérer mon stress.</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="stress">
+    <div class="slider-container">
+    <input
+      type="range"
+      min="1"
+      max="5"
+      value="3"
+      class="slider"
+      data-theme="stress"
+      oninput="updateSlider(this)"
+    >
+    <div class="slider-label">Parfois</div>
+    </div><br/>
   </div>
+</div>
 
-  
     
   <!-- AXE 4 -->
   <div class="step">
