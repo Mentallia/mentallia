@@ -31,6 +31,29 @@
   <label>Je me sens bien quand je suis dans mon activité / mon travail, même quand je ne réussis pas.</label>
   <input type="range" min="1" max="5" value="3" class="slider" data-theme="motivation">
 
+  <div class="question">
+  <label>Je me donne à fond dans mon activité / mon travail et cela me rend heureux(se).</label>
+
+  <input
+    type="range"
+    min="1"
+    max="5"
+    value="3"
+    class="slider"
+    data-theme="motivation"
+    oninput="updateSlider(this)"
+  >
+
+  <div class="scale">
+    <span>Jamais</span>
+    <span>Rarement</span>
+    <span>Parfois</span>
+    <span>Souvent</span>
+    <span>Toujours</span>
+  </div>
+</div>
+
+
   <!-- AXE 2 -->
   <h2>Concentration et attention</h2>
 
