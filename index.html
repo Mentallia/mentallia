@@ -81,18 +81,60 @@
   
   
   <!-- AXE 2 -->
-  <div class="step">
-    <h2>Concentration et attention</h2>
-
+   <div class="step active">
+    <h2>Motivation et Plaisir</h2>
+  <br/>
+<div class="scale">
+    <span>Jamais</span>
+    <span>Rarement</span>
+    <span>Parfois</span>
+    <span>Souvent</span>
+    <span>Toujours</span>
+</div>
+<br/>
+<div class="question">
   <label>J'arrive à rester concentré(e) jusqu'au bout, même quand il se passe plein de choses autour de moi.</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="concentration">
+    <div class="slider-container">
+    <input
+      type="range"
+      min="1"
+      max="5"
+      value="3"
+      class="slider"
+      data-theme="motivation"
+      oninput="updateSlider(this)"
+    >
+    <div class="slider-label">Parfois</div>
+    </div><br/>
 
   <label>J'écoute attentivement les consignes qui me sont données.</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="concentration">
+    <div class="slider-container">
+    <input
+      type="range"
+      min="1"
+      max="5"
+      value="3"
+      class="slider"
+      data-theme="motivation"
+      oninput="updateSlider(this)"
+    >
+    <div class="slider-label">Parfois</div>
+    </div><br/>
 
   <label>Je fais attention aux petits détails dans mon activité / mon travail.</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="concentration">
-  </div>
+    <div class="slider-container">
+    <input
+      type="range"
+      min="1"
+      max="5"
+      value="3"
+      class="slider"
+      data-theme="motivation"
+      oninput="updateSlider(this)"
+    >
+    <div class="slider-label">Parfois</div>
+    </div><br/>
+</div>
     
 
   
