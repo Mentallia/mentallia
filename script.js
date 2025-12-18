@@ -63,6 +63,9 @@ function updateSlider(slider) {
       #ddd ${percentage}%
     )
   `;
+  const labels = ["Jamais", "Rarement", "Parfois", "Souvent", "Toujours"];
+slider.nextElementSibling.nextElementSibling.innerText = labels[value - 1];
+
 }
 
 window.onload = function () {
