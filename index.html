@@ -15,12 +15,14 @@
 <body>
 
 <h1>Bilan Mental Express en direct</h1>
-<p>Déplace les curseurs selon ce qui te correspond le plus.</p>
+<p>Déplace les curseurs de chaque phrase selon si tu réalises toujours, souvent, parfois, rarement ou jamais l'action présentée.</p>
 
 <form id="testForm">
 
   <!-- AXE 1 -->
   <h2>Motivation et Plaisir</h2>
+  <br/>
+  <br/>
 <div class="scale">
     <span>Jamais</span>
     <span>Rarement</span>
@@ -28,41 +30,9 @@
     <span>Souvent</span>
     <span>Toujours</span>
 </div>
-  <label>Je me donne à fond dans mon activité / mon travail et cela me rend heureux(se).</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="motivation">
-
-  <label>J'ai envie d'aller faire mon activité / mon travail, même quand je suis fatigué(e) ou quand c'est dur.</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="motivation">
-
-  <label>Je me sens bien quand je suis dans mon activité / mon travail, même quand je ne réussis pas.</label>
-  <input type="range" min="1" max="5" value="3" class="slider" data-theme="motivation">
-
-  <div class="question">
-  <label>Je me donne à fond dans mon activité / mon travail et cela me rend heureux(se).</label>
-
-  <input
-    type="range"
-    min="1"
-    max="5"
-    value="3"
-    class="slider"
-    data-theme="motivation"
-    oninput="updateSlider(this)"
-  >
-<div class="valueLabel">Parfois</div>
-
-  <div class="scale">
-    <span>Jamais</span>
-    <span>Rarement</span>
-    <span>Parfois</span>
-    <span>Souvent</span>
-    <span>Toujours</span>
-  </div>
-</div>
-
 
 <div class="question">
-  <label>Essai question</label>
+  <label>Je me donne à fond dans mon activité / mon travail et cela me rend heureux(se).</label>
     <div class="slider-container">
     <input
       type="range"
@@ -70,10 +40,10 @@
       max="5"
       value="3"
       class="slider"
-      data-theme="stress"
+      data-theme="motivation"
       oninput="updateSlider(this)"
     >
-    <div class="slider-label">Test du truc</div>
+    <div class="slider-label">Motivation</div>
   </div>
 
   <div class="scale">
@@ -84,6 +54,12 @@
     <span>Toujours</span>
   </div>
 </div>
+  
+  <label>J'ai envie d'aller faire mon activité / mon travail, même quand je suis fatigué(e) ou quand c'est dur.</label>
+  <input type="range" min="1" max="5" value="3" class="slider" data-theme="motivation">
+
+  <label>Je me sens bien quand je suis dans mon activité / mon travail, même quand je ne réussis pas.</label>
+  <input type="range" min="1" max="5" value="3" class="slider" data-theme="motivation">
 
   <!-- AXE 2 -->
   <h2>Concentration et attention</h2>
