@@ -108,3 +108,9 @@ button {
 .step.active {
   display: block;
 }
+
+#prevBtn {
+  margin-top: 10px;
+  background-color: #6b7280; /* gris */
+}
+
