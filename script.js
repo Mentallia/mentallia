@@ -75,7 +75,7 @@ function updateSlider(slider) {
   slider.style.background = `
     linear-gradient(
       to right,
-      #1e3a8a ${percentage}%,
+      #121449 ${percentage}%,
       #ddd ${percentage}%
     )
   `;
