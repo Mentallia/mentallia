@@ -5,7 +5,7 @@ body {
 }
 
 h1, h2 {
-  color: #1e3a8a;
+  color: #121449;
 }
 
 .slider {
@@ -16,7 +16,7 @@ h1, h2 {
 button {
   padding: 15px;
   font-size: 16px;
-  background-color: #1e3a8a;
+  background-color: #121449;
   color: white;
   border: none;
   border-radius: 8px;
@@ -42,7 +42,7 @@ button {
   border-radius: 5px;
   background: linear-gradient(
     to right,
-    #1e3a8a 50%,
+    #121449 50%,
     #ddd 50%
   );
   outline: none;
@@ -56,7 +56,7 @@ button {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #1e3a8a;
+  background: #121449;
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -76,7 +76,7 @@ button {
   top: 28px; /* distance sous le curseur */
   transform: translateX(-50%);
   font-size: 12px;
-  background-color: #1e3a8a;
+  background-color: #121449;
   color: white;
   padding: 3px 8px;
   border-radius: 12px;
@@ -97,7 +97,7 @@ button {
 .progress-bar {
   height: 100%;
   width: 0%;
-  background-color: #1e3a8a;
+  background-color: #121449;
   transition: width 0.3s ease;
 }
 
