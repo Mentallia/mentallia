@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
-  background-color: #f4f6f8;
+  background-color: #ffffff;
 }
 
 h1, h2 {
@@ -97,7 +97,7 @@ button {
 .progress-bar {
   height: 100%;
   width: 0%;
-  background-color: #121449;
+  background-color: #e4fe4f;
   transition: width 0.3s ease;
 }
 
