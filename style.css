@@ -114,3 +114,7 @@ button {
   background-color: #6b7280; /* gris */
 }
 
+.intro {
+  font-size: 1.15rem;   /* légèrement plus grand */
+  font-weight: bold;  /* sécurité si jamais <strong> est retiré */
+}
