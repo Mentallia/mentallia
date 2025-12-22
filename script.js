@@ -34,7 +34,7 @@ function afficherRadar(scores) {
       labels: [
         ["Motivation et Plaisir"], ["Concentration", "et Attention"], ["Gestion du", "stress et", "des Emotions"],
         ["Confiance en soi"], ["Fixation d'objectifs"], ["Imagerie", "mentale"],
-        ["Pensées et", "Discours internes"], ["Bien-être"]
+        ["Pensées et", "Discours", "internes"], ["Bien-être"]
       ],
       datasets: [{
         label: "Profil mental",
