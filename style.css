@@ -120,14 +120,14 @@ button {
 }
 
 
-.home-header { /*mise en page en-tête page index.html */
+.home-page .header { /*mise en page en-tête page index.html */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
 }
-.home-header .logo {
-  height: 60px;   /* plus grand */
+.home-page .logo {
+  height: 20px;   /* plus grand */
   width: auto;
 }
 
