@@ -131,6 +131,26 @@ button {
   width: auto;
 }
 
+.home-page h2 {
+  font-size: 1.5rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+.home p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.home ul {
+  list-style: disc;
+  text-align: left;
+  margin: 0 auto 30px auto;
+  padding-left: 20px;
+  max-width: 600px;
+}
+
 .bilan-page .header { /*mise en page en-tête page bilan.html */
   display: flex;
   justify-content: center;
