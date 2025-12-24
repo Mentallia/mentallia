@@ -128,7 +128,7 @@ button {
 }
 
 .bilan-page .header { /*mise en page en-tête page bilan.html */
-  justify-content: space-between;
+  justify-content: center;
 }
 .bilan-page .logo {
   height: 50px;
