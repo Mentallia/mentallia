@@ -121,14 +121,16 @@ button {
 
 
 .home-page .header { /*mise en page en-tête page index.html */
-  justify-content: right;
+  display: flex;
+  align-items: center;
 }
 .home-page .logo {
   height: 100px;   /* plus grand */
 }
 
 .bilan-page .header { /*mise en page en-tête page bilan.html */
-  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 .bilan-page .logo {
   height: 50px;
