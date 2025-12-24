@@ -204,7 +204,7 @@ body {
   justify-content: space-between; /* Logo à gauche, liens à droite */
   align-items: center;
   padding: 10px 20px;
-  background-color: #0a1f44; /* Bleu foncé comme ton logo */
+  background-color: #121449; /* Bleu foncé comme ton logo */
   color: white;
   position: sticky;
   top: 0;
@@ -239,7 +239,7 @@ body {
   .nav-links {
     flex-direction: column;
     gap: 10px;
-    background-color: #0a1f44;
+    background-color: #121449;
     position: absolute;
     top: 70px; /* juste en dessous du header */
     right: 0;
