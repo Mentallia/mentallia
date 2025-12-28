@@ -235,6 +235,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  position: static;
 }
 
 /* Liens normaux */
@@ -291,6 +292,7 @@ body {
   }
 
   .menu-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
   }
 }
