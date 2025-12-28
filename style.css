@@ -216,12 +216,14 @@ body {
 .nav-logo {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .logo-navbar {
   Max-height: 55px;
   width: auto;
   display: block;
+  Height: 100%;
 }
 
 .nav-links {
