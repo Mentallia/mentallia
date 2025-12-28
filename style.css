@@ -244,16 +244,23 @@ body {
   padding: 0;
 }
 
+/* Liens normaux */
 .nav-links li a {
   text-decoration: none;
   color: white;
-  font-weight: bold;
+  font-weight: 500;
   transition: color 0.3s;
 }
 
+/* Lien visité */
+.nav-links li a:visited {
+  color: white;
+}
+
+/* Survol  */
 .nav-links li a:hover {
   opacitu: 0.7;
-  color: #f0a500; /* Couleur d'accent au survol */
+  color: #123245; /* Couleur d'accent au survol */
 }
 
   .menu-toggle {
