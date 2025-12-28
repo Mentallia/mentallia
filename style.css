@@ -214,13 +214,11 @@ body {
 }
 
 .nav-logo {
-  height: 100%;
   display: flex;
   align-items: center;
 }
 
 .logo-navbar {
-  Height: 100%;
   Max-height: 55px;
   width: auto;
   display: block;
