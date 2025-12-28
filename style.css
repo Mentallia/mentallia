@@ -251,4 +251,25 @@ body {
     color: white;
     font-size: 24px;
   }
+
+@media (max-width: 600px) {
+  .nav-links {
+    flex-direction: column;
+    background-color: #121449;
+    left: 0;
+    position: absolute;
+    top: 70px; /* juste en dessous du header */
+    width: 100%;
+    display: none; /* masqué par défaut */
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
 }
