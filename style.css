@@ -4,6 +4,28 @@ cbody {
   background-color: #ffffff;
 }
 
+.hero {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #121449;
+}
+
+.hero-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+
 h1, h2 {
   color: #121449;
 }
