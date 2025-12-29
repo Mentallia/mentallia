@@ -233,13 +233,12 @@ body {
   align-items: center;
   justify-content: center;
   height: 70px;
-  padding: 0 20px;
   background-color: #121449; /* Bleu Mentallia */
   color: white;
   position: fixed; /* la navbar reste fixe */
   top: 0;          /* en haut de la page */
-  left: 0;
   width: 100%;     /* prend toute la largeur */
+  box-sizing: border-box;
   z-index: 2000;   /* pour rester au-dessus du contenu */
 }
 
@@ -304,13 +303,13 @@ body {
   .menu-toggle {
     display: none;
     position: absolute;
-    right: 20px;
     top: 50%;
     transform: translateY(-50%); /* centrage vertical */
     cursor: pointer;
     color: #E6E6FA;
     background: red;
     font-size: 28px;
+    margin-left: auto;
   }
 
 @media (max-width: 600px) {
