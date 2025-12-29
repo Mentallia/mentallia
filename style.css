@@ -403,9 +403,9 @@ body {
 }
 
 .about-photo {
-  flex: 0 0 180px; /* largeur fixe réduite */
+  flex: 0 0 400px; /* largeur fixe réduite */
   width: 100%;      /* s’adapte au conteneur mais limité par flex */
-  max-width: 180px; /* ne dépasse jamais 180px */
+  max-width: 400px; /* ne dépasse jamais 180px */
   border-radius: 10px;
 }
 
