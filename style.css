@@ -139,6 +139,7 @@ button {
   font-size: 1.15rem;   /* légèrement plus grand */
   font-weight: bold;  /* sécurité si jamais <strong> est retiré */
   max-width: 1500px;
+  margin: 10px auto;
   padding: 0 20px;
   text-align: center;
 }
