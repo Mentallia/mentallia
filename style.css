@@ -271,6 +271,7 @@ body {
 
 .nav-links li a {
   text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
   color: white;
   font-weight: 500;
   display: flex;
