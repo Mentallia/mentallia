@@ -308,9 +308,9 @@ body {
     top: 50%;
     transform: translateY(-50%); /* centrage vertical */
     cursor: pointer;
-    color: white;
-    font-size: 26px;
-    z-index: 2100; /* au-dessus de la navbar */
+    color: #E6E6FA;
+    background: red;
+    font-size: 28px;
   }
 
 @media (max-width: 600px) {
@@ -332,6 +332,7 @@ body {
   .menu-toggle {
     display: block;
     align-items: center;
+    background: red;
   }
 }
 
