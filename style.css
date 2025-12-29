@@ -240,7 +240,7 @@ body {
   top: 0;          /* en haut de la page */
   left: 0;
   width: 100%;     /* prend toute la largeur */
-  z-index: 1000;   /* pour rester au-dessus du contenu */
+  z-index: 2000;   /* pour rester au-dessus du contenu */
 }
 
 .nav-logo {
@@ -305,9 +305,12 @@ body {
     display: none;
     position: absolute;
     right: 20px;
+    top: 50%;
+    transform: translateY(-50%); /* centrage vertical */
     cursor: pointer;
     color: white;
     font-size: 26px;
+    z-index: 2100; /* au-dessus de la navbar */
   }
 
 @media (max-width: 600px) {
@@ -327,7 +330,7 @@ body {
   }
 
   .menu-toggle {
-    display: flex;
+    display: block;
     align-items: center;
   }
 }
