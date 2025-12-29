@@ -236,7 +236,11 @@ body {
   padding: 0 20px;
   background-color: #121449; /* Bleu Mentallia */
   color: white;
-  position: relative;
+  position: fixed; /* la navbar reste fixe */
+  top: 0;          /* en haut de la page */
+  left: 0;
+  width: 100%;     /* prend toute la largeur */
+  z-index: 1000;   /* pour rester au-dessus du contenu */
 }
 
 .nav-logo {
