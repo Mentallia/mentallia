@@ -231,7 +231,7 @@ body {
   list-style: none;
   display: flex;
   justify-content: center;
-  align-self: center;
+  align-items: center;
   gap: 30px; /* espace entre les liens */
   margin: 0;
   padding: 0;
@@ -246,6 +246,7 @@ body {
   line-height: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%
 }
 
