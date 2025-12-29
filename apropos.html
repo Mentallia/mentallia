@@ -2,30 +2,40 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <title>Mentallia – À propos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mentallia - À propos</title>
-
-  <!-- Google Fonts Montserrat pour titres et textes -->
+  <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <!-- CSS interne ou à déplacer dans style.css -->
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      color: #121449;
-    }
-
-    
-  </style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="home-page">
 
+  <header class="site-header">
+  <nav class="navbar">
+    <!-- Logo à gauche -->
+    <div class="nav-logo">
+        <img src="images/logo-mentallia-blanc.png" alt="Mentallia" class="logo-navbar">
+    </div>  
+    
+    <!-- Liens centrés -->
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="bilan.html">Bilan Mental Express</a></li>
+      <li><a href="apropos.html" class="active">À propos</a></li>
+      <!-- Tu pourras ajouter d'autres liens ici plus tard -->
+    </ul>
+
+    <!--Burger à droite -->
+      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  </nav>
+</header>
+
+  <br/>
+
+  <!--Début du texte -->
+  <main class="home">
   <section class="about-container">
 
     <!-- Photo de profil -->
@@ -48,5 +58,43 @@
 
   </section>
 
+
+    
+  </main>
+
+  <script>
+  function toggleMenu() {
+    document.querySelector('.nav-links').classList.toggle('active');
+  }
+</script>
+
+<footer class="footer">
+  <div class="footer-grid">
+
+    <!-- Colonne 1 : Contact -->
+    <div class="footer-col">
+      <h3>Contacte-moi</h3>
+    </div>
+
+    <!-- Colonne 2 : Coordonnées -->
+    <div class="footer-col">
+      <p>Téléphone : <a href="tel:+33673626621">06 73 62 66 21</a></p>
+      <p>Email : <a href="mailto:mentallia.sports@gmail.com">mentallia.sports@gmail.com</a></p>
+    </div>
+
+    <!-- Colonne 3 : Réseaux sociaux -->
+    <div class="footer-col footer-social">
+      <a href="https://www.linkedin.com/in/bastien-page/?originalSubdomain=fr" target="_blank">
+        <img src="images/linkedin-logo-blanc.png" alt="LinkedIn" class="social-icon">
+      </a>
+      <a href="https://www.instagram.com/mentallia_sports" target="_blank">
+        <img src="images/logo-instagram-png-blanc.png" alt="Instagram" class="social-icon">
+      </a>
+    </div>
+
+  </div>
+</footer>
+
+  
 </body>
 </html>
