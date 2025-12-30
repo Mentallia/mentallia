@@ -172,6 +172,7 @@ button {
   grid-template-columns: repeat(4, 1fr);
   gap: 40px;
   margin: 40px 0;
+  align-items: end;
 }
 
 .partner-item {
@@ -179,9 +180,9 @@ button {
 }
 
 .partner-item img {
-  max-width: 120px;
+  max-width: 100px;
   height: auto;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   transition: transform 0.3s ease;
 }
 
