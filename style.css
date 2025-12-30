@@ -4,6 +4,15 @@ body {
   padding-top: 70px; /* espace pour la navbar fixe */
 }
 
+.separator {
+  border: none;
+  height: 1px;
+  width: 60px;
+  margin: 40px auto;
+  background-color: #121449;
+  opacity: 0.3;
+}
+
 .hero {
   max-width: 1500px;
   margin: 50px auto;
