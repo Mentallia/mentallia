@@ -488,6 +488,31 @@ button {
   max-width: 600px;
 }
 
+.presta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+}
+
+.presta-card {
+  text-align: left;
+}
+
+.presta-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .presta-grid {
+    grid-template-columns: 1fr;
+    gazp: 50px;
+  }
+}
+
 .center-text {
   text-align: center;
   margin: 40px 0;
