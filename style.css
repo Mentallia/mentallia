@@ -222,12 +222,6 @@ button {
   text-decoration: underline;
 }
 
-/* Style général du menu */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif; /* Police simple et lisible */
-}
-
 .navbar {
   position: fixed;
   top: 0;
