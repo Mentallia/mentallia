@@ -498,3 +498,20 @@ body {
   text-align: center;
   margin: 40px 0;
 }
+
+.custom-list2 {
+  list-style: none;
+  padding-left: 0;
+}
+
+.custom-list2 li {
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 10px;
+}
+
+.custom-list2 li::before {
+  content: "➤";
+  position: absolute;
+  left: 0;
+}
