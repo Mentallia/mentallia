@@ -633,7 +633,6 @@ button {
 
 .avis-subtitle {
   fontsize: 1.5rem;
-  color: #ffd700;
   max-width: 700px;
   margin: 0 auto;
 }
@@ -652,12 +651,12 @@ button {
 }
 
 .avis-quote {
-  font-family: 'Playfair Display', serif;
-  font-size: 4.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 5rem;
   font-weight: 700;
   color: #ffd700;
   opacity: 0.85;
-  line-height: 1;
+  line-height: 0.8;
   text-align: center;
 }
 
