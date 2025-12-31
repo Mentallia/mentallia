@@ -650,6 +650,11 @@ button {
   align-items: center;
 }
 
+.avis-logo img {
+  max-width: 100px;
+  height: auto;
+}
+
 .avis-quote {
   font-family: 'Cormorant Garamond', serif;
   font-size: 5rem;
