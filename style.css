@@ -667,9 +667,10 @@ button {
 }
 
 .avis-texte p {
-  font-size: 1.05rem;
+  font-size: 1.50rem;
   line-height: 1.6;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .avis-text strong {
