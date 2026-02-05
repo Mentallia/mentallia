@@ -285,6 +285,23 @@ button {
   text-decoration: underline;
 }
 
+.pdf-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #121449;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.pdf-link:hover {
+  color: #ffec1f;
+  border-bottom: 1px solid #ffec1f;
+}
+
+
 /* Barre de navigation */
 .navbar {
   position: fixed;
