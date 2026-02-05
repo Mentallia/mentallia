@@ -285,24 +285,19 @@ button {
   text-decoration: underline;
 }
 
-.pdf-link {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
+.pdf-inline {
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.pdf-inline a {
   color: #121449;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.pdf-link:hover {
+.pdf-inline a:hover {
   color: #ffec1f;
-  border-bottom: 1px solid #ffec1f;
-}
-
-.pdf-link::before {
-  content: "📄 ";
+  text-decoration: underline;
 }
 
 
