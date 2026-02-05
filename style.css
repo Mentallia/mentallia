@@ -301,6 +301,11 @@ button {
   border-bottom: 1px solid #ffec1f;
 }
 
+.pdf-link::before {
+  content: "📄 ";
+}
+
+
 
 /* Barre de navigation */
 .navbar {
