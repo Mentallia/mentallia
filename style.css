@@ -596,6 +596,13 @@ button {
   }
 }
 
+audio {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 5px;
+}
+
+
 .center-text {
   text-align: center;
   margin: 40px 0;
