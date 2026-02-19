@@ -704,6 +704,27 @@ audio {
   font-weight: 600;
 }
 
+
+.design {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 5rem;
+  font-weight: 700;
+  color: #ffd700;
+  opacity: 0.85;
+  line-height: 0.8;
+  text-align: center;
+}
+.avis-design::before {
+  content: "“";
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 5rem;
+  color: #ffd700;
+  position: absolute;
+  left: 0;
+  top: -5px;
+  line-height: 1;
+}
+
 @media (max-width: 768px) {
   .avis-item {
     grid-template-columns: 1fr;
@@ -716,5 +737,13 @@ audio {
 
   .avis-logo img {
     margin: 0 auto 15px;
+  }
+  .avis-design {
+    padding-left: 28px;
+  }
+
+  .avis-design::before {
+    font-size: 2.2rem;
+    top: 0;
   }
 }
