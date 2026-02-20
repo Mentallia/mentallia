@@ -73,15 +73,13 @@ function afficherRadar(scores) {
   });
 }
 
-function updateSlider(slider) {
+window.updateSlider = function (slider) {
 
   const value = parseInt(slider.value);
   const labels = ["Jamais", "Rarement", "Parfois", "Souvent", "Toujours"];
 
-  // Pourcentage de déplacement (0 à 100)
   const percentage = ((value - 1) / 4) * 100;
 
-  // Mise à jour du fond du curseur
   slider.style.background = `
     linear-gradient(
       to right,
@@ -90,16 +88,13 @@ function updateSlider(slider) {
     )
   `;
 
-  // ✅ Ciblage robuste (ne dépend plus du header ou du DOM)
-  const container = slider.closest('.slider-container');
-  const label = container.querySelector('.slider-label');
+  const label = slider.parentElement.querySelector('.slider-label');
+  if (!label) return;
 
-  // Texte
   label.innerText = labels[value - 1];
-
-  // Position horizontale
   label.style.left = `${percentage}%`;
-}
+};
+
 let currentStep = 0;
 const steps = document.querySelectorAll('.step');
 
