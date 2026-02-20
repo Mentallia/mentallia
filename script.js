@@ -90,8 +90,9 @@ function updateSlider(slider) {
     )
   `;
 
-  // Récupération de la bulle
-  const label = slider.parentElement.querySelector('.slider-label');
+  // ✅ Ciblage robuste (ne dépend plus du header ou du DOM)
+  const container = slider.closest('.slider-container');
+  const label = container.querySelector('.slider-label');
 
   // Texte
   label.innerText = labels[value - 1];
