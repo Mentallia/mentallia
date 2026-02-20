@@ -748,4 +748,12 @@ audio {
     font-size: 2.2rem;
     top: 0;
   }
+
+    .avis-text {
+    margin-top: 0;
+  }
+
+  .avis-text p {
+    margin-top: 0;
+  }
 }
