@@ -739,7 +739,9 @@ audio {
     margin: 0 auto 15px;
   }
   .avis-design {
-    padding-left: 28px;
+    margin-bottom: -10px;
+    padding-left: 0;
+    line-height: 1;
   }
 
   .avis-design::before {
