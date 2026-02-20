@@ -1,11 +1,12 @@
-<script>
-  const toggle = document.getElementById('menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
+const navLinks = document.querySelector('.nav-links');
+const toggle = document.querySelector('.menu-toggle');
 
+if (toggle && navLinks) {
   toggle.addEventListener('click', () => {
     navLinks.classList.toggle('active');
   });
-</script>
+}
+
 
 
 function calculerScores() {
