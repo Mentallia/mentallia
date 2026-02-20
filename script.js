@@ -103,6 +103,21 @@ function updateSlider(slider) {
 let currentStep = 0;
 const steps = document.querySelectorAll('.step');
 
+document.addEventListener('DOMContentLoaded', () => {
+  const sliders = document.querySelectorAll('.slider');
+
+  sliders.forEach(slider => {
+    // initialisation visuelle au chargement
+    updateSlider(slider);
+
+    // écouteur fiable
+    slider.addEventListener('input', () => {
+      updateSlider(slider);
+    });
+  });
+});
+
+
 
 function nextStep() {
 
