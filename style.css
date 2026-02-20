@@ -720,7 +720,8 @@ audio {
   .avis-item {
     grid-template-columns: 1fr;
     text-align: center;
-    row-gap: 8px;
+    row-gap: 4px;
+    align-items: start;
   }
 
   .avis-quote {
@@ -731,9 +732,11 @@ audio {
     margin: 0 auto 15px;
   }
   .avis-design {
-    margin-bottom: -10px;
+    margin-bottom: -6px;
     padding-left: 0;
     line-height: 1;
+    font-size: 2.2rem;
+    line-height: 0.7;
   }
 
   .avis-design::before {
@@ -741,7 +744,7 @@ audio {
     top: 0;
   }
 
-    .avis-text {
+  .avis-text {
     margin-top: 0;
   }
 
