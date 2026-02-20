@@ -203,3 +203,10 @@ function backToTest() {
   document.getElementById('nextBtn').style.display = 'none';
   document.getElementById('prevBtn').style.display = 'block';
 }
+
+window.addEventListener('load', () => {
+  document.querySelectorAll('.slider').forEach(slider => {
+    updateSlider(slider);
+  });
+});
+
