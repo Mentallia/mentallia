@@ -99,19 +99,7 @@ window.updateSlider = function (slider) {
 let currentStep = 0;
 const steps = document.querySelectorAll('.step');
 
-document.addEventListener('DOMContentLoaded', () => {
-  const sliders = document.querySelectorAll('.slider');
 
-  sliders.forEach(slider => {
-    // initialisation visuelle au chargement
-    updateSlider(slider);
-
-    // écouteur fiable
-    slider.addEventListener('input', () => {
-      updateSlider(slider);
-    });
-  });
-});
 
 
 
@@ -141,12 +129,6 @@ function updateProgressBar() {
   document.getElementById('progressBar').style.width = progress + '%';
 }
 
-// Initialisation
-window.onload = function () {
-  updateProgressBar();
-  const sliders = document.querySelectorAll('.slider');
-  sliders.forEach(slider => updateSlider(slider));
-};
 
 function prevStep() {
 
@@ -205,9 +187,8 @@ function backToTest() {
   document.getElementById('prevBtn').style.display = 'block';
 }
 
-window.addEventListener('load', () => {
-  document.querySelectorAll('.slider').forEach(slider => {
-    updateSlider(slider);
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  updateProgressBar();
+  document.querySelectorAll('.slider').forEach(updateSlider);
 });
 
