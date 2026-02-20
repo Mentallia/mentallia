@@ -729,6 +729,7 @@ audio {
   .avis-item {
     grid-template-columns: 1fr;
     text-align: center;
+    row-gap: 8px;
   }
 
   .avis-quote {
