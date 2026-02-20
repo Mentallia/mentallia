@@ -714,16 +714,7 @@ audio {
   line-height: 0.8;
   text-align: center;
 }
-.avis-design::before {
-  content: "“";
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 5rem;
-  color: #ffd700;
-  position: absolute;
-  left: 0;
-  top: -5px;
-  line-height: 1;
-}
+
 
 @media (max-width: 768px) {
   .avis-item {
