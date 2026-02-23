@@ -246,6 +246,27 @@ button {
   height: 50px;
 }
 
+.bilan-send {
+  max-width: 400px;
+  margin: 30px auto;
+  text-align: center;
+}
+
+.bilan-send input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.bilan-send button {
+  background: #121449;
+  color: white;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+}
+
+
 .home-page {
   text-align: center;
 }
