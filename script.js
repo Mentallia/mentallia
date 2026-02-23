@@ -212,9 +212,21 @@ function sendBilan() {
     return;
   }
 
-  const canvas = document.getElementById('radarChart');
-  const imageBase64 = canvas.toDataURL('image/png');
+  const themes = {
+    motivation: 0,
+    concentration: 0,
+    stress: 0,
+    confiance: 0,
+    objectifs: 0,
+    imagerie: 0,
+    pensées: 0,
+    bienetre: 0
+  };
 
+  document.querySelectorAll('.slider').forEach(slider => {
+    themes[slider.dataset.theme] += parseInt(slider.value);
+  });
+  
   emailjs.send(
     "service_r5laf1y",
     "template_iqgghv5",
@@ -222,7 +234,14 @@ function sendBilan() {
       prenom: prenom,
       nom: nom,
       email: email,
-      radar_image: imageBase64
+      motivation: themes.motivation,
+      concentration: themes.concentration,
+      stress: themes.stress,
+      confiance: themes.confiance,
+      objectifs: themes.objectifs,
+      imagerie: themes.imagerie,
+      pensees: themes.pensées,
+      bienetre: themes.bienetre
     }
   )
   .then(() => {
