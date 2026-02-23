@@ -534,6 +534,23 @@
 <div id="resultView" style="display:none;">
   <h2>Ton Bilan Mental</h2>  
 <canvas id="radarChart"></canvas>
+
+  <div class="bilan-send">
+  <h3>Recevoir ou envoyer mon bilan</h3>
+
+  <input type="text" id="prenom" placeholder="Prénom" required>
+  <input type="text" id="nom" placeholder="Nom" required>
+  <input type="email" id="email" placeholder="Adresse email" required>
+
+  <button type="button" onclick="sendBilan()">
+    Envoyer mon bilan à Mentallia
+  </button>
+
+  <p id="sendStatus"></p>
+</div>
+
+
+  
 <button type="button" onclick="backToTest()">
     Retour au questionnaire
 </button>
