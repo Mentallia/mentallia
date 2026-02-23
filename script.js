@@ -1,3 +1,7 @@
+(function(){
+  emailjs.init("FqisC_j6Q9psVZ4pG");
+})();
+
 const navLinks = document.querySelector('.nav-links');
 const toggle = document.querySelector('.menu-toggle');
 
@@ -192,9 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.slider').forEach(updateSlider);
 });
 
-(function(){
-  emailjs.init("FqisC_j6Q9psVZ4pG");
-})();
+
 
 function sendBilan() {
 
