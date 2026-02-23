@@ -1,6 +1,8 @@
 (function(){
   emailjs.init("FqisC_j6Q9psVZ4pG");
 })();
+console.log("EmailJS chargé :", emailjs);
+
 
 const navLinks = document.querySelector('.nav-links');
 const toggle = document.querySelector('.menu-toggle');
