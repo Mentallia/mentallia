@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 (function(){
-  emailjs.init("TON_PUBLIC_KEY_EMAILJS");
+  emailjs.init("FqisC_j6Q9psVZ4pG");
 })();
 
 function sendBilan() {
@@ -212,8 +212,8 @@ function sendBilan() {
   const imageBase64 = canvas.toDataURL('image/png');
 
   emailjs.send(
-    "TON_SERVICE_ID",
-    "TON_TEMPLATE_ID",
+    "service_r5laf1y",
+    "template_iqgghv5",
     {
       prenom: prenom,
       nom: nom,
