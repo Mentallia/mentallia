@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
   <!-- Chart.js (pour le radar) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 
 <body class="bilan-page">
@@ -534,6 +535,24 @@
 <div id="resultView" style="display:none;">
   <h2>Ton Bilan Mental</h2>  
 <canvas id="radarChart"></canvas>
+
+  <div class="bilan-send">
+  <h3>Tu souhaites envoyer ton Bilan Mental à Mentallia et être recontacté(e) pour travailler sur tes habiletés ? Remplis les informations ci-dessous et clique sur le bouton.</h3>
+
+  <input type="text" id="prenom" placeholder="Prénom" required>
+  <input type="text" id="nom" placeholder="Nom" required>
+  <input type="email" id="email" placeholder="Adresse email" required>
+
+  <button type="button" onclick="sendBilan()">
+    Envoyer mon bilan à Mentallia
+  </button>
+
+  <p id="sendStatus"></p>
+    Les informations transmises sont utilisées uniquement pour l’analyse de votre bilan mental.
+</div>
+
+
+  
 <button type="button" onclick="backToTest()">
     Retour au questionnaire
 </button>
