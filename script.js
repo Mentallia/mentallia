@@ -192,3 +192,41 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.slider').forEach(updateSlider);
 });
 
+(function(){
+  emailjs.init("TON_PUBLIC_KEY_EMAILJS");
+})();
+
+function sendBilan() {
+
+  const prenom = document.getElementById('prenom').value;
+  const nom = document.getElementById('nom').value;
+  const email = document.getElementById('email').value;
+
+  if (!prenom || !nom || !email) {
+    document.getElementById('sendStatus').innerText =
+      "Merci de remplir tous les champs.";
+    return;
+  }
+
+  const canvas = document.getElementById('radarChart');
+  const imageBase64 = canvas.toDataURL('image/png');
+
+  emailjs.send(
+    "TON_SERVICE_ID",
+    "TON_TEMPLATE_ID",
+    {
+      prenom: prenom,
+      nom: nom,
+      email: email,
+      radar_image: imageBase64
+    }
+  )
+  .then(() => {
+    document.getElementById('sendStatus').innerText =
+      "✅ Bilan envoyé avec succès !";
+  })
+  .catch(() => {
+    document.getElementById('sendStatus').innerText =
+      "❌ Erreur lors de l'envoi.";
+  });
+}
