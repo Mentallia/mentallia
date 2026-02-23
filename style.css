@@ -773,3 +773,21 @@ audio {
     margin-top: 0;
   }
 }
+
+/* ===== RADAR – AJUSTEMENT PC UNIQUEMENT ===== */
+@media (min-width: 769px) {
+
+  .radar-container {
+    height: calc(100vh - 220px); /* ajuste à la hauteur écran */
+    max-width: 700px;           /* évite qu’il soit trop large */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #radarChart {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
