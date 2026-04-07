@@ -247,6 +247,13 @@ function sendBilan() {
   .then(() => {
     document.getElementById('sendStatus').innerText =
       "✅ Bilan envoyé avec succès !";
+
+    // ✅ Vider les champs
+  document.getElementById("prenom").value = "";
+  document.getElementById("nom").value = "";
+  document.getElementById("email").value = "";
+
+  showPopup();
   })
   .catch(() => {
     document.getElementById('sendStatus').innerText =
