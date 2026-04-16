@@ -991,7 +991,7 @@ audio {
 .hero-netflix h1 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 3rem;
-  color: white;
+  color: #121449;
 }
 
 .hero-netflix p {
@@ -1006,7 +1006,7 @@ audio {
 .outil-row h2 {
   margin-bottom: 20px;
   font-size: 1.5rem;
-  color: #ffffff;
+  color: #121449;
 }
 
 .scroll-row {
