@@ -823,3 +823,47 @@ audio {
   border: none;
   cursor: pointer;
 }
+
+'Outils
+.outils-section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.intro-outils {
+  margin-bottom: 40px;
+  color: #555;
+}
+
+.outils-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.outil-card {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.outil-card:hover {
+  transform: translateY(-5px);
+}
+
+.outil-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.outil-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 18px;
+  background: #121449;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
