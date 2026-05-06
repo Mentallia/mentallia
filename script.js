@@ -15,6 +15,7 @@ if (toggle && navLinks) {
 
 
 
+
 function calculerScores() {
 
   const canvas = document.getElementById('radarChart');
@@ -172,8 +173,8 @@ function showResults() {
   // Calculer et afficher le radar
   calculerScores();
 
-  //compteur : aller sur https://api.countapi.xyz/get/mentallia/bilan
-  fetch("https://api.countapi.xyz/hit/mentallia/bilan")
+  //compteur : aller sur https://api.countapi.xyz/get/mentallia_bme/resultats
+  fetch("https://api.countapi.xyz/hit/mentallia_bme/resultats")
 }
 
 function backToTest() {
