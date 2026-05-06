@@ -173,8 +173,6 @@ function showResults() {
   // Calculer et afficher le radar
   calculerScores();
 
-  //compteur : aller sur https://api.countapi.xyz/get/mentallia_bme/resultats
-  fetch("https://api.countapi.xyz/hit/mentallia_bme/resultats")
 }
 
 function backToTest() {
