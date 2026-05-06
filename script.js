@@ -171,6 +171,9 @@ function showResults() {
 
   // Calculer et afficher le radar
   calculerScores();
+
+  //compteur : aller sur https://api.countapi.xyz/get/mentallia/bilan
+  fetch("https://api.countapi.xyz/hit/mentallia/bilan")
 }
 
 function backToTest() {
