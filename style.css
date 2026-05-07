@@ -831,6 +831,7 @@ audio {
 .outils-premium {
   padding: 60px 8%;
   min-height: 100vh;
+  background-color: #ffffff;
 }
 
 .outils-hero {
@@ -964,7 +965,7 @@ audio {
 
 .outils-premium {
   padding: 50px 8%;
-  background: #f5f7fb;
+  background: white;
 }
 
 .outils-hero {
