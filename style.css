@@ -1015,38 +1015,35 @@ audio {
 
 /* Cartes */
 
-.outil-card {
-  background: white;
-  border-radius: 22px;
-  padding: 35px 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.07);
-  transition: 0.3s;
-  display: flex;
-  flex-direction: column;
-}
+outilsHTML += `
+  <div class="outil-card">
 
-.outil-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
-}
+    <div class="outil-visuel">
+      ${outil.icon}
+    </div>
 
-.outil-visuel {
-  font-size: 2.7rem;
-  margin-bottom: 20px;
-}
+    <h3>${outil.titre}</h3>
 
-.outil-card h3 {
-  color: #121449;
-  margin-bottom: 15px;
-  font-size: 1.3rem;
-}
+    <p>${outil.description}</p>
 
-.outil-card p {
-  color: #555;
-  line-height: 1.6;
-  flex-grow: 1;
-}
+    ${
+      outil.audio
+      ? `
+        <audio controls class="audio-player">
+          <source src="${outil.audio}" type="audio/mpeg">
+          Votre navigateur ne supporte pas l'audio.
+        </audio>
+      `
+      : `
+        <a href="${outil.lien}" class="btn-outil">
+          ${outil.bouton}
+        </a>
+      `
+    }
 
+  </div>
+`;
+      
 /* Boutons */
 
 .btn-outil {
