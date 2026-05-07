@@ -1015,35 +1015,11 @@ audio {
 
 /* Cartes */
 
-outilsHTML += `
-  <div class="outil-card">
-
-    <div class="outil-visuel">
-      ${outil.icon}
-    </div>
-
-    <h3>${outil.titre}</h3>
-
-    <p>${outil.description}</p>
-
-    ${
-      outil.audio
-      ? `
-        <audio controls class="audio-player">
-          <source src="${outil.audio}" type="audio/mpeg">
-          Votre navigateur ne supporte pas l'audio.
-        </audio>
-      `
-      : `
-        <a href="${outil.lien}" class="btn-outil">
-          ${outil.bouton}
-        </a>
-      `
-    }
-
-  </div>
-`;
-      
+.audio-player {
+  width: 100%;
+  margin-top: 25px;
+  border-radius: 12px;
+}      
 /* Boutons */
 
 .btn-outil {
