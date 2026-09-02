@@ -1,0 +1,1812 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>
+    Mentallia – NPI-02 Réactivité décisionnelle
+  </title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <link
+    rel="icon"
+    href="favicon.png"
+    type="image/png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    /* =========================
+       PAGE NPI-02
+    ========================= */
+
+    .npi-test-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 80px 20px;
+    }
+
+
+    /* =========================
+       INTRODUCTION
+    ========================= */
+
+    .npi-test-intro {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .npi-test-intro h1 {
+      margin-bottom: 15px;
+    }
+
+    .npi-test-intro p {
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.7;
+      color: #555;
+    }
+
+
+    /* =========================
+       INSTRUCTIONS
+    ========================= */
+
+    .npi-instructions {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .npi-instructions h2 {
+      margin-bottom: 20px;
+    }
+
+    .npi-instructions p {
+      line-height: 1.7;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+
+    /* =========================
+       BOUTON
+    ========================= */
+
+    .btn-principal {
+      display: inline-block;
+      border: none;
+      background: #121449;
+      color: white;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn-principal:hover {
+      transform: translateY(-2px);
+      opacity: 0.92;
+    }
+
+
+    /* =========================
+       ZONE TEST
+    ========================= */
+
+    #testZone {
+      display: none;
+      margin-top: 40px;
+    }
+
+
+    /* =========================
+       INFORMATIONS TEST
+    ========================= */
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .test-status {
+      font-weight: 700;
+      color: #121449;
+      margin-bottom: 8px;
+    }
+
+    .test-phase {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+
+    /* =========================
+       CARRÉS
+    ========================= */
+
+    .reaction-grid {
+      display: flex;
+      gap: 30px;
+      width: 100%;
+      max-width: 800px;
+      margin: 40px auto 0;
+    }
+
+    .reaction-square {
+      flex: 1;
+      aspect-ratio: 1 / 1;
+      min-height: 260px;
+      border-radius: 20px;
+      background: #d9d9df;
+      border: 4px solid #d9d9df;
+      cursor: pointer;
+      transition:
+        background 0.08s ease,
+        border-color 0.08s ease,
+        transform 0.08s ease;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .reaction-square.active {
+      background: #1976d2;
+      border-color: #1976d2;
+      transform: scale(1.02);
+    }
+
+    .reaction-square:active {
+      transform: scale(0.98);
+    }
+
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    .reaction-message {
+      text-align: center;
+      min-height: 30px;
+      margin-top: 25px;
+      font-weight: 700;
+      color: #121449;
+    }
+
+
+    /* =========================
+       RÉSULTATS
+    ========================= */
+
+    #resultZone {
+      display: none;
+      max-width: 760px;
+      margin: 50px auto 0;
+    }
+
+    .result-card {
+      background: #f6f6f8;
+      border-radius: 18px;
+      padding: 35px;
+    }
+
+    .result-card h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .result-row:last-child {
+      border-bottom: none;
+    }
+
+    .result-row span {
+      color: #555;
+    }
+
+    .result-row strong {
+      color: #121449;
+      text-align: right;
+    }
+
+
+    /* =========================
+       RETOUR
+    ========================= */
+
+    .result-actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      .npi-test-page {
+        padding: 50px 15px;
+      }
+
+      .reaction-grid {
+        flex-direction: column;
+        gap: 20px;
+        max-width: 420px;
+      }
+
+      .reaction-square {
+        min-height: 0;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+      }
+
+      .result-card {
+        padding: 25px 20px;
+      }
+
+      .result-row {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .result-row strong {
+        text-align: left;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================
+       NAVBAR
+  ========================= -->
+
+  <header class="site-header">
+
+    <nav class="navbar">
+
+      <div class="nav-logo">
+
+        <a href="index.html">
+
+          <img
+            src="images/logo-mentallia-blanc.png"
+            alt="Mentallia"
+            class="logo-navbar"
+          >
+
+        </a>
+
+      </div>
+
+
+      <ul class="nav-links">
+
+        <li>
+          <a href="index.html">
+            Accueil
+          </a>
+        </li>
+
+        <li>
+          <a href="bilan.html">
+            Bilan Mental Express
+          </a>
+        </li>
+
+        <li>
+          <a href="prestations.html">
+            Prestations
+          </a>
+        </li>
+
+        <li>
+          <a href="outils.html">
+            Outils
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="NPI.html"
+            class="active"
+          >
+            NeuroPerformance Index
+          </a>
+        </li>
+
+        <li>
+          <a href="avis.html">
+            On parle de Mentallia
+          </a>
+        </li>
+
+        <li>
+          <a href="apropos.html">
+            À propos
+          </a>
+        </li>
+
+      </ul>
+
+
+      <div
+        class="menu-toggle"
+        onclick="toggleMenu()"
+      >
+        ☰
+      </div>
+
+    </nav>
+
+  </header>
+
+
+
+  <!-- =========================
+       CONTENU
+  ========================= -->
+
+  <main class="npi-test-page">
+
+
+    <!-- =========================
+         INTRO
+    ========================= -->
+
+    <section class="npi-test-intro">
+
+      <h1>
+        NPI-02 — Réactivité décisionnelle
+      </h1>
+
+      <p>
+        Évaluez votre capacité à détecter rapidement
+        une information visuelle et à choisir la bonne
+        réponse motrice.
+      </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         INSTRUCTIONS
+    ========================= -->
+
+    <section
+      id="instructions"
+      class="npi-instructions"
+    >
+
+      <h2>
+        Consignes
+      </h2>
+
+      <p>
+        Deux carrés vont apparaître à l'écran.
+        Dès que l'un des deux devient bleu,
+        cliquez le plus rapidement possible
+        sur le carré bleu.
+      </p>
+
+      <p>
+        Le test commence par 3 essais d'entraînement,
+        puis 30 essais officiels seront comptabilisés.
+      </p>
+
+      <button
+        type="button"
+        id="btnDemarrer"
+        class="btn-principal"
+      >
+        Commencer le test
+      </button>
+
+    </section>
+
+
+
+    <!-- =========================
+         ZONE TEST
+    ========================= -->
+
+    <section id="testZone">
+
+
+      <div class="test-header">
+
+        <div
+          id="testStatus"
+          class="test-status"
+        >
+          Concentrez-vous
+        </div>
+
+        <div
+          id="phaseInfo"
+          class="test-phase"
+        >
+          Entraînement
+        </div>
+
+        <div
+          id="essaiInfo"
+          class="test-phase"
+        >
+          Essai 1 / 3
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           CARRÉS
+      ========================= -->
+
+      <div class="reaction-grid">
+
+        <div
+          id="squareLeft"
+          class="reaction-square"
+          aria-label="Carré gauche"
+        ></div>
+
+
+        <div
+          id="squareRight"
+          class="reaction-square"
+          aria-label="Carré droit"
+        ></div>
+
+      </div>
+
+
+      <div
+        id="reactionMessage"
+        class="reaction-message"
+      >
+        Attendez...
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =========================
+         RÉSULTATS
+    ========================= -->
+
+    <section id="resultZone">
+
+      <div class="result-card">
+
+        <h2>
+          Résultats
+        </h2>
+
+
+        <div class="result-row">
+
+          <span>
+            Temps de réaction moyen
+          </span>
+
+          <strong id="resultMoyenne">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="result-row">
+
+          <span>
+            Moyenne gauche / haut
+          </span>
+
+          <strong id="resultMoyenneGauche">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="result-row">
+
+          <span>
+            Moyenne droite / bas
+          </span>
+
+          <strong id="resultMoyenneDroite">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="result-row">
+
+          <span>
+            Écart-type
+          </span>
+
+          <strong id="resultEcartType">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="result-row">
+
+          <span>
+            Anticipations
+          </span>
+
+          <strong id="resultAnticipations">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="result-row">
+
+          <span>
+            Essais valides
+          </span>
+
+          <strong id="resultValides">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="result-row">
+
+          <span>
+            Maintien de performance
+          </span>
+
+          <strong id="resultMaintien">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="result-actions">
+
+          <button
+            type="button"
+            class="btn-principal"
+            onclick="retourNPI()"
+          >
+            Retour au NeuroPerformance Index
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
+  <script>
+
+
+    /* =========================
+       MENU
+    ========================= */
+
+    function toggleMenu() {
+
+      document
+        .querySelector(".nav-links")
+        .classList
+        .toggle("active");
+
+    }
+
+
+
+    /* =========================
+       CONFIGURATION
+    ========================= */
+
+    const essaisEntrainement = 3;
+
+    const nombreEssaisOfficiels = 30;
+
+    const seuilAnticipation = 100;
+
+
+
+    /* =========================
+       VARIABLES
+    ========================= */
+
+    let phase = "entrainement";
+
+    let essaiActuel = 0;
+
+    let stimulusActif = false;
+
+    let coteActif = null;
+
+    let tempsDebutStimulus = 0;
+
+    let timerStimulus = null;
+
+    let timerSuivant = null;
+
+    let tempsEntrainement = [];
+
+    let tempsOfficiels = [];
+
+    let nombreAnticipations = 0;
+
+
+    /*
+      Chaque essai officiel est conservé
+      avec son côté et son résultat.
+    */
+
+    let essaisOfficiels = [];
+
+
+
+    /* =========================
+       ÉLÉMENTS
+    ========================= */
+
+    const instructions =
+      document.getElementById(
+        "instructions"
+      );
+
+    const testZone =
+      document.getElementById(
+        "testZone"
+      );
+
+    const resultZone =
+      document.getElementById(
+        "resultZone"
+      );
+
+    const squareLeft =
+      document.getElementById(
+        "squareLeft"
+      );
+
+    const squareRight =
+      document.getElementById(
+        "squareRight"
+      );
+
+    const reactionMessage =
+      document.getElementById(
+        "reactionMessage"
+      );
+
+    const testStatus =
+      document.getElementById(
+        "testStatus"
+      );
+
+    const phaseInfo =
+      document.getElementById(
+        "phaseInfo"
+      );
+
+    const essaiInfo =
+      document.getElementById(
+        "essaiInfo"
+      );
+
+    const btnDemarrer =
+      document.getElementById(
+        "btnDemarrer"
+      );
+
+
+
+    /* =========================
+       DÉMARRER
+    ========================= */
+
+    function demarrerTest() {
+
+      clearTimeout(timerStimulus);
+
+      clearTimeout(timerSuivant);
+
+      instructions.style.display =
+        "none";
+
+      testZone.style.display =
+        "block";
+
+      resultZone.style.display =
+        "none";
+
+      phase = "entrainement";
+
+      essaiActuel = 0;
+
+      stimulusActif = false;
+
+      coteActif = null;
+
+      tempsEntrainement = [];
+
+      tempsOfficiels = [];
+
+      nombreAnticipations = 0;
+
+      essaisOfficiels = [];
+
+      squareLeft.classList.remove(
+        "active"
+      );
+
+      squareRight.classList.remove(
+        "active"
+      );
+
+      preparerEssai();
+
+    }
+
+
+
+    /* =========================
+       PRÉPARER ESSAI
+    ========================= */
+
+    function preparerEssai() {
+
+      clearTimeout(timerStimulus);
+
+      stimulusActif = false;
+
+      coteActif = null;
+
+      squareLeft.classList.remove(
+        "active"
+      );
+
+      squareRight.classList.remove(
+        "active"
+      );
+
+      reactionMessage.textContent =
+        "Attendez...";
+
+
+      /* -------------------------
+         INFORMATIONS
+      ------------------------- */
+
+      if (
+        phase === "entrainement"
+      ) {
+
+        phaseInfo.textContent =
+          "Entraînement";
+
+        essaiInfo.textContent =
+          `Essai ${essaiActuel + 1} / ${essaisEntrainement}`;
+
+      }
+
+      else {
+
+        phaseInfo.textContent =
+          "Test officiel";
+
+        essaiInfo.textContent =
+          `Essai ${essaiActuel + 1} / ${nombreEssaisOfficiels}`;
+
+      }
+
+
+      testStatus.textContent =
+        "Concentrez-vous";
+
+
+      /*
+        Délai aléatoire :
+        1,5 à 4 secondes.
+      */
+
+      const delai =
+        Math.floor(
+          Math.random() * 2500
+        ) + 1500;
+
+
+      timerStimulus =
+        setTimeout(
+          afficherStimulus,
+          delai
+        );
+
+    }
+
+
+
+    /* =========================
+       AFFICHER STIMULUS
+    ========================= */
+
+    function afficherStimulus() {
+
+      /*
+        Choix aléatoire :
+        0 = gauche
+        1 = droite
+      */
+
+      coteActif =
+        Math.random() < 0.5
+          ? "gauche"
+          : "droite";
+
+
+      stimulusActif = true;
+
+
+      if (
+        coteActif === "gauche"
+      ) {
+
+        squareLeft.classList.add(
+          "active"
+        );
+
+      }
+
+      else {
+
+        squareRight.classList.add(
+          "active"
+        );
+
+      }
+
+
+      reactionMessage.textContent =
+        "TOUCHEZ LE CARRÉ BLEU !";
+
+      testStatus.textContent =
+        "Répondez !";
+
+
+      tempsDebutStimulus =
+        performance.now();
+
+    }
+
+
+
+    /* =========================
+       GESTION D'UN CLIC
+    ========================= */
+
+    function gererReponse(coteClique) {
+
+
+      /* =========================
+         AVANT LE STIMULUS
+      ========================= */
+
+      if (!stimulusActif) {
+
+        clearTimeout(
+          timerStimulus
+        );
+
+
+        /*
+          En entraînement :
+          l'anticipation ne consomme
+          pas l'essai.
+        */
+
+        if (
+          phase === "entrainement"
+        ) {
+
+          testStatus.textContent =
+            "Anticipation";
+
+          reactionMessage.textContent =
+            "Trop tôt";
+
+
+          timerSuivant =
+            setTimeout(
+              preparerEssai,
+              1000
+            );
+
+          return;
+
+        }
+
+
+        /*
+          En officiel :
+          l'anticipation consomme
+          l'essai.
+        */
+
+        nombreAnticipations++;
+
+
+        essaisOfficiels.push({
+
+          cote:
+            coteActuelPourAnticipation(),
+
+          temps: null,
+
+          valide: false,
+
+          anticipation: true
+
+        });
+
+
+        essaiActuel++;
+
+
+        testStatus.textContent =
+          "Anticipation";
+
+        reactionMessage.textContent =
+          "Trop tôt";
+
+
+        if (
+          essaiActuel >=
+          nombreEssaisOfficiels
+        ) {
+
+          timerSuivant =
+            setTimeout(
+              terminerTest,
+              1000
+            );
+
+        }
+
+        else {
+
+          timerSuivant =
+            setTimeout(
+              preparerEssai,
+              1000
+            );
+
+        }
+
+        return;
+
+      }
+
+
+
+      /* =========================
+         TEMPS DE RÉACTION
+      ========================= */
+
+      const tempsReaction =
+        performance.now()
+        - tempsDebutStimulus;
+
+
+
+      /* =========================
+         MAUVAIS CARRÉ
+      ========================= */
+
+      if (
+        coteClique !== coteActif
+      ) {
+
+        testStatus.textContent =
+          "Mauvais choix";
+
+        reactionMessage.textContent =
+          "Touchez le carré bleu";
+
+
+        /*
+          L'essai continue.
+          Il n'est pas consommé.
+        */
+
+        return;
+
+      }
+
+
+
+      /* =========================
+         STIMULUS TERMINÉ
+      ========================= */
+
+      stimulusActif = false;
+
+
+      squareLeft.classList.remove(
+        "active"
+      );
+
+      squareRight.classList.remove(
+        "active"
+      );
+
+
+
+      /* =========================
+         ENTRAÎNEMENT
+      ========================= */
+
+      if (
+        phase === "entrainement"
+      ) {
+
+        tempsEntrainement.push(
+          tempsReaction
+        );
+
+
+        reactionMessage.textContent =
+          Math.round(
+            tempsReaction
+          ) + " ms";
+
+        testStatus.textContent =
+          "Réponse enregistrée";
+
+
+        essaiActuel++;
+
+
+        if (
+          essaiActuel <
+          essaisEntrainement
+        ) {
+
+          timerSuivant =
+            setTimeout(
+              preparerEssai,
+              800
+            );
+
+        }
+
+        else {
+
+          phase = "officiel";
+
+          essaiActuel = 0;
+
+          testStatus.textContent =
+            "Entraînement terminé";
+
+          reactionMessage.textContent =
+            "Le test va commencer";
+
+
+          timerSuivant =
+            setTimeout(
+              preparerEssai,
+              1500
+            );
+
+        }
+
+
+        return;
+
+      }
+
+
+
+      /* =========================
+         TEST OFFICIEL
+      ========================= */
+
+      /*
+        Moins de 100 ms :
+        anticipation.
+      */
+
+      if (
+        tempsReaction <
+        seuilAnticipation
+      ) {
+
+        nombreAnticipations++;
+
+
+        essaisOfficiels.push({
+
+          cote:
+            coteActif,
+
+          temps: null,
+
+          valide: false,
+
+          anticipation: true
+
+        });
+
+
+        essaiActuel++;
+
+
+        testStatus.textContent =
+          "Anticipation";
+
+        reactionMessage.textContent =
+          "Trop tôt";
+
+
+        if (
+          essaiActuel >=
+          nombreEssaisOfficiels
+        ) {
+
+          timerSuivant =
+            setTimeout(
+              terminerTest,
+              1000
+            );
+
+        }
+
+        else {
+
+          timerSuivant =
+            setTimeout(
+              preparerEssai,
+              1000
+            );
+
+        }
+
+
+        return;
+
+      }
+
+
+
+      /* =========================
+         RÉPONSE VALIDE
+      ========================= */
+
+      tempsOfficiels.push(
+        tempsReaction
+      );
+
+
+      essaisOfficiels.push({
+
+        cote:
+          coteActif,
+
+        temps:
+          tempsReaction,
+
+        valide: true,
+
+        anticipation: false
+
+      });
+
+
+      reactionMessage.textContent =
+        Math.round(
+          tempsReaction
+        ) + " ms";
+
+      testStatus.textContent =
+        "Réponse enregistrée";
+
+
+      essaiActuel++;
+
+
+
+      /* =========================
+         FIN / SUITE
+      ========================= */
+
+      if (
+        essaiActuel >=
+        nombreEssaisOfficiels
+      ) {
+
+        timerSuivant =
+          setTimeout(
+            terminerTest,
+            1000
+          );
+
+      }
+
+      else {
+
+        timerSuivant =
+          setTimeout(
+            preparerEssai,
+            800
+          );
+
+      }
+
+    }
+
+
+
+    /* =========================
+       CÔTÉ EN CAS D'ANTICIPATION
+    ========================= */
+
+    function coteActuelPourAnticipation() {
+
+      /*
+        Comme aucun stimulus n'est encore
+        apparu, aucun côté actif n'existe.
+
+        On conserve le côté cliqué afin
+        de pouvoir analyser les anticipations.
+      */
+
+      return "non-déterminé";
+
+    }
+
+
+
+    /* =========================
+       ÉVÉNEMENTS DES CARRÉS
+    ========================= */
+
+    squareLeft.addEventListener(
+      "pointerdown",
+      function(event) {
+
+        event.preventDefault();
+
+        gererReponse("gauche");
+
+      }
+    );
+
+
+    squareRight.addEventListener(
+      "pointerdown",
+      function(event) {
+
+        event.preventDefault();
+
+        gererReponse("droite");
+
+      }
+    );
+
+
+
+    /* =========================
+       MOYENNE
+    ========================= */
+
+    function calculerMoyenne(
+      valeurs
+    ) {
+
+      if (
+        valeurs.length === 0
+      ) {
+
+        return null;
+
+      }
+
+
+      const somme =
+        valeurs.reduce(
+          (
+            total,
+            valeur
+          ) =>
+            total + valeur,
+          0
+        );
+
+
+      return somme /
+        valeurs.length;
+
+    }
+
+
+
+    /* =========================
+       ÉCART-TYPE
+    ========================= */
+
+    function calculerEcartType(
+      valeurs
+    ) {
+
+      if (
+        valeurs.length === 0
+      ) {
+
+        return null;
+
+      }
+
+
+      const moyenne =
+        calculerMoyenne(
+          valeurs
+        );
+
+
+      const variance =
+        valeurs.reduce(
+          (
+            total,
+            valeur
+          ) => {
+
+            return total +
+              Math.pow(
+                valeur - moyenne,
+                2
+              );
+
+          },
+          0
+        ) /
+        valeurs.length;
+
+
+      return Math.sqrt(
+        variance
+      );
+
+    }
+
+
+
+    /* =========================
+       FIN DU TEST
+    ========================= */
+
+    function terminerTest() {
+
+      clearTimeout(
+        timerStimulus
+      );
+
+      clearTimeout(
+        timerSuivant
+      );
+
+
+      testZone.style.display =
+        "none";
+
+      resultZone.style.display =
+        "block";
+
+
+
+      /* =========================
+         MOYENNE GÉNÉRALE
+      ========================= */
+
+      const moyenne =
+        calculerMoyenne(
+          tempsOfficiels
+        );
+
+
+
+      /* =========================
+         MOYENNE GAUCHE
+      ========================= */
+
+      const tempsGauche =
+        essaisOfficiels
+          .filter(
+            essai =>
+              essai.cote === "gauche" &&
+              essai.valide
+          )
+          .map(
+            essai =>
+              essai.temps
+          );
+
+
+      const moyenneGauche =
+        calculerMoyenne(
+          tempsGauche
+        );
+
+
+
+      /* =========================
+         MOYENNE DROITE
+      ========================= */
+
+      const tempsDroite =
+        essaisOfficiels
+          .filter(
+            essai =>
+              essai.cote === "droite" &&
+              essai.valide
+          )
+          .map(
+            essai =>
+              essai.temps
+          );
+
+
+      const moyenneDroite =
+        calculerMoyenne(
+          tempsDroite
+        );
+
+
+
+      /* =========================
+         ÉCART-TYPE
+      ========================= */
+
+      const ecartType =
+        calculerEcartType(
+          tempsOfficiels
+        );
+
+
+
+      /* =========================
+         MAINTIEN
+      ========================= */
+
+      /*
+        Bloc 1 :
+        essais officiels 1 à 10
+
+        Bloc 3 :
+        essais officiels 21 à 30
+
+        Les anticipations sont conservées
+        à leur position réelle mais exclues
+        des moyennes.
+      */
+
+      const bloc1 =
+        essaisOfficiels
+          .slice(0, 10)
+          .filter(
+            essai =>
+              essai.valide
+          )
+          .map(
+            essai =>
+              essai.temps
+          );
+
+
+      const bloc3 =
+        essaisOfficiels
+          .slice(20, 30)
+          .filter(
+            essai =>
+              essai.valide
+          )
+          .map(
+            essai =>
+              essai.temps
+          );
+
+
+      const moyenneBloc1 =
+        calculerMoyenne(
+          bloc1
+        );
+
+
+      const moyenneBloc3 =
+        calculerMoyenne(
+          bloc3
+        );
+
+
+      let maintien = null;
+
+
+      if (
+        moyenneBloc1 !== null &&
+        moyenneBloc3 !== null &&
+        moyenneBloc3 !== 0
+      ) {
+
+        maintien =
+          moyenneBloc1 /
+          moyenneBloc3;
+
+      }
+
+
+
+      /* =========================
+         AFFICHAGE
+      ========================= */
+
+      document.getElementById(
+        "resultMoyenne"
+      ).textContent =
+        moyenne !== null
+          ? Math.round(moyenne) +
+            " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultMoyenneGauche"
+      ).textContent =
+        moyenneGauche !== null
+          ? Math.round(
+              moyenneGauche
+            ) + " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultMoyenneDroite"
+      ).textContent =
+        moyenneDroite !== null
+          ? Math.round(
+              moyenneDroite
+            ) + " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultEcartType"
+      ).textContent =
+        ecartType !== null
+          ? Math.round(
+              ecartType
+            ) + " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultAnticipations"
+      ).textContent =
+        nombreAnticipations;
+
+
+      document.getElementById(
+        "resultValides"
+      ).textContent =
+        tempsOfficiels.length +
+        " / " +
+        nombreEssaisOfficiels;
+
+
+      document.getElementById(
+        "resultMaintien"
+      ).textContent =
+        maintien !== null
+          ? maintien.toFixed(2)
+          : "—";
+
+
+
+      /* =========================
+         SAUVEGARDE NPI
+      ========================= */
+
+      const resultatNPI02 = {
+
+        moyenne:
+          moyenne !== null
+            ? Math.round(
+                moyenne
+              )
+            : null,
+
+        moyenneGauche:
+          moyenneGauche !== null
+            ? Math.round(
+                moyenneGauche
+              )
+            : null,
+
+        moyenneDroite:
+          moyenneDroite !== null
+            ? Math.round(
+                moyenneDroite
+              )
+            : null,
+
+        ecartType:
+          ecartType !== null
+            ? Math.round(
+                ecartType
+              )
+            : null,
+
+        anticipations:
+          nombreAnticipations,
+
+        essaisValides:
+          tempsOfficiels.length,
+
+        essaisOfficiels:
+          nombreEssaisOfficiels,
+
+        maintien:
+          maintien !== null
+            ? Number(
+                maintien.toFixed(4)
+              )
+            : null,
+
+        temps:
+          tempsOfficiels.map(
+            temps =>
+              Math.round(temps)
+          ),
+
+        date:
+          new Date().toISOString()
+
+      };
+
+
+      /*
+        Récupération des résultats
+        existants.
+      */
+
+      let resultatsNPI =
+        JSON.parse(
+          localStorage.getItem(
+            "NPI-results"
+          )
+        ) || {};
+
+
+      /*
+        Ajout du NPI-02.
+      */
+
+      resultatsNPI["NPI-02"] =
+        resultatNPI02;
+
+
+      /*
+        Sauvegarde.
+      */
+
+      localStorage.setItem(
+        "NPI-results",
+        JSON.stringify(
+          resultatsNPI
+        )
+      );
+
+    }
+
+
+
+    /* =========================
+       BOUTON DÉMARRER
+    ========================= */
+
+    if (btnDemarrer) {
+
+      btnDemarrer.addEventListener(
+        "click",
+        demarrerTest
+      );
+
+    }
+
+
+
+    /* =========================
+       RETOUR NPI
+    ========================= */
+
+    function retourNPI() {
+
+      window.location.href =
+        "NPI.html";
+
+    }
+
+  </script>
+
+
+</body>
+
+</html>
+```
