@@ -1256,6 +1256,11 @@ audio {
 
 .progress-container {
   margin-bottom: 30px;
+  position: relative;
+  height: 40px;
+  background: #e8e8ee;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .progress-text {
