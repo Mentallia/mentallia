@@ -1059,3 +1059,157 @@ audio {
   }
 
 }
+
+
+/* ===============================
+   NEUROPERFORMANCE INDEX
+================================ */
+
+.npi-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 25px 80px;
+}
+
+
+/* INTRO */
+
+.npi-intro {
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 60px;
+}
+
+.npi-intro h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  color: #121449;
+  margin-bottom: 20px;
+}
+
+.npi-subtitle {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #121449;
+  margin-bottom: 20px;
+}
+
+.npi-info {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+
+/* GRILLE */
+
+.npi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+
+/* CARTE TEST */
+
+.npi-test {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  text-decoration: none;
+  color: #121449;
+
+  border: 1px solid rgba(18,20,73,0.08);
+
+  box-shadow:
+    0 8px 25px rgba(18,20,73,0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.npi-test:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 14px 35px rgba(18,20,73,0.15);
+}
+
+
+/* NUMERO */
+
+.npi-number {
+  display: inline-block;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  background: #121449;
+  color: white;
+
+  padding: 6px 10px;
+  border-radius: 6px;
+
+  margin-bottom: 15px;
+}
+
+
+/* TITRE TEST */
+
+.npi-test h2 {
+  margin: 0 0 10px;
+
+  font-size: 1.3rem;
+  color: #121449;
+}
+
+
+/* DESCRIPTION */
+
+.npi-test p {
+  margin: 0;
+
+  font-size: 0.95rem;
+  line-height: 1.5;
+
+  color: #555;
+}
+
+
+/* TABLETTE */
+
+@media (max-width: 900px) {
+
+  .npi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/* SMARTPHONE */
+
+@media (max-width: 650px) {
+
+  .npi-page {
+    padding: 40px 18px 60px;
+  }
+
+  .npi-intro h1 {
+    font-size: 2rem;
+  }
+
+  .npi-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .npi-test {
+    padding: 22px;
+  }
+
+}
