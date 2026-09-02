@@ -618,77 +618,105 @@
   </main>
 
 
-  <script>
+ ```html
+<script>
 
-    /* =========================
-       CONFIGURATION
-    ========================= */
+/* =========================
+   CONFIGURATION
+========================= */
 
-    const essaisEntrainement = 3;
-
-    const essaisOfficiels = 30;
-
-    const seuilAnticipation = 100;
-
-
-    /* =========================
-       VARIABLES
-    ========================= */
-
-    let phase = "entrainement";
-
-    let essaiActuel = 0;
-
-    let tempsDebutStimulus = 0;
-
-    let stimulusActif = false;
-
-    let timerStimulus = null;
-
-    let tempsEntrainement = [];
-
-    let tempsOfficiels = [];
-
-    let nombreAnticipations = 0;
+const essaisEntrainement = 3;
+const nombreEssaisOfficiels = 30;
+const seuilAnticipation = 100;
 
 
-    /* =========================
-       ÉLÉMENTS
-    ========================= */
+/* =========================
+   VARIABLES
+========================= */
 
-    const instructions =
+let phase = "entrainement";
+
+let essaiActuel = 0;
+
+let tempsDebutStimulus = 0;
+
+let stimulusActif = false;
+
+let timerStimulus = null;
+
+let timerSuivant = null;
+
+let tempsEntrainement = [];
+
+let tempsOfficiels = [];
+
+let nombreAnticipations = 0;
+
+/*
+  Chaque essai officiel est enregistré ici.
+
+  Exemple :
+  {
+    temps: 315,
+    valide: true,
+    anticipation: false
+  }
+
+  ou :
+
+  {
+    temps: null,
+    valide: false,
+    anticipation: true
+  }
+*/
+let essaisOfficiels = [];
+
+
+/* =========================
+   ÉLÉMENTS
+========================= */
+
+const instructions =
   document.getElementById("instructions");
 
 const testZone =
   document.getElementById("testZone");
 
+const resultZone =
+  document.getElementById("resultZone");
+
+const reactionZone =
+  document.getElementById("reactionZone");
+
+const reactionMessage =
+  document.getElementById("reactionMessage");
+
+const testStatus =
+  document.getElementById("testStatus");
+
+const phaseInfo =
+  document.getElementById("phaseInfo");
+
+const essaiInfo =
+  document.getElementById("essaiInfo");
+
 const btnDemarrer =
   document.getElementById("btnDemarrer");
 
-    const resultZone =
-      document.getElementById("resultZone");
 
-    const reactionZone =
-      document.getElementById("reactionZone");
-
-    const reactionMessage =
-      document.getElementById("reactionMessage");
-
-    const testStatus =
-      document.getElementById("testStatus");
-
-    const phaseInfo =
-      document.getElementById("phaseInfo");
-
-    const essaiInfo =
-      document.getElementById("essaiInfo");
-
-
-    /* =========================
-   DÉMARRER
+/* =========================
+   DÉMARRER LE TEST
 ========================= */
 
 function demarrerTest() {
+
+  /*
+    Sécurité :
+    on annule d'éventuels anciens timers.
+  */
+  clearTimeout(timerStimulus);
+  clearTimeout(timerSuivant);
 
   instructions.style.display = "none";
 
@@ -706,7 +734,749 @@ function demarrerTest() {
 
   nombreAnticipations = 0;
 
+  essaisOfficiels = [];
+
   preparerEssai();
+}
+
+
+/* =========================
+   PRÉPARER UN ESSAI
+========================= */
+
+function preparerEssai() {
+
+  clearTimeout(timerStimulus);
+
+  stimulusActif = false;
+
+  reactionZone.classList.remove("active");
+
+  reactionMessage.textContent =
+    "Attendez...";
+
+
+  /* -------------------------
+     PHASE ENTRAÎNEMENT
+  ------------------------- */
+
+  if (phase === "entrainement") {
+
+    phaseInfo.textContent =
+      "Entraînement";
+
+    essaiInfo.textContent =
+      `Essai ${essaiActuel + 1} / ${essaisEntrainement}`;
+
+  }
+
+
+  /* -------------------------
+     PHASE OFFICIELLE
+  ------------------------- */
+
+  else {
+
+    /*
+      essaiActuel commence à 0,
+      mais l'affichage commence à 1.
+    */
+
+    phaseInfo.textContent =
+      "Test";
+
+    essaiInfo.textContent =
+      `Essai ${essaiActuel + 1} / ${nombreEssaisOfficiels}`;
+
+  }
+
+
+  testStatus.textContent =
+    "Concentrez-vous";
+
+
+  /*
+    Délai aléatoire :
+    entre 1,5 et 4 secondes.
+  */
+
+  const delai =
+    Math.floor(
+      Math.random() * 2500
+    ) + 1500;
+
+
+  timerStimulus =
+    setTimeout(
+      afficherStimulus,
+      delai
+    );
+}
+
+
+/* =========================
+   AFFICHER LE STIMULUS
+========================= */
+
+function afficherStimulus() {
+
+  stimulusActif = true;
+
+  reactionZone.classList.add("active");
+
+  reactionMessage.textContent =
+    "TOUCHEZ !";
+
+  testStatus.textContent =
+    "Répondez !";
+
+  tempsDebutStimulus =
+    performance.now();
+}
+
+
+/* =========================
+   RÉPONSE
+========================= */
+
+reactionZone.addEventListener(
+  "pointerdown",
+  function() {
+
+
+    /* =========================
+       ANTICIPATION AVANT STIMULUS
+    ========================= */
+
+    if (!stimulusActif) {
+
+      clearTimeout(timerStimulus);
+
+      /*
+        Pendant l'entraînement,
+        l'anticipation ne compte pas
+        dans les résultats officiels.
+      */
+
+      if (phase === "entrainement") {
+
+        testStatus.textContent =
+          "Anticipation";
+
+        reactionMessage.textContent =
+          "Trop tôt";
+
+        /*
+          On recommence le même essai
+          d'entraînement.
+        */
+
+        timerSuivant =
+          setTimeout(
+            preparerEssai,
+            1000
+          );
+
+        return;
+      }
+
+
+      /* =========================
+         ANTICIPATION OFFICIELLE
+      ========================= */
+
+      /*
+        IMPORTANT :
+
+        Une anticipation consomme
+        maintenant l'essai officiel.
+
+        On enregistre donc un essai
+        invalide dans le tableau.
+      */
+
+      nombreAnticipations++;
+
+      essaisOfficiels.push({
+        temps: null,
+        valide: false,
+        anticipation: true
+      });
+
+      /*
+        L'essai officiel est consommé.
+      */
+
+      essaiActuel++;
+
+      testStatus.textContent =
+        "Anticipation";
+
+      reactionMessage.textContent =
+        "Trop tôt";
+
+
+      /*
+        Vérifie si nous venons
+        d'atteindre le 30e essai.
+      */
+
+      if (
+        essaiActuel >=
+        nombreEssaisOfficiels
+      ) {
+
+        timerSuivant =
+          setTimeout(
+            terminerTest,
+            1000
+          );
+
+      } else {
+
+        timerSuivant =
+          setTimeout(
+            preparerEssai,
+            1000
+          );
+
+      }
+
+      return;
+    }
+
+
+    /* =========================
+       CALCUL DU TEMPS DE RÉACTION
+    ========================= */
+
+    const tempsReaction =
+      performance.now()
+      - tempsDebutStimulus;
+
+
+    stimulusActif = false;
+
+    reactionZone.classList.remove(
+      "active"
+    );
+
+
+    /* =========================
+       PHASE ENTRAÎNEMENT
+    ========================= */
+
+    if (phase === "entrainement") {
+
+      tempsEntrainement.push(
+        tempsReaction
+      );
+
+      reactionMessage.textContent =
+        Math.round(tempsReaction) +
+        " ms";
+
+      testStatus.textContent =
+        "Réponse enregistrée";
+
+      essaiActuel++;
+
+
+      /*
+        Encore des essais
+        d'entraînement.
+      */
+
+      if (
+        essaiActuel <
+        essaisEntrainement
+      ) {
+
+        timerSuivant =
+          setTimeout(
+            preparerEssai,
+            800
+          );
+
+      }
+
+      /*
+        Entraînement terminé.
+      */
+
+      else {
+
+        phase = "officiel";
+
+        essaiActuel = 0;
+
+        testStatus.textContent =
+          "Entraînement terminé";
+
+        reactionMessage.textContent =
+          "Le test va commencer";
+
+
+        timerSuivant =
+          setTimeout(
+            preparerEssai,
+            1500
+          );
+
+      }
+
+      return;
+    }
+
+
+    /* =========================
+       TEST OFFICIEL
+    ========================= */
+
+    /*
+      Une réponse inférieure à 100 ms
+      est considérée comme une
+      anticipation.
+    */
+
+    if (
+      tempsReaction <
+      seuilAnticipation
+    ) {
+
+      nombreAnticipations++;
+
+      /*
+        L'essai officiel est consommé
+        même dans ce cas.
+      */
+
+      essaisOfficiels.push({
+        temps: null,
+        valide: false,
+        anticipation: true
+      });
+
+      essaiActuel++;
+
+      testStatus.textContent =
+        "Anticipation";
+
+      reactionMessage.textContent =
+        "Trop tôt";
+
+
+      if (
+        essaiActuel >=
+        nombreEssaisOfficiels
+      ) {
+
+        timerSuivant =
+          setTimeout(
+            terminerTest,
+            1000
+          );
+
+      } else {
+
+        timerSuivant =
+          setTimeout(
+            preparerEssai,
+            1000
+          );
+
+      }
+
+      return;
+    }
+
+
+    /* =========================
+       RÉPONSE OFFICIELLE VALIDE
+    ========================= */
+
+    tempsOfficiels.push(
+      tempsReaction
+    );
+
+
+    essaisOfficiels.push({
+      temps: tempsReaction,
+      valide: true,
+      anticipation: false
+    });
+
+
+    reactionMessage.textContent =
+      Math.round(tempsReaction) +
+      " ms";
+
+    testStatus.textContent =
+      "Réponse enregistrée";
+
+
+    /*
+      L'essai officiel est consommé.
+    */
+
+    essaiActuel++;
+
+
+    /* =========================
+       FIN DU TEST
+    ========================= */
+
+    if (
+      essaiActuel >=
+      nombreEssaisOfficiels
+    ) {
+
+      timerSuivant =
+        setTimeout(
+          terminerTest,
+          1000
+        );
+
+    }
+
+    else {
+
+      timerSuivant =
+        setTimeout(
+          preparerEssai,
+          800
+        );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   MOYENNE
+========================= */
+
+function calculerMoyenne(valeurs) {
+
+  if (
+    valeurs.length === 0
+  ) {
+    return null;
+  }
+
+
+  const somme =
+    valeurs.reduce(
+      (total, valeur) =>
+        total + valeur,
+      0
+    );
+
+
+  return somme / valeurs.length;
+}
+
+
+/* =========================
+   ÉCART-TYPE
+========================= */
+
+function calculerEcartType(valeurs) {
+
+  if (
+    valeurs.length === 0
+  ) {
+    return null;
+  }
+
+
+  const moyenne =
+    calculerMoyenne(
+      valeurs
+    );
+
+
+  const variance =
+    valeurs.reduce(
+      (total, valeur) => {
+
+        return total +
+          Math.pow(
+            valeur - moyenne,
+            2
+          );
+
+      },
+      0
+    ) / valeurs.length;
+
+
+  return Math.sqrt(
+    variance
+  );
+}
+
+
+/* =========================
+   FIN DU TEST
+========================= */
+
+function terminerTest() {
+
+  clearTimeout(timerStimulus);
+  clearTimeout(timerSuivant);
+
+  testZone.style.display =
+    "none";
+
+  resultZone.style.display =
+    "block";
+
+
+  /* =========================
+     MOYENNE GÉNÉRALE
+  ========================= */
+
+  const moyenne =
+    calculerMoyenne(
+      tempsOfficiels
+    );
+
+
+  /* =========================
+     MEILLEUR TEMPS
+  ========================= */
+
+  const meilleur =
+    tempsOfficiels.length > 0
+      ? Math.min(
+          ...tempsOfficiels
+        )
+      : null;
+
+
+  /* =========================
+     ÉCART-TYPE
+  ========================= */
+
+  const ecartType =
+    calculerEcartType(
+      tempsOfficiels
+    );
+
+
+  /* =========================
+     MAINTIEN DE PERFORMANCE
+  ========================= */
+
+  /*
+    On travaille maintenant
+    sur les VRAIS essais officiels.
+
+    Bloc 1 :
+    essais 1 à 10
+
+    Bloc 3 :
+    essais 21 à 30
+
+    Les anticipations restent
+    dans leur position d'essai,
+    mais ne sont pas incluses
+    dans les moyennes.
+  */
+
+  const bloc1 =
+    essaisOfficiels
+      .slice(0, 10)
+      .filter(
+        essai => essai.valide
+      )
+      .map(
+        essai => essai.temps
+      );
+
+
+  const bloc3 =
+    essaisOfficiels
+      .slice(20, 30)
+      .filter(
+        essai => essai.valide
+      )
+      .map(
+        essai => essai.temps
+      );
+
+
+  const moyenneBloc1 =
+    calculerMoyenne(
+      bloc1
+    );
+
+
+  const moyenneBloc3 =
+    calculerMoyenne(
+      bloc3
+    );
+
+
+  let maintien = null;
+
+
+  if (
+    moyenneBloc1 !== null &&
+    moyenneBloc3 !== null &&
+    moyenneBloc3 !== 0
+  ) {
+
+    maintien =
+      moyenneBloc1 /
+      moyenneBloc3;
+
+  }
+
+
+  /* =========================
+     AFFICHAGE
+  ========================= */
+
+  document.getElementById(
+    "resultMoyenne"
+  ).textContent =
+    moyenne !== null
+      ? Math.round(moyenne) +
+        " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultMaintien"
+  ).textContent =
+    maintien !== null
+      ? maintien.toFixed(2)
+      : "—";
+
+
+  document.getElementById(
+    "resultMeilleur"
+  ).textContent =
+    meilleur !== null
+      ? Math.round(meilleur) +
+        " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultEcartType"
+  ).textContent =
+    ecartType !== null
+      ? Math.round(ecartType) +
+        " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultAnticipations"
+  ).textContent =
+    nombreAnticipations;
+
+
+  document.getElementById(
+    "resultValides"
+  ).textContent =
+    tempsOfficiels.length +
+    " / " +
+    nombreEssaisOfficiels;
+
+
+  /* =========================
+     SAUVEGARDE NPI
+  ========================= */
+
+  const resultatNPI01 = {
+
+    moyenne:
+      moyenne !== null
+        ? Math.round(moyenne)
+        : null,
+
+    maintien:
+      maintien !== null
+        ? Number(
+            maintien.toFixed(4)
+          )
+        : null,
+
+    meilleur:
+      meilleur !== null
+        ? Math.round(meilleur)
+        : null,
+
+    ecartType:
+      ecartType !== null
+        ? Math.round(ecartType)
+        : null,
+
+    anticipations:
+      nombreAnticipations,
+
+    essaisValides:
+      tempsOfficiels.length,
+
+    essaisOfficiels:
+      nombreEssaisOfficiels,
+
+    /*
+      On conserve uniquement
+      les temps valides pour
+      rester compatible avec
+      le reste du NPI.
+    */
+
+    temps:
+      tempsOfficiels.map(
+        temps =>
+          Math.round(temps)
+      ),
+
+    date:
+      new Date().toISOString()
+
+  };
+
+
+  /*
+    On récupère les résultats
+    déjà enregistrés.
+  */
+
+  let resultatsNPI =
+    JSON.parse(
+      localStorage.getItem(
+        "NPI-results"
+      )
+    ) || {};
+
+
+  /*
+    On ajoute ou remplace
+    le résultat du NPI-01.
+  */
+
+  resultatsNPI["NPI-01"] =
+    resultatNPI01;
+
+
+  /*
+    Sauvegarde.
+  */
+
+  localStorage.setItem(
+    "NPI-results",
+    JSON.stringify(
+      resultatsNPI
+    )
+  );
 
 }
 
@@ -715,609 +1485,30 @@ function demarrerTest() {
    BOUTON DÉMARRER
 ========================= */
 
-btnDemarrer.addEventListener(
-  "click",
-  demarrerTest
-);
+if (btnDemarrer) {
 
+  btnDemarrer.addEventListener(
+    "click",
+    demarrerTest
+  );
 
-    /* =========================
-       PRÉPARER ESSAI
-    ========================= */
-
-    function preparerEssai() {
-
-      stimulusActif = false;
-
-      reactionZone.classList.remove("active");
-
-      reactionMessage.textContent =
-        "Attendez...";
-
-
-      /* -------------------------
-         Phase entraînement
-      ------------------------- */
-
-      if (phase === "entrainement") {
-
-        phaseInfo.textContent =
-          "Entraînement";
-
-        essaiInfo.textContent =
-          `Essai ${essaiActuel + 1} / ${essaisEntrainement}`;
-
-      }
-
-
-      /* -------------------------
-         Phase officielle
-      ------------------------- */
-
-      else {
-
-        phaseInfo.textContent =
-          "Test";
-
-        essaiInfo.textContent =
-          `Essai ${essaiActuel + 1} / ${essaisOfficiels}`;
-
-      }
-
-
-      testStatus.textContent =
-        "Concentrez-vous";
-
-
-      /*
-  Délai aléatoire :
-  entre 1,5 et 4 secondes.
-*/
-
-const delai =
-  Math.floor(
-    Math.random() * 2500
-  ) + 1500;
-
-
-      timerStimulus = setTimeout(
-        afficherStimulus,
-        delai
-      );
-
-    }
-
-
-    /* =========================
-       STIMULUS
-    ========================= */
-
-    function afficherStimulus() {
-
-      stimulusActif = true;
-
-      reactionZone.classList.add("active");
-
-      reactionMessage.textContent =
-        "TOUCHEZ !";
-
-      testStatus.textContent =
-        "Répondez !";
-
-      tempsDebutStimulus =
-        performance.now();
-
-    }
-
-
-    /* =========================
-       RÉPONSE
-    ========================= */
-
-    reactionZone.addEventListener(
-      "pointerdown",
-      function() {
-
-
-        /* -------------------------
-           ANTICIPATION
-        ------------------------- */
-
-        if (!stimulusActif) {
-
-          clearTimeout(timerStimulus);
-
-          /*
-            Une anticipation est comptabilisée
-            uniquement pendant les 30 essais
-            officiels.
-          */
-
-          if (phase === "officiel") {
-
-            nombreAnticipations++;
-
-          }
-
-
-          testStatus.textContent =
-            "Anticipation";
-
-          reactionMessage.textContent =
-            "Trop tôt";
-
-
-          /*
-            L'essai est recommencé.
-            Il ne consomme pas un essai officiel.
-          */
-
-          setTimeout(
-            preparerEssai,
-            1000
-          );
-
-          return;
-
-        }
-
-
-        /* -------------------------
-           CALCUL DU TEMPS
-        ------------------------- */
-
-        const tempsReaction =
-          performance.now()
-          - tempsDebutStimulus;
-
-
-        stimulusActif = false;
-
-        reactionZone.classList.remove(
-          "active"
-        );
-
-
-        /* -------------------------
-           ENTRAINEMENT
-        ------------------------- */
-
-        if (phase === "entrainement") {
-
-          tempsEntrainement.push(
-            tempsReaction
-          );
-
-          reactionMessage.textContent =
-            Math.round(tempsReaction) + " ms";
-
-          testStatus.textContent =
-            "Réponse enregistrée";
-
-
-          essaiActuel++;
-
-
-          if (
-            essaiActuel <
-            essaisEntrainement
-          ) {
-
-            setTimeout(
-              preparerEssai,
-              800
-            );
-
-          } else {
-
-            /*
-              Passage automatique
-              au test officiel.
-            */
-
-            phase = "officiel";
-
-            essaiActuel = 0;
-
-            testStatus.textContent =
-              "Entraînement terminé";
-
-            reactionMessage.textContent =
-              "Le test va commencer";
-
-
-            setTimeout(
-              preparerEssai,
-              1500
-            );
-
-          }
-
-
-          return;
-
-        }
-
-
-        /* -------------------------
-           TEST OFFICIEL
-        ------------------------- */
-
-        /*
-          Une réponse < 100 ms est
-          considérée comme anticipation.
-
-          Elle ne doit pas être ajoutée
-          aux temps valides.
-        */
-
-        if (
-          tempsReaction <
-          seuilAnticipation
-        ) {
-
-          nombreAnticipations++;
-
-          testStatus.textContent =
-            "Anticipation";
-
-          reactionMessage.textContent =
-            "Trop tôt";
-
-
-          setTimeout(
-            preparerEssai,
-            1000
-          );
-
-          return;
-
-        }
-
-
-        /*
-          Réponse valide.
-        */
-
-        tempsOfficiels.push(
-          tempsReaction
-        );
-
-        reactionMessage.textContent =
-          Math.round(tempsReaction) + " ms";
-
-        testStatus.textContent =
-          "Réponse enregistrée";
-
-
-        essaiActuel++;
-
-
-        /*
-          Fin du test.
-        */
-
-        if (
-          essaiActuel >=
-          essaisOfficiels
-        ) {
-
-          setTimeout(
-            terminerTest,
-            1000
-          );
-
-        } else {
-
-          setTimeout(
-            preparerEssai,
-            800
-          );
-
-        }
-
-      }
-    );
-
-
-    /* =========================
-       MOYENNE
-    ========================= */
-
-    function calculerMoyenne(valeurs) {
-
-      if (
-        valeurs.length === 0
-      ) {
-
-        return null;
-
-      }
-
-      const somme =
-        valeurs.reduce(
-          (total, valeur) =>
-            total + valeur,
-          0
-        );
-
-      return somme / valeurs.length;
-
-    }
-
-
-    /* =========================
-       ÉCART-TYPE
-    ========================= */
-
-    function calculerEcartType(valeurs) {
-
-      if (
-        valeurs.length === 0
-      ) {
-
-        return null;
-
-      }
-
-      const moyenne =
-        calculerMoyenne(valeurs);
-
-
-      const variance =
-        valeurs.reduce(
-          (total, valeur) => {
-
-            return total +
-              Math.pow(
-                valeur - moyenne,
-                2
-              );
-
-          },
-          0
-        ) / valeurs.length;
-
-
-      return Math.sqrt(variance);
-
-    }
-
-
-    /* =========================
-       FIN DU TEST
-    ========================= */
-
-    function terminerTest() {
-
-      testZone.style.display =
-        "none";
-
-      resultZone.style.display =
-        "block";
-
-
-      /* -------------------------
-         Moyenne générale
-      ------------------------- */
-
-      const moyenne =
-        calculerMoyenne(
-          tempsOfficiels
-        );
-
-
-      /* -------------------------
-         Meilleur temps
-      ------------------------- */
-
-      const meilleur =
-        tempsOfficiels.length > 0
-          ? Math.min(...tempsOfficiels)
-          : null;
-
-
-      /* -------------------------
-         Écart-type
-      ------------------------- */
-
-      const ecartType =
-        calculerEcartType(
-          tempsOfficiels
-        );
-
-
-      /* -------------------------
-         Maintien de performance
-      ------------------------- */
-
-      /*
-        Les essais officiels sont
-        numérotés de 1 à 30.
-
-        Bloc 1 :
-        essais 1 à 10
-
-        Bloc 3 :
-        essais 21 à 30
-
-        Les essais invalides ne sont
-        pas présents dans tempsOfficiels.
-      */
-
-
-      const bloc1 =
-        tempsOfficiels.slice(0, 10);
-
-      const bloc3 =
-        tempsOfficiels.slice(-10);
-
-
-      const moyenneBloc1 =
-        calculerMoyenne(bloc1);
-
-      const moyenneBloc3 =
-        calculerMoyenne(bloc3);
-
-
-      let maintien = null;
-
-
-      if (
-        moyenneBloc1 !== null &&
-        moyenneBloc3 !== null &&
-        moyenneBloc3 !== 0
-      ) {
-
-        maintien =
-          moyenneBloc1 /
-          moyenneBloc3;
-
-      }
-
-
-      /* -------------------------
-         AFFICHAGE
-      ------------------------- */
-
-      document.getElementById(
-        "resultMoyenne"
-      ).textContent =
-        moyenne !== null
-          ? Math.round(moyenne) + " ms"
-          : "—";
-
-
-      document.getElementById(
-        "resultMaintien"
-      ).textContent =
-        maintien !== null
-          ? maintien.toFixed(2)
-          : "—";
-
-
-      document.getElementById(
-        "resultMeilleur"
-      ).textContent =
-        meilleur !== null
-          ? Math.round(meilleur) + " ms"
-          : "—";
-
-
-      document.getElementById(
-        "resultEcartType"
-      ).textContent =
-        ecartType !== null
-          ? Math.round(ecartType) + " ms"
-          : "—";
-
-
-      document.getElementById(
-        "resultAnticipations"
-      ).textContent =
-        nombreAnticipations;
-
-
-      document.getElementById(
-        "resultValides"
-      ).textContent =
-        tempsOfficiels.length +
-        " / " +
-        essaisOfficiels;
-
-
+}
 
 
 /* =========================
-   SAUVEGARDE NPI
+   RETOUR NPI
 ========================= */
 
-const resultatNPI01 = {
+function retourNPI() {
 
-  moyenne:
-    moyenne !== null
-      ? Math.round(moyenne)
-      : null,
+  window.location.href =
+    "NPI.html";
 
-  maintien:
-    maintien !== null
-      ? Number(maintien.toFixed(4))
-      : null,
+}
 
-  meilleur:
-    meilleur !== null
-      ? Math.round(meilleur)
-      : null,
+</script>
+```
 
-  ecartType:
-    ecartType !== null
-      ? Math.round(ecartType)
-      : null,
-
-  anticipations:
-    nombreAnticipations,
-
-  essaisValides:
-    tempsOfficiels.length,
-
-  essaisOfficiels:
-    essaisOfficiels,
-
-  temps:
-    tempsOfficiels.map(
-      temps => Math.round(temps)
-    ),
-
-  date:
-    new Date().toISOString()
-
-};
-
-
-/*
-  On récupère les éventuels résultats
-  déjà enregistrés.
-*/
-
-let resultatsNPI =
-  JSON.parse(
-    localStorage.getItem("NPI-results")
-  ) || {};
-
-
-/*
-  On ajoute ou remplace le résultat
-  du NPI-01.
-*/
-
-resultatsNPI["NPI-01"] =
-  resultatNPI01;
-
-
-/*
-  On sauvegarde l'ensemble.
-*/
-
-localStorage.setItem(
-  "NPI-results",
-  JSON.stringify(resultatsNPI)
-);
-
-    
-
-
-    /* =========================
-       RETOUR NPI
-    ========================= */
-
-    function retourNPI() {
-
-      window.location.href =
-        "NPI.html";
-
-    }
-
-  </script>
 
 </body>
 
