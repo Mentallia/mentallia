@@ -351,63 +351,99 @@ function chargerResultatsNPI() {
   }
 
 
-  /* =========================
-     NPI-02 à NPI-10
-  ========================= */
 
-  const testsRestants = [
-    "NPI-02",
-    "NPI-03",
-    "NPI-04",
-    "NPI-05",
-    "NPI-06",
-    "NPI-07",
-    "NPI-08",
-    "NPI-09",
-    "NPI-10"
-  ];
+/* =========================
+   NPI-02
+========================= */
+
+if (resultats["NPI-02"]) {
+
+  const resultat =
+    resultats["NPI-02"];
+
+  const element =
+    document.getElementById(
+      "resultNPI02"
+    );
+
+  if (element) {
+
+    element.innerHTML = `
+      ${resultat.moyenne !== null
+        ? resultat.moyenne + " ms"
+        : "—"}
+      &nbsp; / &nbsp;
+      ${resultat.ecartType !== null
+        ? resultat.ecartType + " ms"
+        : "—"}
+      &nbsp; / &nbsp;
+      ${resultat.anticipations ?? 0} anticipation(s)
+    `;
+
+  }
+
+  nombreTestsRealises++;
+
+}
 
 
-  testsRestants.forEach(
-    function(test) {
+/* =========================
+   NPI-03 À NPI-10
+========================= */
 
-      const element =
-        document.getElementById(
-          "result" + test.replace("-", "")
-        );
+const testsRestants = [
+  "NPI-03",
+  "NPI-04",
+  "NPI-05",
+  "NPI-06",
+  "NPI-07",
+  "NPI-08",
+  "NPI-09",
+  "NPI-10"
+];
+
+
+testsRestants.forEach(
+  function(test) {
+
+    const element =
+      document.getElementById(
+        "result" +
+        test.replace("-", "")
+      );
+
+
+    if (
+      resultats[test] &&
+      element
+    ) {
 
       if (
-        resultats[test] &&
-        element
+        resultats[test].moyenne !== undefined &&
+        resultats[test].moyenne !== null
       ) {
 
-        /*
-          Pour les futurs tests,
-          nous utiliserons leur indicateur
-          principal.
-        */
-
-        if (
-          resultats[test].moyenne !== undefined &&
-          resultats[test].moyenne !== null
-        ) {
-
-          element.textContent =
-            resultats[test].moyenne + " ms";
-
-        } else {
-
-          element.textContent =
-            "✓ Terminé";
-
-        }
-
-        nombreTestsRealises++;
+        element.textContent =
+          resultats[test].moyenne +
+          " ms";
 
       }
 
+      else {
+
+        element.textContent =
+          "✓ Terminé";
+
+      }
+
+      nombreTestsRealises++;
+
     }
-  );
+
+  }
+);
+
+
 
 
   /* =========================
