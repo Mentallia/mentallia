@@ -657,10 +657,13 @@
     ========================= */
 
     const instructions =
-      document.getElementById("instructions");
+  document.getElementById("instructions");
 
-    const testZone =
-      document.getElementById("testZone");
+const testZone =
+  document.getElementById("testZone");
+
+const btnDemarrer =
+  document.getElementById("btnDemarrer");
 
     const resultZone =
       document.getElementById("resultZone");
@@ -682,28 +685,40 @@
 
 
     /* =========================
-       DÉMARRER
-    ========================= */
+   DÉMARRER
+========================= */
 
-    function demarrerTest() {
+function demarrerTest() {
 
-      instructions.style.display = "none";
+  instructions.style.display = "none";
 
-      testZone.style.display = "block";
+  testZone.style.display = "block";
 
-      phase = "entrainement";
+  resultZone.style.display = "none";
 
-      essaiActuel = 0;
+  phase = "entrainement";
 
-      tempsEntrainement = [];
+  essaiActuel = 0;
 
-      tempsOfficiels = [];
+  tempsEntrainement = [];
 
-      nombreAnticipations = 0;
+  tempsOfficiels = [];
 
-      preparerEssai();
+  nombreAnticipations = 0;
 
-    }
+  preparerEssai();
+
+}
+
+
+/* =========================
+   BOUTON DÉMARRER
+========================= */
+
+btnDemarrer.addEventListener(
+  "click",
+  demarrerTest
+);
 
 
     /* =========================
@@ -755,14 +770,14 @@
 
 
       /*
-        Délai aléatoire :
-        entre 1, et 4 secondes.
-      */
+  Délai aléatoire :
+  entre 1,5 et 4 secondes.
+*/
 
-      const delai =
-        Math.floor(
-          Math.random() * 200
-        ) + 1500;
+const delai =
+  Math.floor(
+    Math.random() * 2500
+  ) + 1500;
 
 
       timerStimulus = setTimeout(
