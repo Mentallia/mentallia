@@ -1213,3 +1213,158 @@ audio {
   }
 
 }
+
+/* =========================
+   TABLEAU DE BORD NPI
+========================= */
+
+.npi-dashboard {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 45px;
+  box-shadow: 0 10px 35px rgba(18, 20, 73, 0.08);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.dashboard-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  color: #121449;
+  font-size: 1.5rem;
+}
+
+
+/* =========================
+   PROGRESSION
+========================= */
+
+.progress-container {
+  margin-bottom: 30px;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.progress-text span:last-child {
+  font-weight: 700;
+  color: #121449;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e9e9ee;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: #121449;
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+
+/* =========================
+   RÉSULTATS
+========================= */
+
+.resultats-npi {
+  border-top: 1px solid rgba(18, 20, 73, 0.08);
+}
+
+.resultat-npi-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(18, 20, 73, 0.06);
+  font-size: 0.9rem;
+}
+
+.resultat-npi-row:last-child {
+  border-bottom: none;
+}
+
+.resultat-npi-row span {
+  color: #555;
+}
+
+.resultat-npi-row strong {
+  color: #121449;
+  white-space: nowrap;
+}
+
+
+/* =========================
+   BOUTON RESET
+========================= */
+
+.btn-reset {
+  border: 1px solid rgba(18, 20, 73, 0.2);
+  background: white;
+  color: #121449;
+  padding: 10px 16px;
+  border-radius: 9px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+  background: #121449;
+  color: white;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+  .npi-dashboard {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .dashboard-header {
+    align-items: flex-start;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .resultat-npi-row {
+    align-items: flex-start;
+    font-size: 0.82rem;
+  }
+
+}
