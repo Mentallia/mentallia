@@ -372,12 +372,22 @@ if (resultats["NPI-02"]) {
       ${resultat.moyenne !== null
         ? resultat.moyenne + " ms"
         : "—"}
+
       &nbsp; / &nbsp;
+
+      ${resultat.erreurs ?? 0}
+      erreur(s)
+
+      &nbsp; / &nbsp;
+
       ${resultat.ecartType !== null
         ? resultat.ecartType + " ms"
         : "—"}
+
       &nbsp; / &nbsp;
-      ${resultat.anticipations ?? 0} anticipation(s)
+
+      ${resultat.anticipations ?? 0}
+      anticipation(s)
     `;
 
   }
