@@ -330,5 +330,185 @@
     }
   </script>
 
+
+  <script>
+
+/* =========================
+   CHARGER LES RÉSULTATS NPI
+========================= */
+
+function chargerResultatsNPI() {
+
+  const resultats =
+    JSON.parse(
+      localStorage.getItem("NPI-results")
+    ) || {};
+
+
+  let nombreTestsRealises = 0;
+
+
+  /* =========================
+     NPI-01
+  ========================= */
+
+  if (resultats["NPI-01"]) {
+
+    const resultat =
+      resultats["NPI-01"];
+
+    document.getElementById(
+      "resultNPI01"
+    ).textContent =
+      resultat.moyenne !== null
+        ? resultat.moyenne + " ms"
+        : "—";
+
+    nombreTestsRealises++;
+
+  }
+
+
+  /* =========================
+     NPI-02 à NPI-10
+  ========================= */
+
+  const testsRestants = [
+    "NPI-02",
+    "NPI-03",
+    "NPI-04",
+    "NPI-05",
+    "NPI-06",
+    "NPI-07",
+    "NPI-08",
+    "NPI-09",
+    "NPI-10"
+  ];
+
+
+  testsRestants.forEach(
+    function(test) {
+
+      const element =
+        document.getElementById(
+          "result" + test.replace("-", "")
+        );
+
+      if (
+        resultats[test] &&
+        element
+      ) {
+
+        /*
+          Pour les futurs tests,
+          nous utiliserons leur indicateur
+          principal.
+        */
+
+        if (
+          resultats[test].moyenne !== undefined &&
+          resultats[test].moyenne !== null
+        ) {
+
+          element.textContent =
+            resultats[test].moyenne + " ms";
+
+        } else {
+
+          element.textContent =
+            "✓ Terminé";
+
+        }
+
+        nombreTestsRealises++;
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     PROGRESSION
+  ========================= */
+
+  const pourcentage =
+    Math.round(
+      (nombreTestsRealises / 10) * 100
+    );
+
+
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    `${nombreTestsRealises} / 10 tests réalisés`;
+
+
+  document.getElementById(
+    "progressPercent"
+  ).textContent =
+    `${pourcentage} %`;
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    `${pourcentage}%`;
+
+}
+
+
+/* =========================
+   RESET DU DIAGNOSTIC
+========================= */
+
+function resetNPI() {
+
+  const confirmation =
+    confirm(
+      "Êtes-vous sûr de vouloir réinitialiser le diagnostic NPI ?\n\nTous les résultats des 10 tests seront supprimés."
+    );
+
+
+  if (!confirmation) {
+    return;
+  }
+
+
+  /*
+    Suppression de l'ensemble
+    des résultats.
+  */
+
+  localStorage.removeItem(
+    "NPI-results"
+  );
+
+
+  /*
+    Rechargement de la page
+    pour remettre l'affichage à zéro.
+  */
+
+  window.location.reload();
+
+}
+
+
+/* =========================
+   INITIALISATION
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    chargerResultatsNPI();
+
+  }
+);
+
+</script>
+  
 </body>
 </html>
