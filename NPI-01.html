@@ -402,7 +402,7 @@
 
         <p>
           Vous effectuerez d'abord
-          <strong>5 essais d'entraînement</strong>,
+          <strong>3 essais d'entraînement</strong>,
           puis <strong>30 essais comptabilisés</strong>.
         </p>
 
@@ -450,7 +450,7 @@
           id="essaiInfo"
           class="essai-info">
 
-          Essai 1 / 5
+          Essai 1 / 3
 
         </div>
 
@@ -624,7 +624,7 @@
        CONFIGURATION
     ========================= */
 
-    const essaisEntrainement = 5;
+    const essaisEntrainement = 3;
 
     const essaisOfficiels = 30;
 
@@ -756,12 +756,12 @@
 
       /*
         Délai aléatoire :
-        entre 1,5 et 4 secondes.
+        entre 1, et 4 secondes.
       */
 
       const delai =
         Math.floor(
-          Math.random() * 2500
+          Math.random() * 200
         ) + 1500;
 
 
