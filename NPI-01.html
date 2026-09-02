@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>NPI-01 — Réactivité visuomotrice | Mentallia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7fa;
+      color: #121449;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+
+    /* =========================
+       BARRE SUPÉRIEURE
+    ========================= */
+
+    .npi-topbar {
+      width: 100%;
+      padding: 20px 25px;
+      background: white;
+      border-bottom: 1px solid rgba(18, 20, 73, 0.08);
+    }
+
+    .retour-npi {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #121449;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: opacity 0.2s ease;
+    }
+
+    .retour-npi:hover {
+      opacity: 0.65;
+    }
+
+
+    /* =========================
+       PAGE
+    ========================= */
+
+    .test-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 25px 80px;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .test-number {
+      display: inline-block;
+      background: #121449;
+      color: white;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .test-header h1 {
+      margin: 0 0 15px;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #121449;
+    }
+
+    .test-header p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #555;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+
+    /* =========================
+       CARTE
+    ========================= */
+
+    .test-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 35px rgba(18, 20, 73, 0.08);
+    }
+
+
+    /* =========================
+       CONSIGNES
+    ========================= */
+
+    .instructions {
+      text-align: center;
+    }
+
+    .instructions h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.35rem;
+    }
+
+    .instructions p {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .instruction-highlight {
+      font-weight: 700;
+      color: #121449;
+    }
+
+
+    /* =========================
+       BOUTON
+    ========================= */
+
+    .btn-principal {
+      border: none;
+      background: #121449;
+      color: white;
+      padding: 15px 28px;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      margin-top: 25px;
+    }
+
+    .btn-principal:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+
+    /* =========================
+       ZONE DE TEST
+    ========================= */
+
+    #testZone {
+      display: none;
+      text-align: center;
+    }
+
+    .test-status {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .phase-info {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .essai-info {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+
+    /* =========================
+       ZONE RÉACTION
+    ========================= */
+
+    .reaction-zone {
+      width: 100%;
+      max-width: 500px;
+      height: 300px;
+      margin: 0 auto;
+      border-radius: 18px;
+      background: #e9e9ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    .reaction-zone.active {
+      background: #121449;
+    }
+
+    .reaction-message {
+      color: #121449;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .reaction-zone.active .reaction-message {
+      color: white;
+    }
+
+
+    /* =========================
+       RÉSULTATS
+    ========================= */
+
+    #resultZone {
+      display: none;
+      text-align: center;
+    }
+
+    .result-title {
+      margin-top: 0;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .result-item {
+      background: #f7f7fa;
+      border-radius: 14px;
+      padding: 22px 15px;
+    }
+
+    .result-label {
+      display: block;
+      font-size: 0.78rem;
+      color: #777;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .result-value {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #121449;
+    }
+
+    .result-description {
+      max-width: 650px;
+      margin: 30px auto 0;
+      color: #555;
+      line-height: 1.7;
+      font-size: 0.9rem;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 650px) {
+
+      .test-page {
+        padding: 40px 18px 60px;
+      }
+
+      .test-header h1 {
+        font-size: 2rem;
+      }
+
+      .test-card {
+        padding: 25px 20px;
+      }
+
+      .reaction-zone {
+        height: 260px;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================
+       RETOUR NPI
+  ========================= -->
+
+  <div class="npi-topbar">
+
+    <a
+      href="NPI.html"
+      class="retour-npi">
+
+      ← Retour au NeuroPerformance Index
+
+    </a>
+
+  </div>
+
+
+  <main class="test-page">
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="test-header">
+
+      <span class="test-number">
+        NPI-01
+      </span>
+
+      <h1>
+        Réactivité visuomotrice
+      </h1>
+
+      <p>
+        Ce test mesure la rapidité avec laquelle
+        vous détectez un stimulus visuel et déclenchez
+        une réponse motrice.
+      </p>
+
+    </header>
+
+
+    <section class="test-card">
+
+
+      <!-- =========================
+           CONSIGNES
+      ========================= -->
+
+      <div
+        id="instructions"
+        class="instructions">
+
+        <h2>
+          Consignes
+        </h2>
+
+        <p>
+          Placez votre doigt ou votre souris
+          au centre de la zone de test.
+        </p>
+
+        <p>
+          La zone va rester neutre pendant
+          un délai variable.
+        </p>
+
+        <p>
+          Dès qu'elle devient active,
+          <span class="instruction-highlight">
+            touchez ou cliquez dessus
+            le plus rapidement possible.
+          </span>
+        </p>
+
+        <p>
+          Vous effectuerez d'abord
+          <strong>5 essais d'entraînement</strong>,
+          puis <strong>30 essais comptabilisés</strong>.
+        </p>
+
+        <p>
+          Une réponse effectuée en moins de
+          <strong>100 ms</strong> est considérée
+          comme une anticipation.
+        </p>
+
+        <button
+          type="button"
+          class="btn-principal"
+          onclick="demarrerTest()">
+
+          Commencer le test
+
+        </button>
+
+      </div>
+
+
+      <!-- =========================
+           TEST
+      ========================= -->
+
+      <div id="testZone">
+
+        <div
+          id="testStatus"
+          class="test-status">
+
+          Préparez-vous...
+
+        </div>
+
+        <div
+          id="phaseInfo"
+          class="phase-info">
+
+          Entraînement
+
+        </div>
+
+        <div
+          id="essaiInfo"
+          class="essai-info">
+
+          Essai 1 / 5
+
+        </div>
+
+
+        <div
+          id="reactionZone"
+          class="reaction-zone">
+
+          <span
+            id="reactionMessage"
+            class="reaction-message">
+
+            Attendez...
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           RÉSULTATS
+      ========================= -->
+
+      <div id="resultZone">
+
+        <h2 class="result-title">
+          Résultats NPI-01
+        </h2>
+
+
+        <div class="result-grid">
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Temps de réaction moyen
+            </span>
+
+            <span
+              id="resultMoyenne"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Maintien de performance
+            </span>
+
+            <span
+              id="resultMaintien"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Meilleur temps
+            </span>
+
+            <span
+              id="resultMeilleur"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Écart-type
+            </span>
+
+            <span
+              id="resultEcartType"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Nombre d'anticipations
+            </span>
+
+            <span
+              id="resultAnticipations"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Essais valides
+            </span>
+
+            <span
+              id="resultValides"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+        <p class="result-description">
+
+          Les réponses inférieures à 100 ms
+          sont considérées comme des anticipations
+          et ne sont pas prises en compte dans les
+          indicateurs de performance.
+
+        </p>
+
+
+        <button
+          type="button"
+          class="btn-principal"
+          onclick="retourNPI()">
+
+          Retour au NPI
+
+        </button>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    /* =========================
+       CONFIGURATION
+    ========================= */
+
+    const essaisEntrainement = 5;
+
+    const essaisOfficiels = 30;
+
+    const seuilAnticipation = 100;
+
+
+    /* =========================
+       VARIABLES
+    ========================= */
+
+    let phase = "entrainement";
+
+    let essaiActuel = 0;
+
+    let tempsDebutStimulus = 0;
+
+    let stimulusActif = false;
+
+    let timerStimulus = null;
+
+    let tempsEntrainement = [];
+
+    let tempsOfficiels = [];
+
+    let nombreAnticipations = 0;
+
+
+    /* =========================
+       ÉLÉMENTS
+    ========================= */
+
+    const instructions =
+      document.getElementById("instructions");
+
+    const testZone =
+      document.getElementById("testZone");
+
+    const resultZone =
+      document.getElementById("resultZone");
+
+    const reactionZone =
+      document.getElementById("reactionZone");
+
+    const reactionMessage =
+      document.getElementById("reactionMessage");
+
+    const testStatus =
+      document.getElementById("testStatus");
+
+    const phaseInfo =
+      document.getElementById("phaseInfo");
+
+    const essaiInfo =
+      document.getElementById("essaiInfo");
+
+
+    /* =========================
+       DÉMARRER
+    ========================= */
+
+    function demarrerTest() {
+
+      instructions.style.display = "none";
+
+      testZone.style.display = "block";
+
+      phase = "entrainement";
+
+      essaiActuel = 0;
+
+      tempsEntrainement = [];
+
+      tempsOfficiels = [];
+
+      nombreAnticipations = 0;
+
+      preparerEssai();
+
+    }
+
+
+    /* =========================
+       PRÉPARER ESSAI
+    ========================= */
+
+    function preparerEssai() {
+
+      stimulusActif = false;
+
+      reactionZone.classList.remove("active");
+
+      reactionMessage.textContent =
+        "Attendez...";
+
+
+      /* -------------------------
+         Phase entraînement
+      ------------------------- */
+
+      if (phase === "entrainement") {
+
+        phaseInfo.textContent =
+          "Entraînement";
+
+        essaiInfo.textContent =
+          `Essai ${essaiActuel + 1} / ${essaisEntrainement}`;
+
+      }
+
+
+      /* -------------------------
+         Phase officielle
+      ------------------------- */
+
+      else {
+
+        phaseInfo.textContent =
+          "Test";
+
+        essaiInfo.textContent =
+          `Essai ${essaiActuel + 1} / ${essaisOfficiels}`;
+
+      }
+
+
+      testStatus.textContent =
+        "Concentrez-vous";
+
+
+      /*
+        Délai aléatoire :
+        entre 1,5 et 4 secondes.
+      */
+
+      const delai =
+        Math.floor(
+          Math.random() * 2500
+        ) + 1500;
+
+
+      timerStimulus = setTimeout(
+        afficherStimulus,
+        delai
+      );
+
+    }
+
+
+    /* =========================
+       STIMULUS
+    ========================= */
+
+    function afficherStimulus() {
+
+      stimulusActif = true;
+
+      reactionZone.classList.add("active");
+
+      reactionMessage.textContent =
+        "TOUCHEZ !";
+
+      testStatus.textContent =
+        "Répondez !";
+
+      tempsDebutStimulus =
+        performance.now();
+
+    }
+
+
+    /* =========================
+       RÉPONSE
+    ========================= */
+
+    reactionZone.addEventListener(
+      "pointerdown",
+      function() {
+
+
+        /* -------------------------
+           ANTICIPATION
+        ------------------------- */
+
+        if (!stimulusActif) {
+
+          clearTimeout(timerStimulus);
+
+          /*
+            Une anticipation est comptabilisée
+            uniquement pendant les 30 essais
+            officiels.
+          */
+
+          if (phase === "officiel") {
+
+            nombreAnticipations++;
+
+          }
+
+
+          testStatus.textContent =
+            "Anticipation";
+
+          reactionMessage.textContent =
+            "Trop tôt";
+
+
+          /*
+            L'essai est recommencé.
+            Il ne consomme pas un essai officiel.
+          */
+
+          setTimeout(
+            preparerEssai,
+            1000
+          );
+
+          return;
+
+        }
+
+
+        /* -------------------------
+           CALCUL DU TEMPS
+        ------------------------- */
+
+        const tempsReaction =
+          performance.now()
+          - tempsDebutStimulus;
+
+
+        stimulusActif = false;
+
+        reactionZone.classList.remove(
+          "active"
+        );
+
+
+        /* -------------------------
+           ENTRAINEMENT
+        ------------------------- */
+
+        if (phase === "entrainement") {
+
+          tempsEntrainement.push(
+            tempsReaction
+          );
+
+          reactionMessage.textContent =
+            Math.round(tempsReaction) + " ms";
+
+          testStatus.textContent =
+            "Réponse enregistrée";
+
+
+          essaiActuel++;
+
+
+          if (
+            essaiActuel <
+            essaisEntrainement
+          ) {
+
+            setTimeout(
+              preparerEssai,
+              800
+            );
+
+          } else {
+
+            /*
+              Passage automatique
+              au test officiel.
+            */
+
+            phase = "officiel";
+
+            essaiActuel = 0;
+
+            testStatus.textContent =
+              "Entraînement terminé";
+
+            reactionMessage.textContent =
+              "Le test va commencer";
+
+
+            setTimeout(
+              preparerEssai,
+              1500
+            );
+
+          }
+
+
+          return;
+
+        }
+
+
+        /* -------------------------
+           TEST OFFICIEL
+        ------------------------- */
+
+        /*
+          Une réponse < 100 ms est
+          considérée comme anticipation.
+
+          Elle ne doit pas être ajoutée
+          aux temps valides.
+        */
+
+        if (
+          tempsReaction <
+          seuilAnticipation
+        ) {
+
+          nombreAnticipations++;
+
+          testStatus.textContent =
+            "Anticipation";
+
+          reactionMessage.textContent =
+            "Trop tôt";
+
+
+          setTimeout(
+            preparerEssai,
+            1000
+          );
+
+          return;
+
+        }
+
+
+        /*
+          Réponse valide.
+        */
+
+        tempsOfficiels.push(
+          tempsReaction
+        );
+
+        reactionMessage.textContent =
+          Math.round(tempsReaction) + " ms";
+
+        testStatus.textContent =
+          "Réponse enregistrée";
+
+
+        essaiActuel++;
+
+
+        /*
+          Fin du test.
+        */
+
+        if (
+          essaiActuel >=
+          essaisOfficiels
+        ) {
+
+          setTimeout(
+            terminerTest,
+            1000
+          );
+
+        } else {
+
+          setTimeout(
+            preparerEssai,
+            800
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       MOYENNE
+    ========================= */
+
+    function calculerMoyenne(valeurs) {
+
+      if (
+        valeurs.length === 0
+      ) {
+
+        return null;
+
+      }
+
+      const somme =
+        valeurs.reduce(
+          (total, valeur) =>
+            total + valeur,
+          0
+        );
+
+      return somme / valeurs.length;
+
+    }
+
+
+    /* =========================
+       ÉCART-TYPE
+    ========================= */
+
+    function calculerEcartType(valeurs) {
+
+      if (
+        valeurs.length === 0
+      ) {
+
+        return null;
+
+      }
+
+      const moyenne =
+        calculerMoyenne(valeurs);
+
+
+      const variance =
+        valeurs.reduce(
+          (total, valeur) => {
+
+            return total +
+              Math.pow(
+                valeur - moyenne,
+                2
+              );
+
+          },
+          0
+        ) / valeurs.length;
+
+
+      return Math.sqrt(variance);
+
+    }
+
+
+    /* =========================
+       FIN DU TEST
+    ========================= */
+
+    function terminerTest() {
+
+      testZone.style.display =
+        "none";
+
+      resultZone.style.display =
+        "block";
+
+
+      /* -------------------------
+         Moyenne générale
+      ------------------------- */
+
+      const moyenne =
+        calculerMoyenne(
+          tempsOfficiels
+        );
+
+
+      /* -------------------------
+         Meilleur temps
+      ------------------------- */
+
+      const meilleur =
+        tempsOfficiels.length > 0
+          ? Math.min(...tempsOfficiels)
+          : null;
+
+
+      /* -------------------------
+         Écart-type
+      ------------------------- */
+
+      const ecartType =
+        calculerEcartType(
+          tempsOfficiels
+        );
+
+
+      /* -------------------------
+         Maintien de performance
+      ------------------------- */
+
+      /*
+        Les essais officiels sont
+        numérotés de 1 à 30.
+
+        Bloc 1 :
+        essais 1 à 10
+
+        Bloc 3 :
+        essais 21 à 30
+
+        Les essais invalides ne sont
+        pas présents dans tempsOfficiels.
+      */
+
+
+      const bloc1 =
+        tempsOfficiels.slice(0, 10);
+
+      const bloc3 =
+        tempsOfficiels.slice(-10);
+
+
+      const moyenneBloc1 =
+        calculerMoyenne(bloc1);
+
+      const moyenneBloc3 =
+        calculerMoyenne(bloc3);
+
+
+      let maintien = null;
+
+
+      if (
+        moyenneBloc1 !== null &&
+        moyenneBloc3 !== null &&
+        moyenneBloc3 !== 0
+      ) {
+
+        maintien =
+          moyenneBloc1 /
+          moyenneBloc3;
+
+      }
+
+
+      /* -------------------------
+         AFFICHAGE
+      ------------------------- */
+
+      document.getElementById(
+        "resultMoyenne"
+      ).textContent =
+        moyenne !== null
+          ? Math.round(moyenne) + " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultMaintien"
+      ).textContent =
+        maintien !== null
+          ? maintien.toFixed(2)
+          : "—";
+
+
+      document.getElementById(
+        "resultMeilleur"
+      ).textContent =
+        meilleur !== null
+          ? Math.round(meilleur) + " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultEcartType"
+      ).textContent =
+        ecartType !== null
+          ? Math.round(ecartType) + " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultAnticipations"
+      ).textContent =
+        nombreAnticipations;
+
+
+      document.getElementById(
+        "resultValides"
+      ).textContent =
+        tempsOfficiels.length +
+        " / " +
+        essaisOfficiels;
+
+
+      /* -------------------------
+         SAUVEGARDE
+      ------------------------- */
+
+      const resultatNPI01 = {
+
+        test: "NPI-01",
+
+        moyenne:
+          moyenne !== null
+            ? Math.round(moyenne)
+            : null,
+
+        maintien:
+          maintien !== null
+            ? Number(maintien.toFixed(4))
+            : null,
+
+        meilleur:
+          meilleur !== null
+            ? Math.round(meilleur)
+            : null,
+
+        ecartType:
+          ecartType !== null
+            ? Math.round(ecartType)
+            : null,
+
+        anticipations:
+          nombreAnticipations,
+
+        essaisValides:
+          tempsOfficiels.length,
+
+        essaisOfficiels:
+          essaisOfficiels,
+
+        temps:
+          tempsOfficiels.map(
+            temps => Math.round(temps)
+          ),
+
+        date:
+          new Date().toISOString()
+
+      };
+
+
+      localStorage.setItem(
+        "NPI-01",
+        JSON.stringify(resultatNPI01)
+      );
+
+    }
+
+
+    /* =========================
+       RETOUR NPI
+    ========================= */
+
+    function retourNPI() {
+
+      window.location.href =
+        "NPI.html";
+
+    }
+
+  </script>
+
+</body>
+
+</html>
