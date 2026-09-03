@@ -395,8 +395,9 @@
         <p>
           Dès qu'elle devient active,
           <span class="instruction-highlight">
-            touchez ou cliquez dessus
-            le plus rapidement possible.
+          touchez ou cliquez dessus,
+          ou appuyez sur la barre Espace,
+          le plus rapidement possible.
           </span>
         </p>
 
@@ -839,9 +840,7 @@ function afficherStimulus() {
    RÉPONSE
 ========================= */
 
-reactionZone.addEventListener(
-  "pointerdown",
-  function() {
+function gererReponse() {
 
 
     /* =========================
@@ -1147,6 +1146,47 @@ reactionZone.addEventListener(
           800
         );
 
+    }
+
+  }
+
+
+/* =========================
+   CLIC / TOUCHER
+========================= */
+
+reactionZone.addEventListener(
+  "pointerdown",
+  gererReponse
+);
+
+
+/* =========================
+   TOUCHE ESPACE
+========================= */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.code !== "Space") {
+      return;
+    }
+
+    /*
+      Empêche la barre Espace
+      de faire défiler la page.
+    */
+    event.preventDefault();
+
+    /*
+      On ne prend en compte Espace
+      que lorsque le test est affiché.
+    */
+    if (
+      testZone.style.display === "block"
+    ) {
+      gererReponse();
     }
 
   }
