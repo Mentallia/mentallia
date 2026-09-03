@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+<meta
+ name="viewport"
+ content="width=device-width, initial-scale=1.0">
+
+  <title>NPI-05 — Flexibilité cognitive | Mentallia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+      margin: 0;
+      background: #f7f7fa;
+      color: #121449;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+
+    /* =========================
+       BARRE SUPÉRIEURE
+    ========================= */
+
+    .npi-topbar {
+      width: 100%;
+      padding: 20px 25px;
+      background: white;
+      border-bottom: 1px solid rgba(18, 20, 73, 0.08);
+    }
+
+    .retour-npi {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #121449;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: opacity 0.2s ease;
+    }
+
+    .retour-npi:hover {
+      opacity: 0.65;
+    }
+
+
+    /* =========================
+       PAGE
+    ========================= */
+
+    .test-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 25px 80px;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .test-number {
+      display: inline-block;
+      background: #121449;
+      color: white;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .test-header h1 {
+      margin: 0 0 15px;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #121449;
+    }
+
+    .test-header p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #555;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+
+    /* =========================
+       CARTE
+    ========================= */
+
+    .test-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 35px rgba(18, 20, 73, 0.08);
+    }
+
+
+    /* =========================
+       CONSIGNES
+    ========================= */
+
+    .instructions {
+      text-align: center;
+    }
+
+    .instructions h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.35rem;
+    }
+
+    .instructions p {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .instruction-highlight {
+      font-weight: 700;
+      color: #121449;
+    }
+
+
+    /* =========================
+       BOUTON PRINCIPAL
+    ========================= */
+
+    .btn-principal {
+      border: none;
+      background: #121449;
+      color: white;
+      padding: 15px 28px;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+      margin-top: 25px;
+    }
+
+    .btn-principal:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+
+    /* =========================
+       ZONE DE TEST
+    ========================= */
+
+    #testZone {
+      display: none;
+      text-align: center;
+    }
+
+    .test-status {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      min-height: 24px;
+    }
+
+    .phase-info {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .essai-info {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 20px;
+    }
+
+
+    /* =========================
+       STIMULUS
+    ========================= */
+
+    .stimulus-zone {
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #chiffre {
+      font-size: 9rem;
+      line-height: 1;
+      font-weight: 700;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+
+    /* =========================
+       BOUTONS DE RÉPONSE
+    ========================= */
+
+    .reponse-zone {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-reponse {
+      border: none;
+      min-height: 80px;
+      border-radius: 15px;
+      background: #121449;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+      padding: 15px;
+    }
+
+    .btn-reponse:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .btn-reponse:active {
+      transform: scale(0.97);
+    }
+
+
+    /* =========================
+       RÉSULTATS
+    ========================= */
+
+    #resultZone {
+      display: none;
+      text-align: center;
+    }
+
+    .result-title {
+      margin-top: 0;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .result-item {
+      background: #f7f7fa;
+      border-radius: 14px;
+      padding: 22px 15px;
+    }
+
+    .result-label {
+      display: block;
+      font-size: 0.78rem;
+      color: #777;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .result-value {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #121449;
+    }
+
+    .result-description {
+      max-width: 650px;
+      margin: 30px auto 0;
+      color: #555;
+      line-height: 1.7;
+      font-size: 0.9rem;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 650px) {
+
+      .test-page {
+        padding: 40px 18px 60px;
+      }
+
+      .test-header h1 {
+        font-size: 2rem;
+      }
+
+      .test-card {
+        padding: 25px 20px;
+      }
+
+      #chiffre {
+        font-size: 7rem;
+      }
+
+      .stimulus-zone {
+        min-height: 190px;
+      }
+
+      .reponse-zone {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-reponse {
+        min-height: 65px;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- =========================
+       RETOUR NPI
+  ========================= -->
+
+  <div class="npi-topbar">
+
+```
+<a
+  href="NPI.html"
+  class="retour-npi">
+
+  ← Retour au NeuroPerformance Index
+
+</a>
+```
+
+  </div>
+
+  <main class="test-page">
+
+```
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="test-header">
+
+  <span class="test-number">
+    NPI-05
+  </span>
+
+  <h1>
+    Flexibilité cognitive
+  </h1>
+
+  <p>
+    Ce test mesure votre capacité à adapter
+    rapidement votre stratégie de réponse
+    lorsque la règle change.
+  </p>
+
+</header>
+
+
+<section class="test-card">
+
+
+  <!-- =========================
+       CONSIGNES
+  ========================= -->
+
+  <div
+    id="instructions"
+    class="instructions">
+
+    <h2>
+      Consignes
+    </h2>
+
+    <p>
+      Un chiffre parmi
+      <strong>1, 2, 3, 4, 6, 7, 8 et 9</strong>
+      va apparaître au centre de l'écran.
+    </p>
+
+    <p>
+      Le chiffre sera écrit soit en
+      <strong style="color:#1867d3;">bleu</strong>,
+      soit en
+      <strong style="color:#d83b3b;">rouge</strong>.
+    </p>
+
+    <p>
+      Si le chiffre est
+      <strong>bleu</strong>,
+      indiquez s'il est
+      <span class="instruction-highlight">
+        PAIR ou IMPAIR
+      </span>.
+    </p>
+
+    <p>
+      Si le chiffre est
+      <strong>rouge</strong>,
+      indiquez s'il est
+      <span class="instruction-highlight">
+        SUPÉRIEUR ou INFÉRIEUR à 5
+      </span>.
+    </p>
+
+    <p>
+      Répondez
+      <span class="instruction-highlight">
+        le plus rapidement possible
+      </span>
+      en cliquant sur le bouton correspondant.
+    </p>
+
+    <p>
+      Vous effectuerez d'abord
+      <strong>3 essais d'entraînement</strong>,
+      puis <strong>60 essais comptabilisés</strong>.
+    </p>
+
+    <button
+      type="button"
+      id="btnDemarrer"
+      class="btn-principal">
+
+      Commencer le test
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       TEST
+  ========================= -->
+
+  <div id="testZone">
+
+    <div
+      id="testStatus"
+      class="test-status">
+
+      Concentrez-vous
+
+    </div>
+
+    <div
+      id="phaseInfo"
+      class="phase-info">
+
+      Entraînement
+
+    </div>
+
+    <div
+      id="essaiInfo"
+      class="essai-info">
+
+      Essai 1 / 3
+
+    </div>
+
+
+    <div class="stimulus-zone">
+
+      <span id="chiffre">
+        —
+      </span>
+
+    </div>
+
+
+    <div class="reponse-zone">
+
+      <button
+        type="button"
+        class="btn-reponse"
+        data-reponse="pair">
+
+        PAIR
+
+      </button>
+
+      <button
+        type="button"
+        class="btn-reponse"
+        data-reponse="impair">
+
+        IMPAIR
+
+      </button>
+
+      <button
+        type="button"
+        class="btn-reponse"
+        data-reponse="superieur">
+
+        SUPÉRIEUR À 5
+
+      </button>
+
+      <button
+        type="button"
+        class="btn-reponse"
+        data-reponse="inferieur">
+
+        INFÉRIEUR À 5
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       RÉSULTATS
+  ========================= -->
+
+  <div id="resultZone">
+
+    <h2 class="result-title">
+      Résultats
+    </h2>
+
+    <div class="result-grid">
+
+      <div class="result-item">
+
+        <span class="result-label">
+          Temps moyen Répétition
+        </span>
+
+        <span
+          id="resultMoyenneRepeat"
+          class="result-value">
+
+          —
+
+        </span>
+
+      </div>
+
+
+      <div class="result-item">
+
+        <span class="result-label">
+          Temps moyen Switch
+        </span>
+
+        <span
+          id="resultMoyenneSwitch"
+          class="result-value">
+
+          —
+
+        </span>
+
+      </div>
+
+
+      <div class="result-item">
+
+        <span class="result-label">
+          Switch Cost
+        </span>
+
+        <span
+          id="resultSwitchCost"
+          class="result-value">
+
+          —
+
+        </span>
+
+      </div>
+
+
+      <div class="result-item">
+
+        <span class="result-label">
+          Erreurs Switch
+        </span>
+
+        <span
+          id="resultErreursSwitch"
+          class="result-value">
+
+          —
+
+        </span>
+
+      </div>
+
+
+      <div class="result-item">
+
+        <span class="result-label">
+          Erreurs Répétition
+        </span>
+
+        <span
+          id="resultErreursRepeat"
+          class="result-value">
+
+          —
+
+        </span>
+
+      </div>
+
+
+      <div class="result-item">
+
+        <span class="result-label">
+          Écart-type Switch
+        </span>
+
+        <span
+          id="resultEcartTypeSwitch"
+          class="result-value">
+
+          —
+
+        </span>
+
+      </div>
+
+
+      <div class="result-item">
+
+        <span class="result-label">
+          Maintien de performance
+        </span>
+
+        <span
+          id="resultMaintien"
+          class="result-value">
+
+          —
+
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <p class="result-description">
+
+      Le Switch Cost correspond à la différence
+      entre votre temps moyen lors des essais
+      Switch et votre temps moyen lors des essais
+      Répétition.
+
+    </p>
+
+
+    <button
+      type="button"
+      class="btn-principal"
+      onclick="retourNPI()">
+
+      Retour au NPI
+
+    </button>
+
+  </div>
+
+</section>
+```
+
+  </main>
+
+  <script>
+
+    /* =========================
+       CONFIGURATION
+    ========================= */
+
+    const NOMBRE_ENTRAINEMENT = 3;
+
+    const NOMBRE_OFFICIEL = 60;
+
+    const NOMBRE_REPEAT = 30;
+
+    const NOMBRE_SWITCH = 30;
+
+
+    const CHIFFRES = [
+      1, 2, 3, 4,
+      6, 7, 8, 9
+    ];
+
+
+    const COULEURS = {
+      bleu: "#1867d3",
+      rouge: "#d83b3b"
+    };
+
+
+    /* =========================
+       ÉLÉMENTS
+    ========================= */
+
+    const instructions =
+      document.getElementById(
+        "instructions"
+      );
+
+    const testZone =
+      document.getElementById(
+        "testZone"
+      );
+
+    const resultZone =
+      document.getElementById(
+        "resultZone"
+      );
+
+    const btnDemarrer =
+      document.getElementById(
+        "btnDemarrer"
+      );
+
+    const testStatus =
+      document.getElementById(
+        "testStatus"
+      );
+
+    const phaseInfo =
+      document.getElementById(
+        "phaseInfo"
+      );
+
+    const essaiInfo =
+      document.getElementById(
+        "essaiInfo"
+      );
+
+    const chiffre =
+      document.getElementById(
+        "chiffre"
+      );
+
+    const boutonsReponse =
+      document.querySelectorAll(
+        ".btn-reponse"
+      );
+
+
+    /* =========================
+       VARIABLES DU TEST
+    ========================= */
+
+    let phase =
+      "entrainement";
+
+    let essaiEntrainement =
+      0;
+
+    let indexOfficiel =
+      0;
+
+    let stimulusActuel =
+      null;
+
+    let tempsDebutStimulus =
+      null;
+
+    let timerStimulus =
+      null;
+
+    let essaisOfficiels =
+      [];
+
+
+    /* =========================
+       UTILITAIRES
+    ========================= */
+
+    function melanger(tableau) {
+
+      for (
+        let i = tableau.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
+
+        [
+          tableau[i],
+          tableau[j]
+        ] = [
+          tableau[j],
+          tableau[i]
+        ];
+
+      }
+
+      return tableau;
+
+    }
+
+
+    function moyenne(valeurs) {
+
+      if (
+        valeurs.length === 0
+      ) {
+
+        return null;
+
+      }
+
+      return (
+        valeurs.reduce(
+          function(total, valeur) {
+
+            return total + valeur;
+
+          },
+          0
+        )
+        / valeurs.length
+      );
+
+    }
+
+
+    function ecartType(valeurs) {
+
+      if (
+        valeurs.length === 0
+      ) {
+
+        return null;
+
+      }
+
+      const moy =
+        moyenne(valeurs);
+
+
+      const variance =
+        moyenne(
+          valeurs.map(
+            function(valeur) {
+
+              return Math.pow(
+                valeur - moy,
+                2
+              );
+
+            }
+          )
+        );
+
+
+      return Math.sqrt(
+        variance
+      );
+
+    }
+
+
+    /* =========================
+       GÉNÉRER UN STIMULUS
+    ========================= */
+
+    function genererStimulus(
+      couleur,
+      type
+    ) {
+
+      const valeur =
+        CHIFFRES[
+          Math.floor(
+            Math.random() *
+            CHIFFRES.length
+          )
+        ];
+
+
+      let bonneReponse;
+
+
+      if (
+        couleur === "bleu"
+      ) {
+
+        bonneReponse =
+          valeur % 2 === 0
+            ? "pair"
+            : "impair";
+
+      } else {
+
+        bonneReponse =
+          valeur > 5
+            ? "superieur"
+            : "inferieur";
+
+      }
+
+
+      return {
+
+        chiffre:
+          valeur,
+
+        couleur:
+          couleur,
+
+        bonneReponse:
+          bonneReponse,
+
+        type:
+          type,
+
+        temps:
+          null,
+
+        correct:
+          null
+
+      };
+
+    }
+
+
+    /* =========================
+       GÉNÉRER LES 60 ESSAIS
+    ========================= */
+
+    function genererEssaisOfficiels() {
+
+      const paires =
+        [];
+
+
+      /*
+        30 paires Repeat
+        \+ 30 paires Switch
+        = 60 paires
+
+        Chaque paire contient deux essais.
+        Pour obtenir exactement 60 essais
+        au total, on utilise une structure
+        de transition :
+
+        30 transitions Repeat
+        30 transitions Switch
+
+        Chaque transition est représentée
+        par deux essais consécutifs.
+      */
+
+      const transitions = [];
+
+
+      /*
+        Création des 30 Repeat
+      */
+
+      for (
+        let i = 0;
+        i < NOMBRE_REPEAT;
+        i++
+      ) {
+
+        const couleur =
+          Math.random() < 0.5
+            ? "bleu"
+            : "rouge";
+
+
+        const premier =
+          genererStimulus(
+            couleur,
+            "transition"
+          );
+
+
+        const second =
+          genererStimulus(
+            couleur,
+            "repeat"
+          );
+
+
+        transitions.push({
+
+          type:
+            "repeat",
+
+          essais: [
+            premier,
+            second
+          ]
+
+        });
+
+      }
+
+
+      /*
+        Création des 30 Switch
+      */
+
+      for (
+        let i = 0;
+        i < NOMBRE_SWITCH;
+        i++
+      ) {
+
+        const premiereCouleur =
+          Math.random() < 0.5
+            ? "bleu"
+            : "rouge";
+
+
+        const deuxiemeCouleur =
+          premiereCouleur === "bleu"
+            ? "rouge"
+            : "bleu";
+
+
+        const premier =
+          genererStimulus(
+            premiereCouleur,
+            "transition"
+          );
+
+
+        const second =
+          genererStimulus(
+            deuxiemeCouleur,
+            "switch"
+          );
+
+
+        transitions.push({
+
+          type:
+            "switch",
+
+          essais: [
+            premier,
+            second
+          ]
+
+        });
+
+      }
+
+
+      /*
+        Mélange des transitions.
+      */
+
+      melanger(transitions);
+
+
+      /*
+        On conserve uniquement les
+        60 essais mesurés :
+        le second essai de chaque
+        transition.
+
+        Pour éviter de créer 120 essais,
+        chaque transition est donc
+        transformée en un seul essai
+        avec son type associé.
+
+        Le premier stimulus sert
+        conceptuellement à définir la
+        couleur précédente.
+      */
+
+      transitions.forEach(
+        function(transition) {
+
+          const premier =
+            transition.essais[0];
+
+          const second =
+            transition.essais[1];
+
+
+          /*
+            La couleur précédente est
+            conservée pour documenter
+            la transition.
+          */
+
+          second.couleurPrecedente =
+            premier.couleur;
+
+
+          paires.push(
+            second
+          );
+
+        }
+      );
+
+
+      return paires;
+
+    }
+
+
+    /* =========================
+       DÉMARRER LE TEST
+    ========================= */
+
+    function demarrerTest() {
+
+      instructions.style.display =
+        "none";
+
+      resultZone.style.display =
+        "none";
+
+      testZone.style.display =
+        "block";
+
+
+      phase =
+        "entrainement";
+
+      essaiEntrainement =
+        0;
+
+      indexOfficiel =
+        0;
+
+      essaisOfficiels =
+        genererEssaisOfficiels();
+
+
+      testStatus.textContent =
+        "Concentrez-vous";
+
+
+      afficherEssai();
+
+    }
+
+
+    /* =========================
+       AFFICHER UN ESSAI
+    ========================= */
+
+    function afficherEssai() {
+
+      clearTimeout(
+        timerStimulus
+      );
+
+
+      stimulusActuel =
+        null;
+
+      tempsDebutStimulus =
+        null;
+
+
+      chiffre.textContent =
+        "—";
+
+      chiffre.style.color =
+        "#121449";
+
+
+      if (
+        phase ===
+        "entrainement"
+      ) {
+
+        essaiEntrainement++;
+
+
+        phaseInfo.textContent =
+          "Entraînement";
+
+
+        essaiInfo.textContent =
+          `Essai ${essaiEntrainement} / ${NOMBRE_ENTRAINEMENT}`;
+
+
+        const couleur =
+          Math.random() < 0.5
+            ? "bleu"
+            : "rouge";
+
+
+        stimulusActuel =
+          genererStimulus(
+            couleur,
+            "entrainement"
+          );
+
+
+      } else {
+
+        if (
+          indexOfficiel >=
+          NOMBRE_OFFICIEL
+        ) {
+
+          terminerTest();
+
+          return;
+
+        }
+
+
+        phaseInfo.textContent =
+          "Test officiel";
+
+
+        essaiInfo.textContent =
+          `Essai ${indexOfficiel + 1} / ${NOMBRE_OFFICIEL}`;
+
+
+        stimulusActuel =
+          essaisOfficiels[
+            indexOfficiel
+          ];
+
+      }
+
+
+      testStatus.textContent =
+        "Préparez-vous";
+
+
+      /*
+        Délai aléatoire avant
+        l'apparition du chiffre.
+      */
+
+      const delai =
+        Math.floor(
+          Math.random() * 1800
+        ) + 1000;
+
+
+      timerStimulus =
+        setTimeout(
+          afficherStimulus,
+          delai
+        );
+
+    }
+
+
+    /* =========================
+       AFFICHER LE STIMULUS
+    ========================= */
+
+    function afficherStimulus() {
+
+      if (
+        !stimulusActuel
+      ) {
+
+        return;
+
+      }
+
+
+      chiffre.textContent =
+        stimulusActuel.chiffre;
+
+
+      chiffre.style.color =
+        COULEURS[
+          stimulusActuel.couleur
+        ];
+
+
+      tempsDebutStimulus =
+        performance.now();
+
+
+      testStatus.textContent =
+        "Répondez !";
+
+    }
+
+
+    /* =========================
+       GÉRER UNE RÉPONSE
+    ========================= */
+
+    function gererReponse(
+      reponseUtilisateur
+    ) {
+
+      if (
+        !stimulusActuel ||
+        tempsDebutStimulus === null
+      ) {
+
+        return;
+
+      }
+
+
+      const tempsReaction =
+        performance.now()
+        - tempsDebutStimulus;
+
+
+      const essai =
+        stimulusActuel;
+
+
+      const correct =
+        reponseUtilisateur ===
+        essai.bonneReponse;
+
+
+      /*
+        Enregistrement du résultat.
+      */
+
+      essai.temps =
+        tempsReaction;
+
+      essai.correct =
+        correct;
+
+
+      /*
+        Entraînement
+      */
+
+      if (
+        phase ===
+        "entrainement"
+      ) {
+
+        testStatus.textContent =
+          correct
+            ? "Bonne réponse"
+            : "Erreur";
+
+
+        stimulusActuel =
+          null;
+
+        tempsDebutStimulus =
+          null;
+
+
+        if (
+          essaiEntrainement <
+          NOMBRE_ENTRAINEMENT
+        ) {
+
+          setTimeout(
+            afficherEssai,
+            500
+          );
+
+        } else {
+
+          phase =
+            "officiel";
+
+          indexOfficiel =
+            0;
+
+          setTimeout(
+            afficherEssai,
+            700
+          );
+
+        }
+
+        return;
+
+      }
+
+
+      /*
+        Essai officiel
+      */
+
+      testStatus.textContent =
+        correct
+          ? "Réponse enregistrée"
+          : "Erreur";
+
+
+      stimulusActuel =
+        null;
+
+      tempsDebutStimulus =
+        null;
+
+
+      indexOfficiel++;
+
+
+      if (
+        indexOfficiel <
+        NOMBRE_OFFICIEL
+      ) {
+
+        setTimeout(
+          afficherEssai,
+          500
+        );
+
+      } else {
+
+        setTimeout(
+          terminerTest,
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =========================
+       CALCUL DES RÉSULTATS
+    ========================= */
+
+    function terminerTest() {
+
+      clearTimeout(
+        timerStimulus
+      );
+
+
+      stimulusActuel =
+        null;
+
+      tempsDebutStimulus =
+        null;
+
+
+      /*
+        On ne garde pour les moyennes
+        que les réponses correctes.
+
+        Les erreurs restent comptabilisées
+        séparément.
+      */
+
+      const repetitions =
+        essaisOfficiels.filter(
+          function(essai) {
+
+            return (
+              essai.type === "repeat"
+            );
+
+          }
+        );
+
+
+      const switches =
+        essaisOfficiels.filter(
+          function(essai) {
+
+            return (
+              essai.type === "switch"
+            );
+
+          }
+        );
+
+
+      const tempsRepeat =
+        repetitions
+          .filter(
+            function(essai) {
+
+              return (
+                essai.correct === true &&
+                essai.temps !== null
+              );
+
+            }
+          )
+          .map(
+            function(essai) {
+
+              return essai.temps;
+
+            }
+          );
+
+
+      const tempsSwitch =
+        switches
+          .filter(
+            function(essai) {
+
+              return (
+                essai.correct === true &&
+                essai.temps !== null
+              );
+
+            }
+          )
+          .map(
+            function(essai) {
+
+              return essai.temps;
+
+            }
+          );
+
+
+      /*
+        Moyennes
+      */
+
+      const moyenneRepeat =
+        moyenne(
+          tempsRepeat
+        );
+
+
+      const moyenneSwitch =
+        moyenne(
+          tempsSwitch
+        );
+
+
+      /*
+        Switch Cost
+      */
+
+      const switchCost =
+        moyenneRepeat !== null &&
+        moyenneSwitch !== null
+
+          ? moyenneSwitch -
+            moyenneRepeat
+
+          : null;
+
+
+      /*
+        Erreurs
+      */
+
+      const erreursRepeat =
+        repetitions.filter(
+          function(essai) {
+
+            return (
+              essai.correct === false
+            );
+
+          }
+        ).length;
+
+
+      const erreursSwitch =
+        switches.filter(
+          function(essai) {
+
+            return (
+              essai.correct === false
+            );
+
+          }
+        ).length;
+
+
+      /*
+        Écart-type Switch
+      */
+
+      const ecartTypeSwitch =
+        ecartType(
+          tempsSwitch
+        );
+
+
+      /*
+        Maintien de performance
+
+        On prend les 15 premiers
+        essais Switch et les 15 derniers
+        essais Switch.
+
+        Les erreurs sont exclues
+        des moyennes.
+      */
+
+      const premiersSwitch =
+        switches
+          .slice(0, 15)
+          .filter(
+            function(essai) {
+
+              return (
+                essai.correct === true &&
+                essai.temps !== null
+              );
+
+            }
+          )
+          .map(
+            function(essai) {
+
+              return essai.temps;
+
+            }
+          );
+
+
+      const derniersSwitch =
+        switches
+          .slice(-15)
+          .filter(
+            function(essai) {
+
+              return (
+                essai.correct === true &&
+                essai.temps !== null
+              );
+
+            }
+          )
+          .map(
+            function(essai) {
+
+              return essai.temps;
+
+            }
+          );
+
+
+      const moyennePremiersSwitch =
+        moyenne(
+          premiersSwitch
+        );
+
+
+      const moyenneDerniersSwitch =
+        moyenne(
+          derniersSwitch
+        );
+
+
+      const maintien =
+        moyennePremiersSwitch !== null &&
+        moyenneDerniersSwitch !== null
+
+          ? moyennePremiersSwitch /
+            moyenneDerniersSwitch
+
+          : null;
+
+
+      /*
+        Affichage
+      */
+
+      document.getElementById(
+        "resultMoyenneRepeat"
+      ).textContent =
+        moyenneRepeat !== null
+
+          ? Math.round(
+              moyenneRepeat
+            ) + " ms"
+
+          : "—";
+
+
+      document.getElementById(
+        "resultMoyenneSwitch"
+      ).textContent =
+        moyenneSwitch !== null
+
+          ? Math.round(
+              moyenneSwitch
+            ) + " ms"
+
+          : "—";
+
+
+      document.getElementById(
+        "resultSwitchCost"
+      ).textContent =
+        switchCost !== null
+
+          ? Math.round(
+              switchCost
+            ) + " ms"
+
+          : "—";
+
+
+      document.getElementById(
+        "resultErreursSwitch"
+      ).textContent =
+        erreursSwitch;
+
+
+      document.getElementById(
+        "resultErreursRepeat"
+      ).textContent =
+        erreursRepeat;
+
+
+      document.getElementById(
+        "resultEcartTypeSwitch"
+      ).textContent =
+        ecartTypeSwitch !== null
+
+          ? Math.round(
+              ecartTypeSwitch
+            ) + " ms"
+
+          : "—";
+
+
+      document.getElementById(
+        "resultMaintien"
+      ).textContent =
+        maintien !== null
+
+          ? maintien.toFixed(2)
+
+          : "—";
+
+
+      /*
+        Affichage des résultats
+      */
+
+      testZone.style.display =
+        "none";
+
+      resultZone.style.display =
+        "block";
+
+
+      /* =========================
+         SAUVEGARDE NPI
+      ========================= */
+
+      const resultatNPI05 = {
+
+        moyenneRepeat:
+          moyenneRepeat !== null
+            ? Math.round(
+                moyenneRepeat
+              )
+            : null,
+
+        moyenneSwitch:
+          moyenneSwitch !== null
+            ? Math.round(
+                moyenneSwitch
+              )
+            : null,
+
+        switchCost:
+          switchCost !== null
+            ? Math.round(
+                switchCost
+              )
+            : null,
+
+        erreursSwitch:
+          erreursSwitch,
+
+        erreursRepeat:
+          erreursRepeat,
+
+        ecartTypeSwitch:
+          ecartTypeSwitch !== null
+            ? Math.round(
+                ecartTypeSwitch
+              )
+            : null,
+
+        maintien:
+          maintien !== null
+            ? Number(
+                maintien.toFixed(2)
+              )
+            : null,
+
+        nombreRepeat:
+          repetitions.length,
+
+        nombreSwitch:
+          switches.length,
+
+        essaisOfficiels:
+          essaisOfficiels.map(
+            function(essai) {
+
+              return {
+
+                chiffre:
+                  essai.chiffre,
+
+                couleur:
+                  essai.couleur,
+
+                couleurPrecedente:
+                  essai.couleurPrecedente,
+
+                type:
+                  essai.type,
+
+                bonneReponse:
+                  essai.bonneReponse,
+
+                temps:
+                  essai.temps !== null
+                    ? Math.round(
+                        essai.temps
+                      )
+                    : null,
+
+                correct:
+                  essai.correct === true
+
+              };
+
+            }
+          ),
+
+        date:
+          new Date().toISOString()
+
+      };
+
+
+      let resultatsNPI =
+        JSON.parse(
+          localStorage.getItem(
+            "NPI-results"
+          )
+        ) || {};
+
+
+      resultatsNPI["NPI-05"] =
+        resultatNPI05;
+
+
+      localStorage.setItem(
+        "NPI-results",
+        JSON.stringify(
+          resultatsNPI
+        )
+      );
+
+    }
+
+
+    /* =========================
+       BOUTONS DE RÉPONSE
+    ========================= */
+
+    boutonsReponse.forEach(
+      function(bouton) {
+
+        bouton.addEventListener(
+          "pointerdown",
+          function(event) {
+
+            event.preventDefault();
+
+
+            const reponse =
+              bouton.dataset.reponse;
+
+
+            gererReponse(
+              reponse
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =========================
+       BOUTON DÉMARRER
+    ========================= */
+
+    if (btnDemarrer) {
+
+      btnDemarrer.addEventListener(
+        "click",
+        demarrerTest
+      );
+
+    }
+
+
+    /* =========================
+       RETOUR NPI
+    ========================= */
+
+    function retourNPI() {
+
+      window.location.href =
+        "NPI.html";
+
+    }
+
+  </script>
+
+</body>
+
+</html>
