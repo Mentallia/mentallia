@@ -434,13 +434,52 @@ if (resultats["NPI-03"]) {
 
 }
 
+/* =========================
+   NPI-04
+========================= */
+if (resultats["NPI-04"]) {
+
+  const resultat =
+    resultats["NPI-04"];
+
+  const element =
+    document.getElementById(
+      "resultNPI04"
+    );
+
+  if (element) {
+
+    element.innerHTML = `
+      ${resultat.erreursCommission ?? 0}
+      commission(s)
+      &nbsp; / &nbsp;
+      ${resultat.erreursOmission ?? 0}
+      omission(s)
+      &nbsp; / &nbsp;
+      ${resultat.tempsMoyen !== null
+        ? resultat.tempsMoyen + " ms"
+        : "—"}
+      &nbsp; / &nbsp;
+      ${resultat.ecartType !== null
+        ? resultat.ecartType + " ms"
+        : "—"}
+      &nbsp; / &nbsp;
+      ${resultat.maintien !== null
+        ? resultat.maintien.toFixed(2)
+        : "—"}
+    `;
+
+  }
+
+  nombreTestsRealises++;
+
+}
   
 /* =========================
-   NPI-04 À NPI-10
+   NPI-05 À NPI-10
 ========================= */
 
 const testsRestants = [
-  "NPI-04",
   "NPI-05",
   "NPI-06",
   "NPI-07",
