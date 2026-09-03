@@ -1,0 +1,2119 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>NPI-04 — Attention soutenue | Mentallia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7fa;
+      color: #121449;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+
+    /* =========================
+       BARRE SUPÉRIEURE
+    ========================= */
+
+    .npi-topbar {
+      width: 100%;
+      padding: 20px 25px;
+      background: white;
+      border-bottom: 1px solid rgba(18, 20, 73, 0.08);
+    }
+
+    .retour-npi {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #121449;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: opacity 0.2s ease;
+    }
+
+    .retour-npi:hover {
+      opacity: 0.65;
+    }
+
+
+    /* =========================
+       PAGE
+    ========================= */
+
+    .test-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 25px 80px;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .test-number {
+      display: inline-block;
+      background: #121449;
+      color: white;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .test-header h1 {
+      margin: 0 0 15px;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #121449;
+    }
+
+    .test-header p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #555;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+
+    /* =========================
+       CARTE
+    ========================= */
+
+    .test-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 35px rgba(18, 20, 73, 0.08);
+    }
+
+
+    /* =========================
+       CONSIGNES
+    ========================= */
+
+    .instructions {
+      text-align: center;
+    }
+
+    .instructions h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.35rem;
+    }
+
+    .instructions p {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .instruction-highlight {
+      font-weight: 700;
+      color: #121449;
+    }
+
+
+    /* =========================
+       BOUTON PRINCIPAL
+    ========================= */
+
+    .btn-principal {
+      border: none;
+      background: #121449;
+      color: white;
+      padding: 15px 28px;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+      margin-top: 25px;
+    }
+
+    .btn-principal:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+
+    /* =========================
+       ZONE DE TEST
+    ========================= */
+
+    #testZone {
+      display: none;
+      text-align: center;
+    }
+
+    .test-status {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .phase-info {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .essai-info {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+
+    /* =========================
+       STIMULUS
+    ========================= */
+
+    .stimulus-zone {
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #chiffre {
+      font-size: 9rem;
+      line-height: 1;
+      font-weight: 700;
+      color: #121449;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+
+    /* =========================
+       BOUTON DE RÉPONSE
+    ========================= */
+
+    .reponse-zone {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #btnReponse {
+      border: none;
+      width: 280px;
+      height: 90px;
+      border-radius: 15px;
+      background: #121449;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+    }
+
+    #btnReponse:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    #btnReponse:active {
+      transform: scale(0.97);
+    }
+
+
+    /* =========================
+       RÉSULTATS
+    ========================= */
+
+    #resultZone {
+      display: none;
+      text-align: center;
+    }
+
+    .result-title {
+      margin-top: 0;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .result-item {
+      background: #f7f7fa;
+      border-radius: 14px;
+      padding: 22px 15px;
+    }
+
+    .result-label {
+      display: block;
+      font-size: 0.78rem;
+      color: #777;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .result-value {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #121449;
+    }
+
+    .result-description {
+      max-width: 650px;
+      margin: 30px auto 0;
+      color: #555;
+      line-height: 1.7;
+      font-size: 0.9rem;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 650px) {
+
+      .test-page {
+        padding: 40px 18px 60px;
+      }
+
+      .test-header h1 {
+        font-size: 2rem;
+      }
+
+      .test-card {
+        padding: 25px 20px;
+      }
+
+      #chiffre {
+        font-size: 7rem;
+      }
+
+      .stimulus-zone {
+        min-height: 200px;
+      }
+
+      #btnReponse {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================
+       RETOUR NPI
+  ========================= -->
+
+  <div class="npi-topbar">
+
+    <a
+      href="NPI.html"
+      class="retour-npi">
+
+      ← Retour au NeuroPerformance Index
+
+    </a>
+
+  </div>
+
+
+  <main class="test-page">
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="test-header">
+
+      <span class="test-number">
+        NPI-04
+      </span>
+
+      <h1>
+        Attention soutenue
+      </h1>
+
+      <p>
+        Ce test mesure votre capacité à maintenir
+        une attention stable dans le temps et à
+        répondre rapidement aux stimuli pertinents.
+      </p>
+
+    </header>
+
+
+    <section class="test-card">
+
+
+      <!-- =========================
+           CONSIGNES
+      ========================= -->
+
+      <div
+        id="instructions"
+        class="instructions">
+
+        <h2>
+          Consignes
+        </h2>
+
+        <p>
+          Un chiffre compris entre
+          <strong>1 et 9</strong>
+          va apparaître à l'écran.
+        </p>
+
+        <p>
+          Dès qu'un chiffre apparaît,
+          <span class="instruction-highlight">
+            cliquez sur le bouton ou appuyez
+            sur la barre Espace le plus rapidement possible.
+          </span>
+        </p>
+
+        <p>
+          <strong>Attention :</strong>
+          lorsqu'un <strong>3</strong> apparaît,
+          vous ne devez pas répondre.
+        </p>
+
+        <p>
+          Si vous ne répondez pas, le chiffre
+          disparaît automatiquement après
+          <strong>1,5 seconde</strong>.
+        </p>
+
+        <p>
+          Vous effectuerez d'abord
+          <strong>3 essais d'entraînement</strong>,
+          puis <strong>120 essais comptabilisés</strong>.
+        </p>
+
+        <p>
+          Parmi les 120 essais, il y aura
+          <strong>108 essais « Go »</strong>
+          et <strong>12 essais « No Go »</strong>.
+        </p>
+
+        <button
+          type="button"
+          id="btnDemarrer"
+          class="btn-principal">
+
+          Commencer le test
+
+        </button>
+
+      </div>
+
+
+      <!-- =========================
+           TEST
+      ========================= -->
+
+      <div id="testZone">
+
+        <div
+          id="testStatus"
+          class="test-status">
+
+          Concentrez-vous
+
+        </div>
+
+        <div
+          id="phaseInfo"
+          class="phase-info">
+
+          Entraînement
+
+        </div>
+
+        <div
+          id="essaiInfo"
+          class="essai-info">
+
+          Essai 1 / 3
+
+        </div>
+
+
+        <div class="stimulus-zone">
+
+          <span
+            id="chiffre">
+
+            —
+
+          </span>
+
+        </div>
+
+
+        <div class="reponse-zone">
+
+          <button
+            type="button"
+            id="btnReponse">
+
+            RÉPONDRE
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           RÉSULTATS
+      ========================= -->
+
+      <div id="resultZone">
+
+        <h2 class="result-title">
+          Résultats NPI-04
+        </h2>
+
+
+        <div class="result-grid">
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Temps moyen sur « Go »
+            </span>
+
+            <span
+              id="resultTempsMoyen"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Erreurs « Commission »
+            </span>
+
+            <span
+              id="resultCommission"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Erreurs « Omission »
+            </span>
+
+            <span
+              id="resultOmission"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Écart-type du temps de réaction
+            </span>
+
+            <span
+              id="resultEcartType"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Maintien de performance
+            </span>
+
+            <span
+              id="resultMaintien"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Moyenne essais 1–30
+            </span>
+
+            <span
+              id="resultBloc1"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Moyenne essais 31–60
+            </span>
+
+            <span
+              id="resultBloc2"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Moyenne essais 61–90
+            </span>
+
+            <span
+              id="resultBloc3"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+          <div class="result-item">
+
+            <span class="result-label">
+              Moyenne essais 91–120
+            </span>
+
+            <span
+              id="resultBloc4"
+              class="result-value">
+
+              —
+
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+        <p class="result-description">
+
+          Les réponses aux chiffres « Go » sont
+          utilisées pour calculer les temps de réaction.
+          Une réponse sur le chiffre 3 constitue une
+          erreur de commission. L'absence de réponse
+          à un chiffre « Go » constitue une erreur
+          d'omission.
+
+        </p>
+
+
+        <button
+          type="button"
+          class="btn-principal"
+          onclick="retourNPI()">
+
+          Retour au NPI
+
+        </button>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+<script>
+
+/* =========================
+   CONFIGURATION
+========================= */
+
+const essaisEntrainement = 3;
+
+const nombreEssaisOfficiels = 120;
+
+const nombreEssaisGo = 108;
+
+const nombreEssaisNoGo = 12;
+
+const dureeStimulus = 1500;
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let phase = "entrainement";
+
+let essaiActuel = 0;
+
+let stimulusActuel = null;
+
+let tempsDebutStimulus = 0;
+
+let timerStimulus = null;
+
+let timerDisparition = null;
+
+let timerSuivant = null;
+
+let tempsGo = [];
+
+let erreursCommission = 0;
+
+let erreursOmission = 0;
+
+let essaisOfficiels = [];
+
+let essaisRestants = [];
+
+
+/* =========================
+   ÉLÉMENTS
+========================= */
+
+const instructions =
+  document.getElementById("instructions");
+
+const testZone =
+  document.getElementById("testZone");
+
+const resultZone =
+  document.getElementById("resultZone");
+
+const chiffre =
+  document.getElementById("chiffre");
+
+const testStatus =
+  document.getElementById("testStatus");
+
+const phaseInfo =
+  document.getElementById("phaseInfo");
+
+const essaiInfo =
+  document.getElementById("essaiInfo");
+
+const btnDemarrer =
+  document.getElementById("btnDemarrer");
+
+const btnReponse =
+  document.getElementById("btnReponse");
+
+
+/* =========================
+   MOYENNE
+========================= */
+
+function calculerMoyenne(valeurs) {
+
+  if (
+    valeurs.length === 0
+  ) {
+
+    return null;
+
+  }
+
+
+  const somme =
+    valeurs.reduce(
+      (total, valeur) =>
+        total + valeur,
+      0
+    );
+
+
+  return somme /
+    valeurs.length;
+
+}
+
+
+/* =========================
+   ÉCART-TYPE
+========================= */
+
+function calculerEcartType(valeurs) {
+
+  if (
+    valeurs.length === 0
+  ) {
+
+    return null;
+
+  }
+
+
+  const moyenne =
+    calculerMoyenne(
+      valeurs
+    );
+
+
+  const variance =
+    valeurs.reduce(
+      (total, valeur) => {
+
+        return total +
+          Math.pow(
+            valeur - moyenne,
+            2
+          );
+
+      },
+      0
+    ) / valeurs.length;
+
+
+  return Math.sqrt(
+    variance
+  );
+
+}
+
+
+/* =========================
+   MÉLANGE
+========================= */
+
+function melanger(tableau) {
+
+  const copie = [
+    ...tableau
+  ];
+
+
+  for (
+    let i = copie.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() *
+        (i + 1)
+      );
+
+
+    [
+      copie[i],
+      copie[j]
+    ] = [
+      copie[j],
+      copie[i]
+    ];
+
+  }
+
+
+  return copie;
+
+}
+
+
+/* =========================
+   CRÉATION DES ESSAIS
+========================= */
+
+function creerEssaisOfficiels() {
+
+  const essais = [];
+
+
+  /*
+    108 essais « Go »
+    chiffres 1, 2, 4, 5, 6, 7, 8 ou 9.
+  */
+
+  for (
+    let i = 0;
+    i < nombreEssaisGo;
+    i++
+  ) {
+
+    const chiffresGo = [
+      1, 2, 4, 5, 6, 7, 8, 9
+    ];
+
+
+    const valeur =
+      chiffresGo[
+        Math.floor(
+          Math.random() *
+          chiffresGo.length
+        )
+      ];
+
+
+    essais.push({
+
+      chiffre: valeur,
+
+      type: "go"
+
+    });
+
+  }
+
+
+  /*
+    12 essais « No Go »
+    toujours avec le chiffre 3.
+  */
+
+  for (
+    let i = 0;
+    i < nombreEssaisNoGo;
+    i++
+  ) {
+
+    essais.push({
+
+      chiffre: 3,
+
+      type: "no-go"
+
+    });
+
+  }
+
+
+  /*
+    Les 120 essais sont mélangés
+    aléatoirement.
+  */
+
+  return melanger(
+    essais
+  );
+
+}
+
+
+/* =========================
+   DÉMARRER LE TEST
+========================= */
+
+function demarrerTest() {
+
+  clearTimeout(
+    timerStimulus
+  );
+
+  clearTimeout(
+    timerDisparition
+  );
+
+  clearTimeout(
+    timerSuivant
+  );
+
+
+  instructions.style.display =
+    "none";
+
+  testZone.style.display =
+    "block";
+
+  resultZone.style.display =
+    "none";
+
+
+  phase =
+    "entrainement";
+
+  essaiActuel =
+    0;
+
+  stimulusActuel =
+    null;
+
+  tempsGo = [];
+
+  erreursCommission =
+    0;
+
+  erreursOmission =
+    0;
+
+  essaisOfficiels = [];
+
+
+  essaisRestants =
+    creerEssaisOfficiels();
+
+
+  preparerEssai();
+
+}
+
+
+/* =========================
+   PRÉPARER UN ESSAI
+========================= */
+
+function preparerEssai() {
+
+  clearTimeout(
+    timerStimulus
+  );
+
+  clearTimeout(
+    timerDisparition
+  );
+
+
+  stimulusActuel =
+    null;
+
+
+  chiffre.textContent =
+    "—";
+
+
+  chiffre.style.visibility =
+    "visible";
+
+
+  testStatus.textContent =
+    "Concentrez-vous";
+
+
+  if (
+    phase === "entrainement"
+  ) {
+
+    phaseInfo.textContent =
+      "Entraînement";
+
+    essaiInfo.textContent =
+      `Essai ${essaiActuel + 1} / ${essaisEntrainement}`;
+
+  }
+
+  else {
+
+    phaseInfo.textContent =
+      "Test";
+
+    essaiInfo.textContent =
+      `Essai ${essaiActuel + 1} / ${nombreEssaisOfficiels}`;
+
+  }
+
+
+  /*
+    Intervalle irrégulier :
+    entre 1,5 et 4 secondes
+    avant l'apparition du chiffre.
+  */
+
+  const delai =
+    Math.floor(
+      Math.random() * 2500
+    ) + 1500;
+
+
+  timerStimulus =
+    setTimeout(
+      afficherStimulus,
+      delai
+    );
+
+}
+
+
+/* =========================
+   AFFICHER LE STIMULUS
+========================= */
+
+function afficherStimulus() {
+
+  let essai;
+
+
+  /* -------------------------
+     ENTRAÎNEMENT
+  ------------------------- */
+
+  if (
+    phase === "entrainement"
+  ) {
+
+    const estNoGo =
+      Math.random() < 0.15;
+
+
+    if (estNoGo) {
+
+      essai = {
+
+        chiffre: 3,
+
+        type: "no-go"
+
+      };
+
+    }
+
+    else {
+
+      const chiffresGo = [
+        1, 2, 4, 5, 6, 7, 8, 9
+      ];
+
+
+      const valeur =
+        chiffresGo[
+          Math.floor(
+            Math.random() *
+            chiffresGo.length
+          )
+        ];
+
+
+      essai = {
+
+        chiffre: valeur,
+
+        type: "go"
+
+      };
+
+    }
+
+  }
+
+
+  /* -------------------------
+     TEST OFFICIEL
+  ------------------------- */
+
+  else {
+
+    essai =
+      essaisRestants.shift();
+
+  }
+
+
+  stimulusActuel =
+    essai;
+
+
+  chiffre.textContent =
+    essai.chiffre;
+
+
+  chiffre.style.visibility =
+    "visible";
+
+
+  tempsDebutStimulus =
+    performance.now();
+
+
+  testStatus.textContent =
+    essai.type === "no-go"
+      ? "NE RÉPONDEZ PAS"
+      : "RÉPONDEZ !";
+
+
+  /*
+    Le chiffre disparaît après
+    1,5 seconde si aucune
+    réponse n'est donnée.
+  */
+
+  timerDisparition =
+    setTimeout(
+      gererAbsenceReponse,
+      dureeStimulus
+    );
+
+}
+
+
+/* =========================
+   RÉPONSE
+========================= */
+
+function gererReponse() {
+
+  /*
+    Si aucun stimulus n'est
+    actuellement affiché,
+    on ignore la réponse.
+  */
+
+  if (
+    stimulusActuel === null
+  ) {
+
+    return;
+
+  }
+
+
+  clearTimeout(
+    timerDisparition
+  );
+
+
+  const tempsReaction =
+    performance.now()
+    - tempsDebutStimulus;
+
+
+  const essai =
+    stimulusActuel;
+
+
+  stimulusActuel =
+    null;
+
+
+  /* =========================
+     ENTRAÎNEMENT
+  ========================= */
+
+  if (
+    phase === "entrainement"
+  ) {
+
+    if (
+      essai.type === "no-go"
+    ) {
+
+      testStatus.textContent =
+        "Erreur de commission";
+
+      chiffre.textContent =
+        "Erreur";
+
+    }
+
+    else {
+
+      testStatus.textContent =
+        "Réponse enregistrée";
+
+      chiffre.textContent =
+        Math.round(
+          tempsReaction
+        ) + " ms";
+
+    }
+
+
+    essaiActuel++;
+
+
+    if (
+      essaiActuel <
+      essaisEntrainement
+    ) {
+
+      timerSuivant =
+        setTimeout(
+          preparerEssai,
+          900
+        );
+
+    }
+
+    else {
+
+      phase =
+        "officiel";
+
+      essaiActuel =
+        0;
+
+
+      testStatus.textContent =
+        "Entraînement terminé";
+
+      chiffre.textContent =
+        "Le test va commencer";
+
+
+      timerSuivant =
+        setTimeout(
+          preparerEssai,
+          1300
+        );
+
+    }
+
+
+    return;
+
+  }
+
+
+  /* =========================
+     TEST OFFICIEL
+  ========================= */
+
+  const reponseCorrecte =
+    essai.type === "go";
+
+
+  /*
+    Réponse sur un « No Go » :
+    erreur de commission.
+  */
+
+  if (
+    essai.type === "no-go"
+  ) {
+
+    erreursCommission++;
+
+
+    essaisOfficiels.push({
+
+      chiffre:
+        essai.chiffre,
+
+      type:
+        essai.type,
+
+      temps:
+        null,
+
+      correct:
+        false,
+
+      erreur:
+        "commission"
+
+    });
+
+
+    testStatus.textContent =
+      "Erreur de commission";
+
+    chiffre.textContent =
+      "Erreur";
+
+  }
+
+
+  /*
+    Réponse correcte sur un « Go ».
+  */
+
+  else {
+
+    tempsGo.push(
+      tempsReaction
+    );
+
+
+    essaisOfficiels.push({
+
+      chiffre:
+        essai.chiffre,
+
+      type:
+        essai.type,
+
+      temps:
+        tempsReaction,
+
+      correct:
+        reponseCorrecte,
+
+      erreur:
+        null
+
+    });
+
+
+    testStatus.textContent =
+      "Réponse enregistrée";
+
+    chiffre.textContent =
+      Math.round(
+        tempsReaction
+      ) + " ms";
+
+  }
+
+
+  essaiActuel++;
+
+
+  /* =========================
+     FIN DU TEST
+  ========================= */
+
+  if (
+    essaiActuel >=
+    nombreEssaisOfficiels
+  ) {
+
+    timerSuivant =
+      setTimeout(
+        terminerTest,
+        900
+      );
+
+  }
+
+  else {
+
+    timerSuivant =
+      setTimeout(
+        preparerEssai,
+        700
+      );
+
+  }
+
+}
+
+
+/* =========================
+   ABSENCE DE RÉPONSE
+========================= */
+
+function gererAbsenceReponse() {
+
+  /*
+    Aucun stimulus actif :
+    rien à faire.
+  */
+
+  if (
+    stimulusActuel === null
+  ) {
+
+    return;
+
+  }
+
+
+  const essai =
+    stimulusActuel;
+
+
+  stimulusActuel =
+    null;
+
+
+  /* =========================
+     ENTRAÎNEMENT
+  ========================= */
+
+  if (
+    phase === "entrainement"
+  ) {
+
+    if (
+      essai.type === "go"
+    ) {
+
+      testStatus.textContent =
+        "Pas de réponse";
+
+      chiffre.textContent =
+        "Omission";
+
+    }
+
+    else {
+
+      testStatus.textContent =
+        "Bonne inhibition";
+
+      chiffre.textContent =
+        "OK";
+
+    }
+
+
+    essaiActuel++;
+
+
+    if (
+      essaiActuel <
+      essaisEntrainement
+    ) {
+
+      timerSuivant =
+        setTimeout(
+          preparerEssai,
+          900
+        );
+
+    }
+
+    else {
+
+      phase =
+        "officiel";
+
+      essaiActuel =
+        0;
+
+
+      testStatus.textContent =
+        "Entraînement terminé";
+
+      chiffre.textContent =
+        "Le test va commencer";
+
+
+      timerSuivant =
+        setTimeout(
+          preparerEssai,
+          1300
+        );
+
+    }
+
+
+    return;
+
+  }
+
+
+  /* =========================
+     TEST OFFICIEL
+  ========================= */
+
+  /*
+    Si c'est un « Go » sans
+    réponse : erreur d'omission.
+  */
+
+  if (
+    essai.type === "go"
+  ) {
+
+    erreursOmission++;
+
+
+    essaisOfficiels.push({
+
+      chiffre:
+        essai.chiffre,
+
+      type:
+        essai.type,
+
+      temps:
+        null,
+
+      correct:
+        false,
+
+      erreur:
+        "omission"
+
+    });
+
+
+    testStatus.textContent =
+      "Omission";
+
+    chiffre.textContent =
+      "Pas de réponse";
+
+  }
+
+
+  /*
+    Si c'est un « No Go » sans
+    réponse : bonne inhibition.
+  */
+
+  else {
+
+    essaisOfficiels.push({
+
+      chiffre:
+        essai.chiffre,
+
+      type:
+        essai.type,
+
+      temps:
+        null,
+
+      correct:
+        true,
+
+      erreur:
+        null
+
+    });
+
+
+    testStatus.textContent =
+      "Bonne inhibition";
+
+    chiffre.textContent =
+      "OK";
+
+  }
+
+
+  essaiActuel++;
+
+
+  /* =========================
+     FIN DU TEST
+  ========================= */
+
+  if (
+    essaiActuel >=
+    nombreEssaisOfficiels
+  ) {
+
+    timerSuivant =
+      setTimeout(
+        terminerTest,
+        900
+      );
+
+  }
+
+  else {
+
+    timerSuivant =
+      setTimeout(
+        preparerEssai,
+        700
+      );
+
+  }
+
+}
+
+
+/* =========================
+   MOYENNE D'UN BLOC
+========================= */
+
+function calculerMoyenneBloc(
+  essais
+) {
+
+  const temps =
+    essais
+      .filter(
+        essai =>
+          essai.type === "go" &&
+          essai.temps !== null
+      )
+      .map(
+        essai =>
+          essai.temps
+      );
+
+
+  return calculerMoyenne(
+    temps
+  );
+
+}
+
+
+/* =========================
+   FIN DU TEST
+========================= */
+
+function terminerTest() {
+
+  clearTimeout(
+    timerStimulus
+  );
+
+  clearTimeout(
+    timerDisparition
+  );
+
+  clearTimeout(
+    timerSuivant
+  );
+
+
+  testZone.style.display =
+    "none";
+
+  resultZone.style.display =
+    "block";
+
+
+  /* =========================
+     TEMPS MOYEN GO
+  ========================= */
+
+  const tempsMoyen =
+    calculerMoyenne(
+      tempsGo
+    );
+
+
+  /* =========================
+     ÉCART-TYPE
+  ========================= */
+
+  const ecartType =
+    calculerEcartType(
+      tempsGo
+    );
+
+
+  /* =========================
+     BLOCS DE 30 ESSAIS
+  ========================= */
+
+  const bloc1 =
+    essaisOfficiels.slice(
+      0,
+      30
+    );
+
+
+  const bloc2 =
+    essaisOfficiels.slice(
+      30,
+      60
+    );
+
+
+  const bloc3 =
+    essaisOfficiels.slice(
+      60,
+      90
+    );
+
+
+  const bloc4 =
+    essaisOfficiels.slice(
+      90,
+      120
+    );
+
+
+  const moyenneBloc1 =
+    calculerMoyenneBloc(
+      bloc1
+    );
+
+
+  const moyenneBloc2 =
+    calculerMoyenneBloc(
+      bloc2
+    );
+
+
+  const moyenneBloc3 =
+    calculerMoyenneBloc(
+      bloc3
+    );
+
+
+  const moyenneBloc4 =
+    calculerMoyenneBloc(
+      bloc4
+    );
+
+
+  /* =========================
+     MAINTIEN DE PERFORMANCE
+  ========================= */
+
+  let maintien =
+    null;
+
+
+  if (
+    moyenneBloc1 !== null &&
+    moyenneBloc4 !== null &&
+    moyenneBloc4 !== 0
+  ) {
+
+    maintien =
+      moyenneBloc1 /
+      moyenneBloc4;
+
+  }
+
+
+  /* =========================
+     AFFICHAGE
+  ========================= */
+
+  document.getElementById(
+    "resultTempsMoyen"
+  ).textContent =
+    tempsMoyen !== null
+      ? Math.round(
+          tempsMoyen
+        ) + " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultCommission"
+  ).textContent =
+    erreursCommission;
+
+
+  document.getElementById(
+    "resultOmission"
+  ).textContent =
+    erreursOmission;
+
+
+  document.getElementById(
+    "resultEcartType"
+  ).textContent =
+    ecartType !== null
+      ? Math.round(
+          ecartType
+        ) + " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultMaintien"
+  ).textContent =
+    maintien !== null
+      ? maintien.toFixed(2)
+      : "—";
+
+
+  document.getElementById(
+    "resultBloc1"
+  ).textContent =
+    moyenneBloc1 !== null
+      ? Math.round(
+          moyenneBloc1
+        ) + " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultBloc2"
+  ).textContent =
+    moyenneBloc2 !== null
+      ? Math.round(
+          moyenneBloc2
+        ) + " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultBloc3"
+  ).textContent =
+    moyenneBloc3 !== null
+      ? Math.round(
+          moyenneBloc3
+        ) + " ms"
+      : "—";
+
+
+  document.getElementById(
+    "resultBloc4"
+  ).textContent =
+    moyenneBloc4 !== null
+      ? Math.round(
+          moyenneBloc4
+        ) + " ms"
+      : "—";
+
+
+  /* =========================
+     SAUVEGARDE NPI
+  ========================= */
+
+  const resultatNPI04 = {
+
+    tempsMoyen:
+      tempsMoyen !== null
+        ? Math.round(
+            tempsMoyen
+          )
+        : null,
+
+    erreursCommission:
+      erreursCommission,
+
+    erreursOmission:
+      erreursOmission,
+
+    ecartType:
+      ecartType !== null
+        ? Math.round(
+            ecartType
+          )
+        : null,
+
+    maintien:
+      maintien !== null
+        ? Number(
+            maintien.toFixed(4)
+          )
+        : null,
+
+    moyenneBloc1:
+      moyenneBloc1 !== null
+        ? Math.round(
+            moyenneBloc1
+          )
+        : null,
+
+    moyenneBloc2:
+      moyenneBloc2 !== null
+        ? Math.round(
+            moyenneBloc2
+          )
+        : null,
+
+    moyenneBloc3:
+      moyenneBloc3 !== null
+        ? Math.round(
+            moyenneBloc3
+          )
+        : null,
+
+    moyenneBloc4:
+      moyenneBloc4 !== null
+        ? Math.round(
+            moyenneBloc4
+          )
+        : null,
+
+    essaisGo:
+      nombreEssaisGo,
+
+    essaisNoGo:
+      nombreEssaisNoGo,
+
+    essaisOfficiels:
+      essaisOfficiels,
+
+    date:
+      new Date().toISOString()
+
+  };
+
+
+  let resultatsNPI =
+    JSON.parse(
+      localStorage.getItem(
+        "NPI-results"
+      )
+    ) || {};
+
+
+  resultatsNPI["NPI-04"] =
+    resultatNPI04;
+
+
+  localStorage.setItem(
+    "NPI-results",
+    JSON.stringify(
+      resultatsNPI
+    )
+  );
+
+}
+
+
+/* =========================
+   CLIC SUR LE BOUTON
+========================= */
+
+btnReponse.addEventListener(
+  "pointerdown",
+  function(event) {
+
+    event.preventDefault();
+
+    gererReponse();
+
+  }
+);
+
+
+/* =========================
+   TOUCHE ESPACE
+========================= */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.code !== "Space"
+    ) {
+
+      return;
+
+    }
+
+
+    event.preventDefault();
+
+    /*
+      La barre Espace fonctionne
+      uniquement pendant le test.
+    */
+
+    if (
+      testZone.style.display === "block"
+    ) {
+
+      gererReponse();
+
+    }
+
+  }
+);
+
+
+/* =========================
+   BOUTON DÉMARRER
+========================= */
+
+if (btnDemarrer) {
+
+  btnDemarrer.addEventListener(
+    "click",
+    demarrerTest
+  );
+
+}
+
+
+/* =========================
+   RETOUR NPI
+========================= */
+
+function retourNPI() {
+
+  window.location.href =
+    "NPI.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
+```
