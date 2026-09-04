@@ -479,15 +479,14 @@ if (resultats["NPI-04"]) {
 /* =========================
    NPI-05
 ========================= */
-js
 if (resultats["NPI-05"]) {
   const resultat = resultats["NPI-05"];
   const element = document.getElementById("resultNPI05");
 
   if (element) {
     element.innerHTML = `
-      ${resultat.coutSwitch !== null
-        ? resultat.coutSwitch + " ms"
+      ${resultat.switchCost !== null
+        ? resultat.switchCost + " ms"
         : "—"}
       &nbsp; / &nbsp;
       ${resultat.moyenneSwitch !== null
@@ -505,6 +504,7 @@ if (resultats["NPI-05"]) {
 
   nombreTestsRealises++;
 }
+
 
   
 /* =========================
