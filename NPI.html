@@ -532,13 +532,28 @@ if (resultats["NPI-06"]) {
 
   nombreTestsRealises++;
 }
+
+  /* =========================
+   NPI-07
+========================= */
+
+if (resultats["NPI-07"]) {
+  const resultat = resultats["NPI-07"];
+  const element = document.getElementById("resultNPI07");
+
+  if (element && resultat.termine) {
+    element.textContent = "Terminé";
+  }
+
+  nombreTestsRealises++;
+}
+
   
 /* =========================
-   NPI-07 À NPI-10
+   NPI-08 À NPI-10
 ========================= */
 
 const testsRestants = [
-  "NPI-07",
   "NPI-08",
   "NPI-09",
   "NPI-10"
