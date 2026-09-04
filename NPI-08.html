@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NPI-08 — Vision périphérique et prise d'information | Mentallia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7fa;
+      color: #121449;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .npi-topbar {
+      background: #ffffff;
+      padding: 20px 25px;
+      border-bottom: 1px solid #e8e8ee;
+    }
+
+    .retour-npi {
+      color: #121449;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .retour-npi:hover {
+      text-decoration: underline;
+    }
+
+    .test-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 25px 80px;
+    }
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .test-number {
+      display: inline-block;
+      background: #121449;
+      color: #ffffff;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+
+    .test-header h1 {
+      margin: 0 0 15px;
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    .test-header p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: #666978;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .test-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(18, 20, 73, 0.06);
+    }
+
+    .instructions {
+      text-align: center;
+    }
+
+    .instructions p {
+      margin: 0 0 25px;
+      color: #555866;
+      line-height: 1.7;
+    }
+
+    .btn-principal {
+      border: none;
+      background: #121449;
+      color: #ffffff;
+      padding: 15px 28px;
+      border-radius: 10px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-principal:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    #testZone {
+      display: none;
+      text-align: center;
+    }
+
+    .test-status {
+      min-height: 25px;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .phase-info {
+      color: #666978;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .essai-info {
+      color: #8a8b96;
+      font-size: 0.85rem;
+      margin-bottom: 30px;
+    }
+
+    /* =========================================================
+       ZONE DU TEST
+    ========================================================= */
+
+    .zone-peripherique {
+      position: relative;
+      width: 620px;
+      height: 620px;
+      max-width: 90vw;
+      max-height: 90vw;
+      margin: 0 auto;
+    }
+
+    .croix-centrale {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 34px;
+      height: 34px;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+
+    .croix-centrale::before,
+    .croix-centrale::after {
+      content: "";
+      position: absolute;
+      background: #121449;
+    }
+
+    .croix-centrale::before {
+      width: 4px;
+      height: 34px;
+      left: 15px;
+      top: 0;
+    }
+
+    .croix-centrale::after {
+      width: 34px;
+      height: 4px;
+      left: 0;
+      top: 15px;
+    }
+
+    .cercle {
+      position: absolute;
+      width: 105px;
+      height: 105px;
+
+      border: 3px solid #121449;
+      border-radius: 50%;
+
+      background: #ffffff;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 2rem;
+      font-weight: 700;
+
+      color: #121449;
+
+      cursor: pointer;
+
+      user-select: none;
+
+      transition: background-color 0.05s linear;
+    }
+
+    .cercle.actif {
+      background: #8fc9ff;
+    }
+
+    /* Positions des 8 cercles */
+
+    .cercle-1 {
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+    }
+
+    .cercle-2 {
+      right: 7%;
+      top: 7%;
+    }
+
+    .cercle-3 {
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .cercle-4 {
+      right: 7%;
+      bottom: 7%;
+    }
+
+    .cercle-5 {
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+    }
+
+    .cercle-6 {
+      left: 7%;
+      bottom: 7%;
+    }
+
+    .cercle-7 {
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .cercle-8 {
+      left: 7%;
+      top: 7%;
+    }
+
+    /* =========================================================
+       BOUTONS CLAVIER / ECRAN
+    ========================================================= */
+
+    .clavier-visuel {
+      margin-top: 35px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-chiffre {
+      border: 2px solid #121449;
+      background: #ffffff;
+      color: #121449;
+
+      min-height: 55px;
+
+      border-radius: 10px;
+
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.1s ease;
+    }
+
+    .btn-chiffre:hover {
+      background: #f1f2f7;
+    }
+
+    .btn-chiffre:active {
+      transform: scale(0.97);
+    }
+
+    .fin-message {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .fin-message h2 {
+      margin: 0 0 12px;
+      font-size: 1.7rem;
+    }
+
+    .fin-message p {
+      margin: 0;
+      color: #666978;
+      line-height: 1.7;
+    }
+
+    .resultats-finaux {
+      margin: 30px auto;
+      max-width: 500px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .resultat-item {
+      background: #f7f7fa;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .resultat-label {
+      display: block;
+      color: #666978;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+
+    .resultat-valeur {
+      display: block;
+      color: #121449;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 700px) {
+
+      .test-page {
+        padding: 40px 18px 60px;
+      }
+
+      .test-header h1 {
+        font-size: 2rem;
+      }
+
+      .test-card {
+        padding: 25px 15px;
+      }
+
+      .zone-peripherique {
+        width: 400px;
+        height: 400px;
+      }
+
+      .cercle {
+        width: 72px;
+        height: 72px;
+        font-size: 1.4rem;
+        border-width: 2px;
+      }
+
+      .croix-centrale {
+        width: 28px;
+        height: 28px;
+      }
+
+      .croix-centrale::before {
+        width: 3px;
+        height: 28px;
+        left: 12.5px;
+      }
+
+      .croix-centrale::after {
+        width: 28px;
+        height: 3px;
+        top: 12.5px;
+      }
+
+      .clavier-visuel {
+        max-width: 350px;
+      }
+
+      .resultats-finaux {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 450px) {
+
+      .zone-peripherique {
+        width: 320px;
+        height: 320px;
+      }
+
+      .cercle {
+        width: 58px;
+        height: 58px;
+        font-size: 1.15rem;
+      }
+
+      .clavier-visuel {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+      }
+
+      .btn-chiffre {
+        min-height: 48px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="npi-topbar">
+    <a href="NPI.html" class="retour-npi">
+      ← Retour au NeuroPerformance Index
+    </a>
+  </div>
+
+  <main class="test-page">
+
+    <header class="test-header">
+
+      <div class="test-number">NPI-08</div>
+
+      <h1>Vision périphérique et prise d'information</h1>
+
+      <p>
+        Fixez la croix centrale et utilisez votre vision périphérique
+        pour repérer le cercle qui change de couleur.
+        Répondez avec le chiffre correspondant.
+      </p>
+
+    </header>
+
+    <section class="test-card">
+
+      <div id="instructions" class="instructions">
+
+        <p>
+          Le test commence par <strong>3 essais d'entraînement</strong>,
+          puis comporte <strong>40 essais officiels</strong>.
+          <br><br>
+          Lorsqu'un cercle devient bleu clair, tapez son chiffre
+          sur le clavier ou cliquez sur le chiffre correspondant
+          parmi les boutons affichés à l'écran.
+        </p>
+
+        <button id="btnDemarrer" class="btn-principal">
+          Commencer le test
+        </button>
+
+      </div>
+
+
+      <div id="testZone">
+
+        <div id="testStatus" class="test-status">
+          Fixez la croix centrale
+        </div>
+
+        <div id="phaseInfo" class="phase-info"></div>
+
+        <div id="essaiInfo" class="essai-info"></div>
+
+
+        <div class="zone-peripherique">
+
+          <div class="croix-centrale"></div>
+
+          <div class="cercle cercle-1" data-chiffre="1">1</div>
+          <div class="cercle cercle-2" data-chiffre="2">2</div>
+          <div class="cercle cercle-3" data-chiffre="3">3</div>
+          <div class="cercle cercle-4" data-chiffre="4">4</div>
+          <div class="cercle cercle-5" data-chiffre="6">6</div>
+          <div class="cercle cercle-6" data-chiffre="7">7</div>
+          <div class="cercle cercle-7" data-chiffre="8">8</div>
+          <div class="cercle cercle-8" data-chiffre="9">9</div>
+
+        </div>
+
+
+        <div class="clavier-visuel">
+
+          <button class="btn-chiffre" data-chiffre="1">1</button>
+          <button class="btn-chiffre" data-chiffre="2">2</button>
+          <button class="btn-chiffre" data-chiffre="3">3</button>
+          <button class="btn-chiffre" data-chiffre="4">4</button>
+
+          <button class="btn-chiffre" data-chiffre="6">6</button>
+          <button class="btn-chiffre" data-chiffre="7">7</button>
+          <button class="btn-chiffre" data-chiffre="8">8</button>
+          <button class="btn-chiffre" data-chiffre="9">9</button>
+
+        </div>
+
+      </div>
+
+
+      <div id="finMessage" class="fin-message" style="display: none;">
+
+        <h2>Test terminé</h2>
+
+        <div class="resultats-finaux">
+
+          <div class="resultat-item">
+            <span class="resultat-label">
+              Temps moyen de réponse
+            </span>
+
+            <span id="resultMoyenne" class="resultat-valeur">
+              —
+            </span>
+          </div>
+
+          <div class="resultat-item">
+            <span class="resultat-label">
+              Réponses correctes
+            </span>
+
+            <span id="resultCorrectes" class="resultat-valeur">
+              —
+            </span>
+          </div>
+
+        </div>
+
+        <a
+          href="NPI.html"
+          class="btn-principal"
+          style="display: inline-block; text-decoration: none;"
+        >
+          Retour au NPI
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    /* =========================================================
+       CONFIGURATION
+    ========================================================= */
+
+    const NOMBRE_ENTRAINEMENT = 3;
+    const NOMBRE_OFFICIEL = 40;
+
+    const DUREE_STIMULUS = 500;
+    const INTERVALLE_STIMULUS = 2000;
+
+    const CHIFFRES = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "6",
+      "7",
+      "8",
+      "9"
+    ];
+
+
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
+
+    const instructions =
+      document.getElementById("instructions");
+
+    const testZone =
+      document.getElementById("testZone");
+
+    const finMessage =
+      document.getElementById("finMessage");
+
+    const btnDemarrer =
+      document.getElementById("btnDemarrer");
+
+    const testStatus =
+      document.getElementById("testStatus");
+
+    const phaseInfo =
+      document.getElementById("phaseInfo");
+
+    const essaiInfo =
+      document.getElementById("essaiInfo");
+
+    const cercles =
+      document.querySelectorAll(".cercle");
+
+    const boutonsChiffres =
+      document.querySelectorAll(".btn-chiffre");
+
+
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
+    let phase = "entrainement";
+    let essaiActuel = 0;
+
+    let stimulusActuel = null;
+    let tempsDebutStimulus = null;
+
+    let tempsReponses = [];
+    let nombreReponsesCorrectes = 0;
+
+    let timerStimulus = null;
+    let timerProchainEssai = null;
+
+    let essaisEntrainement = [];
+    let essaisOfficiels = [];
+
+
+    /* =========================================================
+       UTILITAIRES
+    ========================================================= */
+
+    function melanger(tableau) {
+
+      const copie = [...tableau];
+
+      for (let i = copie.length - 1; i > 0; i--) {
+
+        const j =
+          Math.floor(Math.random() * (i + 1));
+
+        [copie[i], copie[j]] =
+          [copie[j], copie[i]];
+      }
+
+      return copie;
+    }
+
+
+    function genererEssais() {
+
+      essaisEntrainement =
+        melanger(CHIFFRES);
+
+      essaisEntrainement =
+        essaisEntrainement.slice(
+          0,
+          NOMBRE_ENTRAINEMENT
+        );
+
+      essaisOfficiels = [];
+
+      for (
+        let i = 0;
+        i < NOMBRE_OFFICIEL;
+        i++
+      ) {
+
+        const chiffre =
+          CHIFFRES[
+            Math.floor(
+              Math.random() * CHIFFRES.length
+            )
+          ];
+
+        essaisOfficiels.push(chiffre);
+      }
+    }
+
+
+    function obtenirEssaiActuel() {
+
+      if (phase === "entrainement") {
+        return essaisEntrainement[essaiActuel];
+      }
+
+      return essaisOfficiels[essaiActuel];
+    }
+
+
+    /* =========================================================
+       AFFICHAGE
+    ========================================================= */
+
+    function mettreAJourInfos() {
+
+      if (phase === "entrainement") {
+
+        phaseInfo.textContent =
+          "Entraînement";
+
+        essaiInfo.textContent =
+          "Essai " +
+          (essaiActuel + 1) +
+          " / " +
+          NOMBRE_ENTRAINEMENT;
+
+      } else {
+
+        phaseInfo.textContent =
+          "Essais officiels";
+
+        essaiInfo.textContent =
+          "Essai " +
+          (essaiActuel + 1) +
+          " / " +
+          NOMBRE_OFFICIEL;
+      }
+    }
+
+
+    function activerCercle(chiffre) {
+
+      cercles.forEach(function(cercle) {
+
+        cercle.classList.remove("actif");
+
+        if (
+          cercle.dataset.chiffre === chiffre
+        ) {
+          cercle.classList.add("actif");
+        }
+
+      });
+    }
+
+
+    function desactiverTousLesCercles() {
+
+      cercles.forEach(function(cercle) {
+        cercle.classList.remove("actif");
+      });
+
+    }
+
+
+    /* =========================================================
+       AFFICHAGE DU STIMULUS
+    ========================================================= */
+
+    function afficherStimulus() {
+
+      const chiffre =
+        obtenirEssaiActuel();
+
+      if (!chiffre) {
+        terminerTest();
+        return;
+      }
+
+      stimulusActuel = chiffre;
+
+      mettreAJourInfos();
+
+      activerCercle(chiffre);
+
+      tempsDebutStimulus =
+        performance.now();
+
+      testStatus.textContent =
+        "Répondez !";
+
+      /*
+        Le cercle reste bleu clair pendant 500 ms.
+      */
+      timerStimulus = setTimeout(function() {
+
+        desactiverTousLesCercles();
+
+        /*
+          Le stimulus disparaît après 500 ms.
+          Le prochain apparaît à 2 secondes du
+          début du stimulus actuel.
+        */
+
+      }, DUREE_STIMULUS);
+
+    }
+
+
+    /* =========================================================
+       REPONSE
+    ========================================================= */
+
+    function gererReponse(chiffreReponse) {
+
+      /*
+        Aucune réponse n'est prise en compte
+        lorsqu'aucun stimulus n'est actif.
+      */
+      if (
+        stimulusActuel === null ||
+        tempsDebutStimulus === null
+      ) {
+        return;
+      }
+
+      const tempsReaction =
+        performance.now() -
+        tempsDebutStimulus;
+
+      const chiffreCorrect =
+        stimulusActuel;
+
+      const estCorrect =
+        chiffreReponse === chiffreCorrect;
+
+      /*
+        Le stimulus est immédiatement désactivé
+        après la réponse.
+      */
+      if (timerStimulus !== null) {
+
+        clearTimeout(timerStimulus);
+        timerStimulus = null;
+
+      }
+
+      desactiverTousLesCercles();
+
+      /*
+        Une seule réponse est possible par stimulus.
+      */
+      stimulusActuel = null;
+      tempsDebutStimulus = null;
+
+
+      /* =====================================================
+         ENTRAINEMENT
+      ===================================================== */
+
+      if (phase === "entrainement") {
+
+        if (estCorrect) {
+
+          testStatus.textContent =
+            "Bonne réponse";
+
+        } else {
+
+          testStatus.textContent =
+            "Erreur";
+
+        }
+
+        programmerEssaiSuivant();
+
+        return;
+      }
+
+
+      /* =====================================================
+         ESSAIS OFFICIELS
+      ===================================================== */
+
+      if (estCorrect) {
+
+        tempsReponses.push(
+          tempsReaction
+        );
+
+        nombreReponsesCorrectes++;
+
+        testStatus.textContent =
+          "Bonne réponse";
+
+      } else {
+
+        testStatus.textContent =
+          "Erreur";
+
+      }
+
+      programmerEssaiSuivant();
+
+    }
+
+
+    /* =========================================================
+       ABSENCE DE REPONSE
+    ========================================================= */
+
+    function gererAbsenceReponse() {
+
+      if (stimulusActuel === null) {
+        return;
+      }
+
+      /*
+        Une absence de réponse est simplement considérée
+        comme une réponse incorrecte pour le calcul du
+        nombre de réponses correctes.
+      */
+
+      stimulusActuel = null;
+      tempsDebutStimulus = null;
+
+      desactiverTousLesCercles();
+
+      testStatus.textContent =
+        "Pas de réponse";
+
+      programmerEssaiSuivant();
+
+    }
+
+
+    /* =========================================================
+       ESSAI SUIVANT
+    ========================================================= */
+
+    function programmerEssaiSuivant() {
+
+      /*
+        Le prochain stimulus doit apparaître 2 secondes
+        après le début du stimulus précédent.
+      */
+
+      const tempsRestant =
+        Math.max(
+          0,
+          INTERVALLE_STIMULUS -
+          DUREE_STIMULUS
+        );
+
+      timerProchainEssai =
+        setTimeout(function() {
+
+          essaiActuel++;
+
+          const nombreEssais =
+            phase === "entrainement"
+              ? NOMBRE_ENTRAINEMENT
+              : NOMBRE_OFFICIEL;
+
+          if (
+            essaiActuel >= nombreEssais
+          ) {
+
+            if (
+              phase === "entrainement"
+            ) {
+
+              commencerOfficiel();
+
+            } else {
+
+              terminerTest();
+
+            }
+
+            return;
+          }
+
+          afficherStimulus();
+
+        }, tempsRestant);
+    }
+
+
+    /* =========================================================
+       DEMARRAGE
+    ========================================================= */
+
+    function demarrerTest() {
+
+      if (timerStimulus !== null) {
+        clearTimeout(timerStimulus);
+        timerStimulus = null;
+      }
+
+      if (timerProchainEssai !== null) {
+        clearTimeout(timerProchainEssai);
+        timerProchainEssai = null;
+      }
+
+      phase = "entrainement";
+      essaiActuel = 0;
+
+      stimulusActuel = null;
+      tempsDebutStimulus = null;
+
+      tempsReponses = [];
+      nombreReponsesCorrectes = 0;
+
+      genererEssais();
+
+      instructions.style.display = "none";
+      finMessage.style.display = "none";
+      testZone.style.display = "block";
+
+      desactiverTousLesCercles();
+
+      testStatus.textContent =
+        "Fixez la croix centrale";
+
+      afficherStimulus();
+
+    }
+
+
+    /* =========================================================
+       PASSAGE AUX ESSAIS OFFICIELS
+    ========================================================= */
+
+    function commencerOfficiel() {
+
+      phase = "officiel";
+      essaiActuel = 0;
+
+      stimulusActuel = null;
+      tempsDebutStimulus = null;
+
+      desactiverTousLesCercles();
+
+      testStatus.textContent =
+        "La phase officielle commence";
+
+      /*
+        Petit délai entre la fin de l'entraînement
+        et le début des 40 essais officiels.
+      */
+
+      setTimeout(function() {
+
+        afficherStimulus();
+
+      }, 800);
+
+    }
+
+
+    /* =========================================================
+       FIN DU TEST
+    ========================================================= */
+
+    function terminerTest() {
+
+      if (timerStimulus !== null) {
+        clearTimeout(timerStimulus);
+        timerStimulus = null;
+      }
+
+      if (timerProchainEssai !== null) {
+        clearTimeout(timerProchainEssai);
+        timerProchainEssai = null;
+      }
+
+      stimulusActuel = null;
+      tempsDebutStimulus = null;
+
+      desactiverTousLesCercles();
+
+
+      /*
+        Calcul du temps moyen de réponse.
+        Seules les réponses correctes sont prises
+        en compte dans le temps moyen.
+      */
+
+      let moyenne = null;
+
+      if (tempsReponses.length > 0) {
+
+        const somme =
+          tempsReponses.reduce(
+            function(total, temps) {
+              return total + temps;
+            },
+            0
+          );
+
+        moyenne =
+          somme / tempsReponses.length;
+      }
+
+
+      /*
+        Enregistrement dans le stockage commun du NPI.
+      */
+
+      let resultatsNPI =
+        JSON.parse(
+          localStorage.getItem("NPI-results")
+        ) || {};
+
+      resultatsNPI["NPI-08"] = {
+
+        moyenne:
+          moyenne !== null
+            ? Math.round(moyenne)
+            : null,
+
+        reponsesCorrectes:
+          nombreReponsesCorrectes,
+
+        nombreEssais:
+          NOMBRE_OFFICIEL,
+
+        essaisOfficiels:
+          NOMBRE_OFFICIEL,
+
+        date:
+          new Date().toISOString()
+      };
+
+      localStorage.setItem(
+        "NPI-results",
+        JSON.stringify(resultatsNPI)
+      );
+
+
+      /*
+        Affichage des résultats.
+      */
+
+      document.getElementById(
+        "resultMoyenne"
+      ).textContent =
+        moyenne !== null
+          ? Math.round(moyenne) + " ms"
+          : "—";
+
+      document.getElementById(
+        "resultCorrectes"
+      ).textContent =
+        nombreReponsesCorrectes +
+        " / " +
+        NOMBRE_OFFICIEL;
+
+
+      testZone.style.display = "none";
+      finMessage.style.display = "block";
+
+    }
+
+
+    /* =========================================================
+       CLICS SUR LES BOUTONS
+    ========================================================= */
+
+    boutonsChiffres.forEach(function(bouton) {
+
+      bouton.addEventListener(
+        "click",
+        function() {
+
+          const chiffre =
+            bouton.dataset.chiffre;
+
+          gererReponse(chiffre);
+
+        }
+      );
+
+    });
+
+
+    /* =========================================================
+       CLIC DIRECT SUR UN CERCLE
+    ========================================================= */
+
+    cercles.forEach(function(cercle) {
+
+      cercle.addEventListener(
+        "click",
+        function() {
+
+          const chiffre =
+            cercle.dataset.chiffre;
+
+          gererReponse(chiffre);
+
+        }
+      );
+
+    });
+
+
+    /* =========================================================
+       CLAVIER
+    ========================================================= */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        const chiffresAutorises = [
+          "1",
+          "2",
+          "3",
+          "4",
+          "6",
+          "7",
+          "8",
+          "9"
+        ];
+
+        if (
+          !chiffresAutorises.includes(
+            event.key
+          )
+        ) {
+          return;
+        }
+
+        if (
+          testZone.style.display !== "block"
+        ) {
+          return;
+        }
+
+        gererReponse(event.key);
+
+      }
+    );
+
+
+    /* =========================================================
+       BOUTON DEMARRER
+    ========================================================= */
+
+    btnDemarrer.addEventListener(
+      "click",
+      demarrerTest
+    );
+
+  </script>
+
+</body>
+</html>
