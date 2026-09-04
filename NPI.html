@@ -548,13 +548,40 @@ if (resultats["NPI-07"]) {
   nombreTestsRealises++;
 }
 
+/* =========================
+   NPI-08
+========================= */  
+if (resultats["NPI-08"]) {
+
+  const resultat = resultats["NPI-08"];
+
+  const element =
+    document.getElementById("resultNPI08");
+
+  if (element) {
+
+    const score =
+      Math.round(
+        (
+          resultat.reponsesCorrectes /
+          40
+        ) * 100
+      );
+
+    element.textContent =
+      score + " %";
+  }
+
+  nombreTestsRealises++;
+}
+
+
   
 /* =========================
-   NPI-08 À NPI-10
+   NPI-09 À NPI-10
 ========================= */
 
 const testsRestants = [
-  "NPI-08",
   "NPI-09",
   "NPI-10"
 ];
