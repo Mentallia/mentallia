@@ -405,27 +405,39 @@
        CHANGEMENT DE COULEUR
     ========================================================= */
 
-    function lancerSequence() {
-      afficherCouleur();
+
+function lancerSequence() {
+
+  afficherCouleur();
+
+  function prochainChangement() {
+
+    const nombreEssais =
+      phase === "entrainement"
+        ? NOMBRE_ENTRAINEMENT
+        : NOMBRE_OFFICIEL;
+
+    /*
+      La couleur reste affichée pendant 2 secondes.
+    */
+    setTimeout(function() {
 
       /*
-        Le carré change de couleur toutes les secondes.
-        setInterval() permet d'exécuter régulièrement la fonction
-        avec un intervalle fixe.
+        Passage au blanc pendant une fraction de seconde.
+        Cela permet de distinguer deux couleurs identiques
+        qui se suivent.
       */
-      intervalCouleur = setInterval(function() {
+      carreCouleur.style.backgroundColor = "#ffffff";
+
+      setTimeout(function() {
 
         essaiActuel++;
 
-        const nombreEssais =
-          phase === "entrainement"
-            ? NOMBRE_ENTRAINEMENT
-            : NOMBRE_OFFICIEL;
-
+        /*
+          Si tous les essais de la phase sont terminés,
+          on passe à la phase suivante ou on termine le test.
+        */
         if (essaiActuel >= nombreEssais) {
-
-          clearInterval(intervalCouleur);
-          intervalCouleur = null;
 
           if (phase === "entrainement") {
             commencerOfficiel();
@@ -435,6 +447,26 @@
 
           return;
         }
+
+        /*
+          Affichage de la couleur suivante.
+        */
+        afficherCouleur();
+
+        /*
+          On recommence le cycle :
+          2 secondes de couleur → blanc → couleur suivante.
+        */
+        prochainChangement();
+
+      }, 250);
+
+    }, 2000);
+  }
+
+  prochainChangement();
+}
+
 
         afficherCouleur();
 
