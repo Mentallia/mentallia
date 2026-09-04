@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NPI-07 — Coordination oeil-main ou oeil-pied | Mentallia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7fa;
+      color: #121449;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .npi-topbar {
+      background: #ffffff;
+      padding: 20px 25px;
+      border-bottom: 1px solid #e8e8ee;
+    }
+
+    .retour-npi {
+      color: #121449;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .retour-npi:hover {
+      text-decoration: underline;
+    }
+
+    .test-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 25px 80px;
+    }
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .test-number {
+      display: inline-block;
+      background: #121449;
+      color: #ffffff;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+
+    .test-header h1 {
+      margin: 0 0 15px;
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    .test-header p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #666978;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .test-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(18, 20, 73, 0.06);
+    }
+
+    .instructions {
+      text-align: center;
+    }
+
+    .instructions p {
+      margin: 0 0 25px;
+      color: #555866;
+      line-height: 1.7;
+    }
+
+    .btn-principal {
+      border: none;
+      background: #121449;
+      color: #ffffff;
+      padding: 15px 28px;
+      border-radius: 10px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-principal:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    #testZone {
+      display: none;
+      text-align: center;
+    }
+
+    .test-status {
+      min-height: 25px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .phase-info {
+      color: #666978;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .essai-info {
+      color: #8a8b96;
+      font-size: 0.85rem;
+      margin-bottom: 30px;
+    }
+
+    .carre-couleur {
+      width: 360px;
+      height: 360px;
+      max-width: 80vw;
+      max-height: 80vw;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 2px solid #dedee5;
+      border-radius: 12px;
+      transition: background-color 0.05s linear;
+    }
+
+    .fin-message {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .fin-message h2 {
+      margin: 0 0 12px;
+      font-size: 1.7rem;
+    }
+
+    .fin-message p {
+      margin: 0;
+      color: #666978;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 650px) {
+      .test-page {
+        padding: 40px 18px 60px;
+      }
+
+      .test-header h1 {
+        font-size: 2rem;
+      }
+
+      .test-card {
+        padding: 25px 20px;
+      }
+
+      .carre-couleur {
+        width: 260px;
+        height: 260px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="npi-topbar">
+    <a href="NPI.html" class="retour-npi">← Retour au NeuroPerformance Index</a>
+  </div>
+
+  <main class="test-page">
+
+    <header class="test-header">
+      <div class="test-number">NPI-07</div>
+
+      <h1>Coordination oeil-main ou oeil-pied</h1>
+
+      <p>
+        Observez attentivement le carré à l'écran.
+        Sa couleur change régulièrement. Restez concentré pendant toute la durée du test.
+      </p>
+    </header>
+
+    <section class="test-card">
+
+      <div id="instructions" class="instructions">
+        <p>
+          Le test commence par <strong>4 essais d'entraînement</strong>.
+          Chaque couleur apparaîtra une fois, dans un ordre aléatoire.
+          <br><br>
+          Après l'entraînement, vous effectuerez <strong>40 essais officiels</strong>.
+        </p>
+
+        <button id="btnDemarrer" class="btn-principal">
+          Commencer le test
+        </button>
+      </div>
+
+      <div id="testZone">
+
+        <div id="testStatus" class="test-status">
+          Observez le carré
+        </div>
+
+        <div id="phaseInfo" class="phase-info"></div>
+
+        <div id="essaiInfo" class="essai-info"></div>
+
+        <div id="carreCouleur" class="carre-couleur"></div>
+
+      </div>
+
+      <div id="finMessage" class="fin-message" style="display: none;">
+        <h2>Test terminé</h2>
+
+        <p>
+          Les 40 essais officiels sont terminés.
+          Vous pouvez maintenant revenir au NeuroPerformance Index.
+        </p>
+
+        <br>
+
+        <a href="NPI.html" class="btn-principal" style="display: inline-block; text-decoration: none;">
+          Retour au NPI
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    /* =========================================================
+       CONFIGURATION
+    ========================================================= */
+
+    const NOMBRE_ENTRAINEMENT = 4;
+    const NOMBRE_OFFICIEL = 40;
+
+    const COULEURS = [
+      {
+        nom: "bleu",
+        valeur: "#1867d3"
+      },
+      {
+        nom: "rouge",
+        valeur: "#d83b3b"
+      },
+      {
+        nom: "jaune",
+        valeur: "#f2c94c"
+      },
+      {
+        nom: "vert",
+        valeur: "#2e9d59"
+      }
+    ];
+
+
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
+
+    const instructions = document.getElementById("instructions");
+    const testZone = document.getElementById("testZone");
+    const finMessage = document.getElementById("finMessage");
+
+    const btnDemarrer = document.getElementById("btnDemarrer");
+
+    const testStatus = document.getElementById("testStatus");
+    const phaseInfo = document.getElementById("phaseInfo");
+    const essaiInfo = document.getElementById("essaiInfo");
+
+    const carreCouleur = document.getElementById("carreCouleur");
+
+
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
+    let phase = "entrainement";
+    let essaiActuel = 0;
+
+    let couleursEntrainement = [];
+    let couleursOfficielles = [];
+
+    let intervalCouleur = null;
+
+
+    /* =========================================================
+       UTILITAIRES
+    ========================================================= */
+
+    function melanger(tableau) {
+      const copie = [...tableau];
+
+      for (let i = copie.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [copie[i], copie[j]] = [copie[j], copie[i]];
+      }
+
+      return copie;
+    }
+
+
+    function genererEntrainement() {
+      /*
+        Les 4 couleurs apparaissent exactement une fois,
+        dans un ordre aléatoire.
+      */
+      couleursEntrainement = melanger(COULEURS);
+    }
+
+
+    function genererOfficiel() {
+      /*
+        Les 40 essais officiels utilisent les 4 couleurs
+        de manière aléatoire.
+      */
+      couleursOfficielles = [];
+
+      for (let i = 0; i < NOMBRE_OFFICIEL; i++) {
+        const couleur =
+          COULEURS[
+            Math.floor(Math.random() * COULEURS.length)
+          ];
+
+        couleursOfficielles.push(couleur);
+      }
+    }
+
+
+    function obtenirCouleurActuelle() {
+      if (phase === "entrainement") {
+        return couleursEntrainement[essaiActuel];
+      }
+
+      return couleursOfficielles[essaiActuel];
+    }
+
+
+    /* =========================================================
+       AFFICHAGE
+    ========================================================= */
+
+    function afficherCouleur() {
+      const couleur = obtenirCouleurActuelle();
+
+      if (!couleur) {
+        terminerTest();
+        return;
+      }
+
+      carreCouleur.style.backgroundColor = couleur.valeur;
+
+      if (phase === "entrainement") {
+        phaseInfo.textContent = "Entraînement";
+        essaiInfo.textContent =
+          "Essai " +
+          (essaiActuel + 1) +
+          " / " +
+          NOMBRE_ENTRAINEMENT;
+
+        testStatus.textContent = "Observez la couleur";
+      } else {
+        phaseInfo.textContent = "Essais officiels";
+        essaiInfo.textContent =
+          "Essai " +
+          (essaiActuel + 1) +
+          " / " +
+          NOMBRE_OFFICIEL;
+
+        testStatus.textContent = "Observez la couleur";
+      }
+    }
+
+
+    /* =========================================================
+       CHANGEMENT DE COULEUR
+    ========================================================= */
+
+    function lancerSequence() {
+      afficherCouleur();
+
+      /*
+        Le carré change de couleur toutes les secondes.
+        setInterval() permet d'exécuter régulièrement la fonction
+        avec un intervalle fixe.
+      */
+      intervalCouleur = setInterval(function() {
+
+        essaiActuel++;
+
+        const nombreEssais =
+          phase === "entrainement"
+            ? NOMBRE_ENTRAINEMENT
+            : NOMBRE_OFFICIEL;
+
+        if (essaiActuel >= nombreEssais) {
+
+          clearInterval(intervalCouleur);
+          intervalCouleur = null;
+
+          if (phase === "entrainement") {
+            commencerOfficiel();
+          } else {
+            terminerTest();
+          }
+
+          return;
+        }
+
+        afficherCouleur();
+
+      }, 1000);
+    }
+
+
+    /* =========================================================
+       DEMARRAGE
+    ========================================================= */
+
+    function demarrerTest() {
+
+      if (intervalCouleur !== null) {
+        clearInterval(intervalCouleur);
+        intervalCouleur = null;
+      }
+
+      phase = "entrainement";
+      essaiActuel = 0;
+
+      genererEntrainement();
+
+      instructions.style.display = "none";
+      finMessage.style.display = "none";
+      testZone.style.display = "block";
+
+      lancerSequence();
+    }
+
+
+    /* =========================================================
+       PASSAGE AUX ESSAIS OFFICIELS
+    ========================================================= */
+
+    function commencerOfficiel() {
+
+      phase = "officiel";
+      essaiActuel = 0;
+
+      genererOfficiel();
+
+      testStatus.textContent = "La phase officielle commence";
+
+      /*
+        Petit délai avant de commencer les 40 essais officiels.
+      */
+      setTimeout(function() {
+
+        lancerSequence();
+
+      }, 800);
+    }
+
+
+    /* =========================================================
+       FIN DU TEST
+    ========================================================= */
+
+    function terminerTest() {
+
+      if (intervalCouleur !== null) {
+        clearInterval(intervalCouleur);
+        intervalCouleur = null;
+      }
+
+      carreCouleur.style.backgroundColor = "#ffffff";
+
+      testZone.style.display = "none";
+      finMessage.style.display = "block";
+    }
+
+
+    /* =========================================================
+       BOUTON DEMARRER
+    ========================================================= */
+
+    btnDemarrer.addEventListener("click", demarrerTest);
+
+  </script>
+
+</body>
+</html>
