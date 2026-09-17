@@ -15,7 +15,6 @@
   >
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -146,7 +145,6 @@
       margin-bottom: 30px;
     }
 
-
     /* =========================================================
        ZONE DU TEST
     ========================================================= */
@@ -179,30 +177,29 @@
       transition: background-color 0.05s linear;
     }
 
+    /* =========================================================
+       CARRÉS
+    ========================================================= */
+
     .carre {
       position: absolute;
-
       width: 105px;
       height: 105px;
 
       border-radius: 12px;
-
       border: 3px solid #121449;
 
       cursor: pointer;
 
-      transition:
-        background-color 0.08s linear,
-        transform 0.1s ease;
+      /* IMPORTANT :
+         on ne met PAS de transform ici */
+      transition: none;
     }
 
-    .carre {
-      position: absolute;
-      width: 105px;
-      height: 105px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: none;
+    .carre:hover {
+      /* Aucun transform ici :
+         cela ne doit pas modifier la position */
+      filter: brightness(1.05);
     }
 
     .carre-vert {
@@ -222,8 +219,7 @@
     }
 
     /*
-      Positions fixes :
-      haut / droite / bas / gauche
+      Positions fixes
     */
 
     .position-haut {
@@ -250,11 +246,6 @@
       transform: translateY(-50%);
     }
 
-    .carre.cible {
-      box-shadow: 0 0 0 5px rgba(18, 20, 73, 0.15);
-    }
-
-
     /* =========================================================
        MESSAGE CIBLE
     ========================================================= */
@@ -266,7 +257,6 @@
       font-weight: 600;
     }
 
-
     /* =========================================================
        RESULTATS
     ========================================================= */
@@ -274,6 +264,7 @@
     .resultats-finaux {
       margin: 30px auto;
       max-width: 500px;
+
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
@@ -308,7 +299,6 @@
       margin: 0 0 12px;
       font-size: 1.7rem;
     }
-
 
     /* =========================================================
        MOBILE
@@ -371,7 +361,6 @@
   </style>
 </head>
 
-
 <body>
 
   <div class="npi-topbar">
@@ -423,8 +412,8 @@
           <br><br>
 
           Quatre carrés colorés tournent autour du cercle central.
-          Deux rotations complètes sont réalisées avant que le
-          cercle central ne prenne une couleur.
+          Deux rotations complètes sont réalisées avant que
+          le cercle central ne prenne une couleur.
 
           <br><br>
 
@@ -459,7 +448,10 @@
         <div id="essaiInfo" class="essai-info"></div>
 
 
-        <div class="zone-anticipation">
+        <div
+          id="zoneAnticipation"
+          class="zone-anticipation"
+        >
 
           <div
             id="cercleCentral"
@@ -467,22 +459,37 @@
           ></div>
 
 
+          <!-- CARRÉ HAUT -->
+
           <div
+            id="carreHaut"
             class="carre position-haut"
             data-position="haut"
           ></div>
 
+
+          <!-- CARRÉ DROITE -->
+
           <div
+            id="carreDroite"
             class="carre position-droite"
             data-position="droite"
           ></div>
 
+
+          <!-- CARRÉ BAS -->
+
           <div
+            id="carreBas"
             class="carre position-bas"
             data-position="bas"
           ></div>
 
+
+          <!-- CARRÉ GAUCHE -->
+
           <div
+            id="carreGauche"
             class="carre position-gauche"
             data-position="gauche"
           ></div>
@@ -509,11 +516,15 @@
       >
 
         <p>
+
           Les essais d'entraînement sont terminés.
+
           <br><br>
+
           Lorsque vous êtes prêt, cliquez sur
           <strong>START</strong>
           pour commencer les 30 essais officiels.
+
         </p>
 
         <button
@@ -592,424 +603,165 @@
 
 
   <script>
-/* =========================================================
-   NPI-09 — Anticipation décisionnelle spécifique
-   ========================================================= */
 
-const NOMBRE_ENTRAINEMENT = 3;
-const NOMBRE_OFFICIEL = 30;
-const NOMBRE_ROTATIONS = 2;
+    /* =========================================================
+       NPI-09
+       Anticipation décisionnelle spécifique
+    ========================================================= */
+
+    const NOMBRE_ENTRAINEMENT = 3;
+    const NOMBRE_OFFICIEL = 30;
+
+    /*
+      4 positions × 2 rotations = 8 déplacements
+    */
+    const NOMBRE_ROTATIONS = 2;
+
+    /*
+      Vitesse de rotation.
+    */
+    const DELAI_MIN = 700;
+    const DELAI_MAX = 900;
+
+    /*
+      Petit délai avant apparition de la cible.
+    */
+    const DELAI_AVANT_CIBLE = 100;
 
-/* Rotation volontairement plus lente */
-const DELAI_MIN = 700;
-const DELAI_MAX = 900;
+
+    /* =========================================================
+       ÉTAT DU TEST
+    ========================================================= */
+
+    let sequenceActive = false;
+
+    let entrainement = true;
+
+    /*
+      Nombre d'essais déjà terminés.
+    */
+    let essaiActuel = 0;
+
+    /*
+      1 = horaire
+      -1 = antihoraire
+    */
+    let direction = 1;
+
+    /*
+      Couleur à anticiper.
+    */
+    let cibleCouleur = null;
+
+    /*
+      Position actuelle de la couleur cible.
+    */
+    let positionCorrecte = null;
+
+    /*
+      Position dans laquelle la couleur doit arriver.
+    */
+    let positionAttendue = null;
+
+    /*
+      Moment d'apparition de la cible centrale.
+    */
+    let t0 = null;
+
+    /*
+      Moment prévu de l'arrivée.
+    */
+    let tArriveePrevue = null;
+
+    /*
+      Moment réel de l'arrivée.
+    */
+    let tArriveeReelle = null;
+
+    /*
+      Moment du clic.
+    */
+    let tClic = null;
+
+    /*
+      Timers.
+    */
+    let timerRotation = null;
+    let timerPreparation = null;
+
+    /*
+      Résultats.
+    */
+    let tempsTanticip = [];
+    let tempsTengag = [];
+    let essaisOfficiels = [];
+
+    /*
+      Configuration actuelle des couleurs.
+    */
+    let configurationCouleurs = {};
+
+
+    /* =========================================================
+       ÉLÉMENTS HTML
+    ========================================================= */
 
-/* Petit délai entre la fin des 2 rotations et l'apparition
-   de la couleur dans le cercle central */
-const DELAI_AVANT_CIBLE = 100;
+    const zoneAnticipation =
+      document.getElementById("zoneAnticipation");
 
-let sequenceActive = false;
-let entrainement = true;
+    const cercleCentral =
+      document.getElementById("cercleCentral");
 
-let essaiActuel = 0;
-let direction = 1;
+    const messageCible =
+      document.getElementById("consigneCible");
 
-let cibleCouleur = null;
+    const testStatus =
+      document.getElementById("testStatus");
 
-/* Position actuelle de la couleur cible */
-let positionCorrecte = null;
+    const btnDemarrer =
+      document.getElementById("btnDemarrer");
 
-/* Position dans laquelle la couleur cible va arriver
-   lors du prochain mouvement */
-let positionAttendue = null;
+    const btnDemarrerOfficiel =
+      document.getElementById("btnStartOfficiel");
 
-let t0 = null;
+    const startOfficiel =
+      document.getElementById("startOfficiel");
 
-/* Instant prévu de l'arrivée */
-let tArriveePrevue = null;
+    const testZone =
+      document.getElementById("testZone");
 
-/* Instant réel de l'arrivée */
-let tArriveeReelle = null;
-
-let tClic = null;
-
-let prochainDelaiRotation = null;
-
-let timerRotation = null;
-let timerPreparation = null;
-
-let tempsTanticip = [];
-let tempsTengag = [];
-
-let essaisOfficiels = [];
-
-/* Configuration actuelle des couleurs */
-let configurationCouleurs = {};
-
-
-/* =========================================================
-   ÉLÉMENTS HTML
-   ========================================================= */
-
-const zoneAnticipation =
-  document.getElementById("zoneAnticipation");
-
-const cercleCentral =
-  document.getElementById("cercleCentral");
-
-const messageCible =
-  document.getElementById("messageCible");
-
-const testStatus =
-  document.getElementById("testStatus");
-
-const btnDemarrer =
-  document.getElementById("btnDemarrer");
-
-const btnDemarrerOfficiel =
-  document.getElementById("btnStartOfficiel");
-
-const startOfficiel =
-  document.getElementById("startOfficiel");
-
-const testZone =
-  document.getElementById("testZone");
-
-const resultatFinal =
-  document.getElementById("finMessage");
-
-const positions = {
-  haut: document.getElementById("carreHaut"),
-  droite: document.getElementById("carreDroite"),
-  bas: document.getElementById("carreBas"),
-  gauche: document.getElementById("carreGauche")
-};
-
-
-/* =========================================================
-   UTILITAIRES
-   ========================================================= */
-
-function obtenirDelaiRotation() {
-  return Math.floor(
-    Math.random() * (DELAI_MAX - DELAI_MIN + 1)
-  ) + DELAI_MIN;
-}
-
-
-function obtenirPositionAleatoire() {
-  const liste = ["haut", "droite", "bas", "gauche"];
-
-  return liste[
-    Math.floor(Math.random() * liste.length)
-  ];
-}
-
-
-/*
- * Donne la position suivante d'une couleur selon le sens
- * de rotation.
- */
-function positionSuivante(position, sens) {
-
-  const ordreHoraire = [
-    "haut",
-    "droite",
-    "bas",
-    "gauche"
-  ];
-
-  const index = ordreHoraire.indexOf(position);
-
-  if (index === -1) {
-    return null;
-  }
-
-  if (sens === 1) {
-    return ordreHoraire[
-      (index + 1) % ordreHoraire.length
-    ];
-  }
-
-  return ordreHoraire[
-    (index - 1 + ordreHoraire.length) %
-    ordreHoraire.length
-  ];
-}
-
-
-/*
- * Retourne la couleur présente dans une position.
- */
-function couleurDeLaPosition(position) {
-  return configurationCouleurs[position];
-}
-
-
-/*
- * Retourne la position actuelle d'une couleur.
- */
-function trouverPositionCouleur(couleur) {
-
-  for (const position in configurationCouleurs) {
-
-    if (configurationCouleurs[position] === couleur) {
-      return position;
-    }
-  }
-
-  return null;
-}
-
-
-/* =========================================================
-   ROTATION DES COULEURS
-   ========================================================= */
-
-function faireUnPasRotation() {
-
-  if (!sequenceActive) {
-    return;
-  }
-
-  const ancienneConfiguration = {
-    ...configurationCouleurs
-  };
-
-  const nouvelleConfiguration = {};
-
-  const ordre = [
-    "haut",
-    "droite",
-    "bas",
-    "gauche"
-  ];
-
-  ordre.forEach(function(position) {
-
-    const nouvellePosition =
-      positionSuivante(position, direction);
-
-    nouvelleConfiguration[nouvellePosition] =
-      ancienneConfiguration[position];
-  });
-
-  configurationCouleurs =
-    nouvelleConfiguration;
-
-
-  /*
-   * Mise à jour visuelle des quatre carrés.
-   */
-  for (const position in positions) {
-
-    positions[position].style.backgroundColor =
-      configurationCouleurs[position];
-  }
-
-
-  /*
-   * Mise à jour de la position actuelle de la cible.
-   */
-  positionCorrecte =
-    trouverPositionCouleur(cibleCouleur);
-
-
-  /*
-   * Si le cercle central est déjà coloré,
-   * on vérifie si la cible vient d'arriver
-   * dans la position attendue.
-   */
-  if (
-    t0 !== null &&
-    positionAttendue !== null
-  ) {
-
-    const positionActuelle =
-      trouverPositionCouleur(cibleCouleur);
-
-    if (
-      positionActuelle === positionAttendue &&
-      tArriveeReelle === null
-    ) {
-
-      tArriveeReelle =
-        performance.now();
-    }
-  }
-
-
-  /*
-   * On programme le mouvement suivant.
-   */
-  programmerProchainMouvement();
-}
-
-
-/* =========================================================
-   PROGRAMMATION DU PROCHAIN MOUVEMENT
-   ========================================================= */
-
-function programmerProchainMouvement() {
-
-  if (!sequenceActive) {
-    return;
-  }
-
-  prochainDelaiRotation =
-    obtenirDelaiRotation();
-
-  /*
-   * Lorsque la cible est déjà affichée,
-   * cet instant représente l'arrivée attendue
-   * de la couleur cible.
-   *
-   * Le clic peut donc avoir lieu AVANT cet instant,
-   * ce qui donnera un Tanticip négatif.
-   */
-  if (
-    t0 !== null &&
-    positionAttendue !== null
-  ) {
-
-    tArriveePrevue =
-      performance.now() + prochainDelaiRotation;
-  }
-
-
-  timerRotation = setTimeout(
-    function() {
-
-      faireUnPasRotation();
-
-    },
-    prochainDelaiRotation
-  );
-}
-
-
-/* =========================================================
-   DÉMARRAGE D'UNE ROTATION
-   ========================================================= */
-
-function demarrerRotation() {
-
-  sequenceActive = true;
-
-  direction =
-    Math.random() < 0.5 ? 1 : -1;
-
-  const couleurs = [
-    "#f2c94c", // jaune
-    "#1867d3", // bleu
-    "#39a852", // vert
-    "#d83b3b"  // rouge
-  ];
-
-  const positionsDisponibles = [
-    "haut",
-    "droite",
-    "bas",
-    "gauche"
-  ];
-
-  /*
-   * Mélange aléatoire des positions
-   */
-  for (
-    let i = positionsDisponibles.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const j =
-      Math.floor(Math.random() * (i + 1));
-
-    [
-      positionsDisponibles[i],
-      positionsDisponibles[j]
-    ] = [
-      positionsDisponibles[j],
-      positionsDisponibles[i]
-    ];
-  }
-
-
-  /*
-   * Nouvelle configuration des couleurs
-   */
-  configurationCouleurs = {};
-
-  couleurs.forEach(function(couleur, index) {
-
-    configurationCouleurs[
-      positionsDisponibles[index]
-    ] = couleur;
-
-  });
-
-
-  /*
-   * Choix aléatoire de la couleur cible
-   */
-  cibleCouleur =
-    couleurs[
-      Math.floor(Math.random() * couleurs.length)
-    ];
-
-
-  /*
-   * Position initiale de la cible
-   */
-  positionCorrecte =
-    trouverPositionCouleur(cibleCouleur);
-
-
-  /*
-   * Réinitialisation des temps
-   */
-  t0 = null;
-  tArriveePrevue = null;
-  tArriveeReelle = null;
-  positionAttendue = null;
-
-
-  /*
-   * Affichage initial des carrés
-   */
-  for (const position in positions) {
-
-    positions[position].style.backgroundColor =
-      configurationCouleurs[position];
-
-  }
-
-
-  /*
-   * 2 rotations complètes
-   *
-   * 4 positions × 2 = 8 mouvements
-   */
-  let nombrePas = 0;
-
-
-  function effectuerPas() {
-
-    if (!sequenceActive) {
-      return;
-    }
+    const resultatFinal =
+      document.getElementById("finMessage");
 
 
     /*
-     * Faire tourner les couleurs d'une position
-     */
-    const ancienneConfiguration = {
-      ...configurationCouleurs
+      IMPORTANT :
+      Les IDs correspondent maintenant réellement
+      aux IDs présents dans le HTML.
+    */
+
+    const positions = {
+
+      haut:
+        document.getElementById("carreHaut"),
+
+      droite:
+        document.getElementById("carreDroite"),
+
+      bas:
+        document.getElementById("carreBas"),
+
+      gauche:
+        document.getElementById("carreGauche")
+
     };
 
-    const nouvelleConfiguration = {};
 
-    const ordre = [
+    /* =========================================================
+       POSITIONS
+    ========================================================= */
+
+    const ordrePositions = [
       "haut",
       "droite",
       "bas",
@@ -1017,819 +769,1292 @@ function demarrerRotation() {
     ];
 
 
-    ordre.forEach(function(position) {
+    function obtenirDelaiRotation() {
 
-      const nouvellePosition =
-        positionSuivante(
-          position,
-          direction
-        );
+      return Math.floor(
+        Math.random() *
+        (DELAI_MAX - DELAI_MIN + 1)
+      ) + DELAI_MIN;
 
-      nouvelleConfiguration[nouvellePosition] =
-        ancienneConfiguration[position];
-
-    });
+    }
 
 
-    configurationCouleurs =
-      nouvelleConfiguration;
+    function obtenirPositionAleatoire() {
 
-
-    /*
-     * Mise à jour visuelle
-     */
-    for (const position in positions) {
-
-      positions[position].style.backgroundColor =
-        configurationCouleurs[position];
+      return ordrePositions[
+        Math.floor(
+          Math.random() *
+          ordrePositions.length
+        )
+      ];
 
     }
 
 
     /*
-     * Mise à jour de la position de la couleur cible
-     */
-    positionCorrecte =
-      trouverPositionCouleur(cibleCouleur);
+      Donne la position suivante d'une couleur.
+    */
 
+    function positionSuivante(position, sens) {
 
-    nombrePas++;
+      const index =
+        ordrePositions.indexOf(position);
 
+      if (index === -1) {
+        return null;
+      }
 
-    /*
-     * Après 8 mouvements :
-     * affichage de la cible centrale.
-     */
-    if (
-      nombrePas >=
-      NOMBRE_ROTATIONS * 4
-    ) {
+      if (sens === 1) {
 
-      terminerRotation();
+        return ordrePositions[
+          (index + 1) %
+          ordrePositions.length
+        ];
 
-      return;
+      }
+
+      return ordrePositions[
+        (index - 1 + ordrePositions.length) %
+        ordrePositions.length
+      ];
+
     }
 
 
     /*
-     * Sinon on continue la rotation.
-     */
-    timerRotation = setTimeout(
-      effectuerPas,
-      obtenirDelaiRotation()
-    );
-  }
+      Cherche où se trouve une couleur.
+    */
+
+    function trouverPositionCouleur(couleur) {
+
+      for (
+        const position in configurationCouleurs
+      ) {
+
+        if (
+          configurationCouleurs[position] === couleur
+        ) {
+
+          return position;
+
+        }
+
+      }
+
+      return null;
+
+    }
 
 
-  /*
-   * Premier mouvement
-   */
-  timerRotation = setTimeout(
-    effectuerPas,
-    obtenirDelaiRotation()
-  );
-}
+    /* =========================================================
+       AFFICHAGE DES COULEURS
+    ========================================================= */
+
+    function afficherToutesLesCouleurs() {
+
+      for (
+        const position of ordrePositions
+      ) {
+
+        const element =
+          positions[position];
+
+        if (!element) {
+          continue;
+        }
+
+        const couleur =
+          configurationCouleurs[position];
+
+        /*
+          On applique directement la couleur.
+        */
+        element.style.backgroundColor =
+          couleur;
+
+        /*
+          On s'assure que le carré est visible.
+        */
+        element.style.display =
+          "block";
+
+        element.style.opacity =
+          "1";
+
+      }
+
+    }
 
 
-/* =========================================================
-   FIN DES 2 ROTATIONS
-   ========================================================= */
+    /* =========================================================
+       EFFECTUER UN PAS DE ROTATION
+    ========================================================= */
 
-function terminerRotation() {
-
-  if (!sequenceActive) {
-    return;
-  }
-
-  /*
-   * Position actuelle de la cible.
-   */
-  positionCorrecte =
-    trouverPositionCouleur(cibleCouleur);
-
-
-  /*
-   * La bonne réponse n'est PAS la position actuelle.
-   *
-   * C'est la prochaine position dans laquelle
-   * la couleur cible va arriver.
-   */
-  positionAttendue =
-    positionSuivante(
-      positionCorrecte,
-      direction
-    );
-
-
-  /*
-   * Petit délai avant l'apparition de la cible
-   * dans le cercle central.
-   */
-  timerPreparation = setTimeout(
-    function() {
+    function faireUnPasRotation() {
 
       if (!sequenceActive) {
         return;
       }
 
-      afficherCible();
 
-    },
-    DELAI_AVANT_CIBLE
-  );
-}
-
-
-/* =========================================================
-   AFFICHAGE DE LA CIBLE
-   ========================================================= */
-
-function afficherCible() {
-
-  if (!sequenceActive) {
-    return;
-  }
-
-  /*
-   * T0 = moment où la couleur apparaît
-   * dans le cercle central.
-   */
-  t0 = performance.now();
-
-  /*
-   * Pas d'arrêt de la rotation.
-   */
-  cercleCentral.style.backgroundColor =
-    cibleCouleur;
-
-  cercleCentral.style.borderColor =
-    "#121449";
-
-  if (testStatus) {
-
-    testStatus.textContent =
-      "Anticipez le carré d’arrivée de la couleur.";
-
-  }
-
-
-  /*
-   * Aucun carré n'est mis en évidence.
-   *
-   * Le participant doit anticiper la prochaine
-   * position de la couleur.
-   */
-
-
-  /*
-   * On prévoit le prochain mouvement.
-   *
-   * C'est cet instant qui permet d'obtenir
-   * un Tanticip négatif.
-   */
-  prochainDelaiRotation =
-    obtenirDelaiRotation();
-
-  tArriveePrevue =
-    performance.now() + prochainDelaiRotation;
-
-
-  /*
-   * On programme le mouvement suivant.
-   */
-  clearTimeout(timerRotation);
-
-  timerRotation = setTimeout(
-    function() {
-
-      if (!sequenceActive) {
-        return;
-      }
-
-      /*
-       * Rotation d'un cran.
-       */
       const ancienneConfiguration = {
         ...configurationCouleurs
       };
 
+
       const nouvelleConfiguration = {};
 
-      const ordre = [
-        "haut",
-        "droite",
-        "bas",
-        "gauche"
-      ];
 
-      ordre.forEach(function(position) {
+      /*
+        Chaque couleur avance d'une position.
+      */
 
-        const nouvellePosition =
-          positionSuivante(position, direction);
+      ordrePositions.forEach(
+        function(position) {
 
-        nouvelleConfiguration[nouvellePosition] =
-          ancienneConfiguration[position];
+          const nouvellePosition =
+            positionSuivante(
+              position,
+              direction
+            );
 
-      });
+          nouvelleConfiguration[
+            nouvellePosition
+          ] =
+            ancienneConfiguration[position];
+
+        }
+      );
+
 
       configurationCouleurs =
         nouvelleConfiguration;
 
 
       /*
-       * Affichage.
-       */
-      for (const position in positions) {
+        AFFICHAGE DES COULEURS.
+      */
 
-        positions[position].style.backgroundColor =
-          configurationCouleurs[position];
+      afficherToutesLesCouleurs();
+
+
+      /*
+        Mise à jour de la position cible.
+      */
+
+      positionCorrecte =
+        trouverPositionCouleur(
+          cibleCouleur
+        );
+
+
+      /*
+        Si la cible centrale est affichée,
+        vérifier si la couleur vient d'arriver.
+      */
+
+      if (
+        t0 !== null &&
+        positionAttendue !== null &&
+        tArriveeReelle === null
+      ) {
+
+        const positionActuelle =
+          trouverPositionCouleur(
+            cibleCouleur
+          );
+
+
+        if (
+          positionActuelle ===
+          positionAttendue
+        ) {
+
+          tArriveeReelle =
+            performance.now();
+
+        }
+
+      }
+
+    }
+
+
+    /* =========================================================
+       DÉMARRER LES 2 ROTATIONS
+    ========================================================= */
+
+    function demarrerRotation() {
+
+      /*
+        Sécurité.
+      */
+
+      clearTimeout(timerRotation);
+      clearTimeout(timerPreparation);
+
+
+      sequenceActive = true;
+
+
+      /*
+        Sens aléatoire.
+      */
+
+      direction =
+        Math.random() < 0.5
+          ? 1
+          : -1;
+
+
+      /*
+        Couleurs fixes.
+      */
+
+      const couleurs = [
+
+        "#f2c94c",  // jaune
+        "#1867d3",  // bleu
+        "#39a852",  // vert
+        "#d83b3b"   // rouge
+
+      ];
+
+
+      /*
+        Mélange des positions.
+      */
+
+      const positionsDisponibles = [
+        ...ordrePositions
+      ];
+
+
+      for (
+        let i = positionsDisponibles.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
+
+        [
+          positionsDisponibles[i],
+          positionsDisponibles[j]
+        ] = [
+          positionsDisponibles[j],
+          positionsDisponibles[i]
+        ];
 
       }
 
 
       /*
-       * La couleur cible vient réellement
-       * d'arriver dans sa position attendue.
-       */
-      const positionActuelle =
-        trouverPositionCouleur(cibleCouleur);
+        Nouvelle configuration.
+      */
 
-      if (
-        positionActuelle === positionAttendue
-      ) {
-
-        tArriveeReelle =
-          performance.now();
-
-      }
-
-    },
-    prochainDelaiRotation
-  );
-}
+      configurationCouleurs = {};
 
 
-/* =========================================================
-   RÉPONSE DU PARTICIPANT
-   ========================================================= */
+      couleurs.forEach(
+        function(couleur, index) {
 
-function gererClic(positionCliquee) {
+          configurationCouleurs[
+            positionsDisponibles[index]
+          ] =
+            couleur;
 
-  if (!sequenceActive) {
-    return;
-  }
-
-  /*
-   * On ne peut répondre qu'après l'apparition
-   * de la couleur dans le cercle central.
-   */
-  if (t0 === null) {
-    return;
-  }
-
-  tClic =
-    performance.now();
+        }
+      );
 
 
-  /*
-   * Si la couleur est déjà arrivée,
-   * on utilise son temps réel.
-   *
-   * Sinon, on utilise son temps d'arrivée prévu.
-   */
-  let tArriveePourCalcul;
+      /*
+        Choix de la couleur cible.
+      */
 
-  if (tArriveeReelle !== null) {
-
-    tArriveePourCalcul =
-      tArriveeReelle;
-
-  } else {
-
-    tArriveePourCalcul =
-      tArriveePrevue;
-
-  }
+      cibleCouleur =
+        couleurs[
+          Math.floor(
+            Math.random() *
+            couleurs.length
+          )
+        ];
 
 
-  /*
-   * Tanticip
-   *
-   * Tanticip = Tclic - Tarrivée
-   *
-   * Si le participant clique AVANT l'arrivée :
-   *
-   * Tclic < Tarrivée
-   *
-   * donc :
-   *
-   * Tanticip < 0
-   */
-  const tAnticip =
-    tClic - tArriveePourCalcul;
+      /*
+        Position initiale de la cible.
+      */
+
+      positionCorrecte =
+        trouverPositionCouleur(
+          cibleCouleur
+        );
 
 
-  /*
-   * Tengag
-   *
-   * Temps entre l'apparition de la cible
-   * dans le cercle central et le clic.
-   */
-  const tEngag =
-    tClic - t0;
+      /*
+        Reset des temps.
+      */
+
+      t0 = null;
+      tArriveePrevue = null;
+      tArriveeReelle = null;
+      positionAttendue = null;
+      tClic = null;
 
 
-  /*
-   * Réponse correcte = prochaine position
-   * de la couleur cible.
-   */
-  const correcte =
-    positionCliquee === positionAttendue;
+      /*
+        IMPORTANT :
+        on affiche immédiatement les 4 couleurs.
+      */
+
+      afficherToutesLesCouleurs();
 
 
-  /*
-   * Entraînement.
-   */
-  if (entrainement) {
+      /*
+        Nombre de mouvements.
+      */
 
-    if (correcte) {
+      let nombrePas = 0;
 
-      testStatus.textContent =
-        "Correct. Préparez-vous pour l’essai suivant.";
 
-    } else {
+      /*
+        Fonction de rotation unique.
+      */
 
-      testStatus.textContent =
-        "Incorrect. Observez bien la direction de rotation.";
+      function effectuerPas() {
 
-    }
-
-    arreterSequence();
-
-    setTimeout(
-      function() {
-
-        if (sequenceActive) {
+        if (!sequenceActive) {
           return;
         }
 
-        essaiActuel++;
+
+        nombrePas++;
+
+
+        /*
+          On fait réellement avancer les couleurs.
+        */
+
+        faireUnPasRotation();
+
+
+        /*
+          Après 8 mouvements :
+          2 rotations complètes.
+        */
 
         if (
-          essaiActuel <
-          NOMBRE_ENTRAINEMENT
+          nombrePas >=
+          NOMBRE_ROTATIONS * 4
         ) {
 
-          demarrerEssai();
+          terminerRotation();
 
-        } else {
-
-          terminerEntrainement();
+          return;
 
         }
 
-      },
-      800
-    );
 
-    return;
-  }
+        /*
+          Sinon on programme le mouvement suivant.
+        */
 
-
-  /* =======================================================
-     ESSAI OFFICIEL
-     ======================================================= */
-
-  const essai = {
-
-    positionCliquee:
-      positionCliquee,
-
-    positionCorrecte:
-      positionAttendue,
-
-    tempsAnticipation:
-      Math.round(tAnticip),
-
-    tempsEngagement:
-      Math.round(tEngag),
-
-    correcte:
-      correcte,
-
-    tAnticip:
-      tAnticip,
-
-    tEngag:
-      tEngag
-
-  };
-
-
-  essaisOfficiels.push(essai);
-
-
-  /*
-   * Les moyennes ne prennent en compte que
-   * les réponses correctes.
-   */
-  if (correcte) {
-
-    tempsTanticip.push(tAnticip);
-    tempsTengag.push(tEngag);
-
-  }
-
-
-  /*
-   * On arrête la rotation uniquement lorsque
-   * le participant clique.
-   */
-  arreterSequence();
-
-
-  testStatus.textContent =
-    correcte
-      ? "Réponse enregistrée."
-      : "Réponse enregistrée — incorrecte.";
-
-
-  essaiActuel++;
-
-
-  /*
-   * Passage à l'essai suivant.
-   */
-  setTimeout(
-    function() {
-
-      if (
-        essaiActuel <
-        NOMBRE_OFFICIEL
-      ) {
-
-        demarrerEssai();
-
-      } else {
-
-        terminerTest();
+        timerRotation =
+          setTimeout(
+            effectuerPas,
+            obtenirDelaiRotation()
+          );
 
       }
 
-    },
-    500
-  );
-}
+
+      /*
+        Premier mouvement.
+      */
+
+      timerRotation =
+        setTimeout(
+          effectuerPas,
+          obtenirDelaiRotation()
+        );
+
+    }
 
 
-/* =========================================================
-   ARRÊT DE LA SÉQUENCE
-   ========================================================= */
+    /* =========================================================
+       FIN DES 2 ROTATIONS
+    ========================================================= */
 
-function arreterSequence() {
+    function terminerRotation() {
 
-  sequenceActive = false;
-
-  clearTimeout(timerRotation);
-  clearTimeout(timerPreparation);
-
-  timerRotation = null;
-  timerPreparation = null;
-}
+      if (!sequenceActive) {
+        return;
+      }
 
 
-/* =========================================================
-   DÉMARRAGE D'UN ESSAI
-   ========================================================= */
+      /*
+        Position actuelle de la couleur cible.
+      */
 
-function demarrerEssai() {
+      positionCorrecte =
+        trouverPositionCouleur(
+          cibleCouleur
+        );
 
-    demarrerRotation();
-}
+
+      /*
+        La bonne réponse est la prochaine position.
+      */
+
+      positionAttendue =
+        positionSuivante(
+          positionCorrecte,
+          direction
+        );
 
 
-/* =========================================================
-   ENTRAÎNEMENT
-   ========================================================= */
+      /*
+        Petit délai avant apparition
+        de la couleur centrale.
+      */
 
-function demarrerTest() {
+      timerPreparation =
+        setTimeout(
+          function() {
 
-  entrainement = true;
+            if (!sequenceActive) {
+              return;
+            }
 
-  essaiActuel = 0;
+            afficherCible();
 
-  tempsTanticip = [];
-  tempsTengag = [];
-  essaisOfficiels = [];
+          },
+          DELAI_AVANT_CIBLE
+        );
 
-  if (btnDemarrer) {
-    btnDemarrer.style.display = "none";
-  }
+    }
 
-  if (testZone) {
-    testZone.style.display = "block";
-  }
 
-  testStatus.textContent =
-    "Préparez-vous… le test va commencer dans 3 secondes.";
+    /* =========================================================
+       AFFICHAGE DE LA CIBLE
+    ========================================================= */
 
-  timerPreparation = setTimeout(
-    function() {
+    function afficherCible() {
+
+      if (!sequenceActive) {
+        return;
+      }
+
+
+      /*
+        Moment d'apparition de la cible.
+      */
+
+      t0 =
+        performance.now();
+
+
+      /*
+        La couleur apparaît au centre.
+      */
+
+      cercleCentral.style.backgroundColor =
+        cibleCouleur;
+
+      cercleCentral.style.borderColor =
+        "#121449";
+
+
+      if (testStatus) {
+
+        testStatus.textContent =
+          "Anticipez le carré d’arrivée de la couleur.";
+
+      }
+
+
+      /*
+        On prévoit le prochain mouvement.
+      */
+
+      const delai =
+        obtenirDelaiRotation();
+
+
+      tArriveePrevue =
+        performance.now() + delai;
+
+
+      /*
+        La rotation continue.
+      */
+
+      clearTimeout(timerRotation);
+
+
+      timerRotation =
+        setTimeout(
+          function() {
+
+            if (!sequenceActive) {
+              return;
+            }
+
+
+            /*
+              Un nouveau pas de rotation.
+            */
+
+            faireUnPasRotation();
+
+
+            /*
+              Si la couleur vient d'arriver,
+              enregistrer le temps réel.
+            */
+
+            if (
+              tArriveeReelle === null
+            ) {
+
+              const positionActuelle =
+                trouverPositionCouleur(
+                  cibleCouleur
+                );
+
+
+              if (
+                positionActuelle ===
+                positionAttendue
+              ) {
+
+                tArriveeReelle =
+                  performance.now();
+
+              }
+
+            }
+
+          },
+          delai
+        );
+
+    }
+
+
+    /* =========================================================
+       CLIC SUR UN CARRÉ
+    ========================================================= */
+
+    function gererClic(positionCliquee) {
+
+      if (!sequenceActive) {
+        return;
+      }
+
+
+      /*
+        Impossible de répondre avant
+        l'apparition de la cible centrale.
+      */
+
+      if (t0 === null) {
+        return;
+      }
+
+
+      tClic =
+        performance.now();
+
+
+      /*
+        Temps d'arrivée utilisé pour le calcul.
+      */
+
+      let tArriveePourCalcul;
+
+
+      if (
+        tArriveeReelle !== null
+      ) {
+
+        tArriveePourCalcul =
+          tArriveeReelle;
+
+      } else {
+
+        tArriveePourCalcul =
+          tArriveePrevue;
+
+      }
+
+
+      /*
+        Tanticip.
+      */
+
+      const tAnticip =
+        tClic -
+        tArriveePourCalcul;
+
+
+      /*
+        Tengag.
+      */
+
+      const tEngag =
+        tClic -
+        t0;
+
+
+      /*
+        Réponse correcte.
+      */
+
+      const correcte =
+        positionCliquee ===
+        positionAttendue;
+
+
+      /* =====================================================
+         ENTRAÎNEMENT
+      ====================================================== */
+
+      if (entrainement) {
+
+        if (correcte) {
+
+          testStatus.textContent =
+            "Correct. Préparez-vous pour l’essai suivant.";
+
+        } else {
+
+          testStatus.textContent =
+            "Incorrect. Observez bien la direction de rotation.";
+
+        }
+
+
+        /*
+          Arrêt de la séquence.
+        */
+
+        arreterSequence();
+
+
+        /*
+          Passage au prochain essai.
+        */
+
+        setTimeout(
+          function() {
+
+            essaiActuel++;
+
+
+            if (
+              essaiActuel <
+              NOMBRE_ENTRAINEMENT
+            ) {
+
+              demarrerEssai();
+
+            } else {
+
+              terminerEntrainement();
+
+            }
+
+          },
+          800
+        );
+
+
+        return;
+      }
+
+
+      /* =====================================================
+         ESSAI OFFICIEL
+      ====================================================== */
+
+      const essai = {
+
+        positionCliquee:
+          positionCliquee,
+
+        positionCorrecte:
+          positionAttendue,
+
+        tempsAnticipation:
+          Math.round(tAnticip),
+
+        tempsEngagement:
+          Math.round(tEngag),
+
+        correcte:
+          correcte,
+
+        tAnticip:
+          tAnticip,
+
+        tEngag:
+          tEngag
+
+      };
+
+
+      essaisOfficiels.push(
+        essai
+      );
+
+
+      /*
+        Moyennes uniquement sur
+        les réponses correctes.
+      */
+
+      if (correcte) {
+
+        tempsTanticip.push(
+          tAnticip
+        );
+
+        tempsTengag.push(
+          tEngag
+        );
+
+      }
+
+
+      /*
+        Arrêt.
+      */
+
+      arreterSequence();
+
+
+      /*
+        Message.
+      */
 
       testStatus.textContent =
-        "Observez la rotation.";
-
-      demarrerEssai();
-
-    },
-    3000
-  );
-}
+        correcte
+          ? "Réponse enregistrée."
+          : "Réponse enregistrée — incorrecte.";
 
 
-/* =========================================================
-   FIN DE L'ENTRAÎNEMENT
-   ========================================================= */
+      /*
+        Essai suivant.
+      */
 
-function terminerEntrainement() {
-
-  arreterSequence();
-
-  if (testZone) {
-    testZone.style.display = "none";
-  }
-
-  if (startOfficiel) {
-    startOfficiel.style.display = "block";
-  }
-
-  if (testStatus) {
-
-    testStatus.textContent =
-      "Entraînement terminé.";
-
-  }
-}
+      essaiActuel++;
 
 
-/* =========================================================
-   DÉMARRAGE OFFICIEL
-   ========================================================= */
+      setTimeout(
+        function() {
 
-function commencerOfficiel() {
+          if (
+            essaiActuel <
+            NOMBRE_OFFICIEL
+          ) {
 
-  entrainement = false;
+            demarrerEssai();
 
-  essaiActuel = 0;
+          } else {
 
-  tempsTanticip = [];
-  tempsTengag = [];
-  essaisOfficiels = [];
+            terminerTest();
 
-  if (startOfficiel) {
-    startOfficiel.style.display = "none";
-  }
+          }
 
-  if (testZone) {
-    testZone.style.display = "block";
-  }
+        },
+        500
+      );
 
-  testStatus.textContent =
-    "Préparez-vous… le test officiel va commencer dans 3 secondes.";
+    }
 
-  timerPreparation = setTimeout(
-    function() {
+
+    /* =========================================================
+       ARRÊTER UNE SÉQUENCE
+    ========================================================= */
+
+    function arreterSequence() {
+
+      sequenceActive = false;
+
+
+      clearTimeout(
+        timerRotation
+      );
+
+      clearTimeout(
+        timerPreparation
+      );
+
+
+      timerRotation = null;
+      timerPreparation = null;
+
+
+      /*
+        On remet le cercle central à blanc.
+      */
+
+      if (cercleCentral) {
+
+        cercleCentral.style.backgroundColor =
+          "#ffffff";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       DÉMARRER UN ESSAI
+    ========================================================= */
+
+    function demarrerEssai() {
+
+      /*
+        IMPORTANT :
+        essaiActuel est incrémenté lorsque
+        l'essai précédent est terminé.
+
+        On ne l'incrémente donc PAS ici.
+      */
+
+      if (testStatus) {
+
+        testStatus.textContent =
+          entrainement
+            ? "Observez la rotation."
+            : "Observez la rotation et anticipez.";
+
+      }
+
+
+      if (document.getElementById("essaiInfo")) {
+
+        document.getElementById(
+          "essaiInfo"
+        ).textContent =
+          entrainement
+            ? "Essai d'entraînement " +
+              (essaiActuel + 1) +
+              " / " +
+              NOMBRE_ENTRAINEMENT
+
+            : "Essai officiel " +
+              (essaiActuel + 1) +
+              " / " +
+              NOMBRE_OFFICIEL;
+
+      }
+
+
+      demarrerRotation();
+
+    }
+
+
+    /* =========================================================
+       DÉMARRAGE DU TEST
+    ========================================================= */
+
+    function demarrerTest() {
+
+      entrainement = true;
+
+      essaiActuel = 0;
+
+      tempsTanticip = [];
+      tempsTengag = [];
+      essaisOfficiels = [];
+
+
+      if (btnDemarrer) {
+
+        btnDemarrer.style.display =
+          "none";
+
+      }
+
+
+      if (startOfficiel) {
+
+        startOfficiel.style.display =
+          "none";
+
+      }
+
+
+      if (resultatFinal) {
+
+        resultatFinal.style.display =
+          "none";
+
+      }
+
+
+      if (testZone) {
+
+        testZone.style.display =
+          "block";
+
+      }
+
 
       testStatus.textContent =
-        "Observez la rotation et anticipez.";
-
-      demarrerEssai();
-
-    },
-    3000
-  );
-}
+        "Préparez-vous… le test va commencer dans 3 secondes.";
 
 
-/* =========================================================
-   FIN DU TEST
-   ========================================================= */
+      timerPreparation =
+        setTimeout(
+          function() {
 
-function terminerTest() {
+            testStatus.textContent =
+              "Observez la rotation.";
 
-  arreterSequence();
+            demarrerEssai();
+
+          },
+          3000
+        );
+
+    }
 
 
-  /*
-   * Moyenne Tanticip.
-   */
-  let moyenneTanticip = null;
+    /* =========================================================
+       FIN ENTRAÎNEMENT
+    ========================================================= */
 
-  if (tempsTanticip.length > 0) {
+    function terminerEntrainement() {
 
-    const somme =
-      tempsTanticip.reduce(
-        function(total, valeur) {
-          return total + valeur;
-        },
-        0
+      arreterSequence();
+
+
+      if (testZone) {
+
+        testZone.style.display =
+          "none";
+
+      }
+
+
+      if (startOfficiel) {
+
+        startOfficiel.style.display =
+          "block";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       DÉMARRAGE OFFICIEL
+    ========================================================= */
+
+    function commencerOfficiel() {
+
+      entrainement = false;
+
+      essaiActuel = 0;
+
+      tempsTanticip = [];
+      tempsTengag = [];
+      essaisOfficiels = [];
+
+
+      if (startOfficiel) {
+
+        startOfficiel.style.display =
+          "none";
+
+      }
+
+
+      if (testZone) {
+
+        testZone.style.display =
+          "block";
+
+      }
+
+
+      testStatus.textContent =
+        "Préparez-vous… le test officiel va commencer dans 3 secondes.";
+
+
+      timerPreparation =
+        setTimeout(
+          function() {
+
+            testStatus.textContent =
+              "Observez la rotation et anticipez.";
+
+            demarrerEssai();
+
+          },
+          3000
+        );
+
+    }
+
+
+    /* =========================================================
+       FIN DU TEST
+    ========================================================= */
+
+    function terminerTest() {
+
+      arreterSequence();
+
+
+      /*
+        Moyenne Tanticip.
+      */
+
+      let moyenneTanticip = null;
+
+
+      if (
+        tempsTanticip.length > 0
+      ) {
+
+        const somme =
+          tempsTanticip.reduce(
+            function(
+              total,
+              valeur
+            ) {
+
+              return total + valeur;
+
+            },
+            0
+          );
+
+
+        moyenneTanticip =
+          Math.round(
+            somme /
+            tempsTanticip.length
+          );
+
+      }
+
+
+      /*
+        Moyenne Tengag.
+      */
+
+      let moyenneTengag = null;
+
+
+      if (
+        tempsTengag.length > 0
+      ) {
+
+        const somme =
+          tempsTengag.reduce(
+            function(
+              total,
+              valeur
+            ) {
+
+              return total + valeur;
+
+            },
+            0
+          );
+
+
+        moyenneTengag =
+          Math.round(
+            somme /
+            tempsTengag.length
+          );
+
+      }
+
+
+      /* =====================================================
+         SAUVEGARDE LOCALSTORAGE
+      ====================================================== */
+
+      let resultatsNPI = {};
+
+
+      try {
+
+        resultatsNPI =
+          JSON.parse(
+            localStorage.getItem(
+              "NPI-results"
+            )
+          ) || {};
+
+      } catch (e) {
+
+        resultatsNPI = {};
+
+      }
+
+
+      resultatsNPI["NPI-09"] = {
+
+        tAnticip:
+          moyenneTanticip,
+
+        tEngag:
+          moyenneTengag,
+
+        nombreEssais:
+          NOMBRE_OFFICIEL,
+
+        essaisValides:
+          tempsTanticip.length,
+
+        essaisOfficiels:
+          essaisOfficiels,
+
+        date:
+          new Date().toISOString()
+
+      };
+
+
+      localStorage.setItem(
+        "NPI-results",
+        JSON.stringify(
+          resultatsNPI
+        )
       );
 
-    moyenneTanticip =
-      Math.round(
-        somme / tempsTanticip.length
-      );
-  }
+
+      /* =====================================================
+         AFFICHAGE FINAL
+      ====================================================== */
+
+      if (testZone) {
+
+        testZone.style.display =
+          "none";
+
+      }
 
 
-  /*
-   * Moyenne Tengag.
-   */
-  let moyenneTengag = null;
+      if (resultatFinal) {
 
-  if (tempsTengag.length > 0) {
-
-    const somme =
-      tempsTengag.reduce(
-        function(total, valeur) {
-          return total + valeur;
-        },
-        0
-      );
-
-    moyenneTengag =
-      Math.round(
-        somme / tempsTengag.length
-      );
-  }
+        resultatFinal.style.display =
+          "block";
 
 
-  /*
-   * Sauvegarde dans localStorage.
-   */
-  let resultatsNPI = {};
-
-  try {
-
-    resultatsNPI =
-      JSON.parse(
-        localStorage.getItem("NPI-results")
-      ) || {};
-
-  } catch (e) {
-
-    resultatsNPI = {};
-
-  }
+        const elementTanticip =
+          document.getElementById(
+            "resultTanticip"
+          );
 
 
-  resultatsNPI["NPI-09"] = {
-
-    /*
-     * Peut maintenant être négatif.
-     */
-    tAnticip:
-      moyenneTanticip,
-
-    /*
-     * Temps d'engagement.
-     */
-    tEngag:
-      moyenneTengag,
-
-    nombreEssais:
-      NOMBRE_OFFICIEL,
-
-    essaisValides:
-      tempsTanticip.length,
-
-    essaisOfficiels:
-      essaisOfficiels,
-
-    date:
-      new Date().toISOString()
-
-  };
+        const elementTengag =
+          document.getElementById(
+            "resultTengag"
+          );
 
 
-  localStorage.setItem(
-    "NPI-results",
-    JSON.stringify(resultatsNPI)
-  );
+        if (elementTanticip) {
 
+          elementTanticip.textContent =
+            moyenneTanticip !== null
+              ? moyenneTanticip + " ms"
+              : "—";
 
-  /*
-   * Affichage final.
-   */
-  if (testZone) {
-    testZone.style.display = "none";
-  }
-
-  if (resultatFinal) {
-
-    resultatFinal.style.display = "block";
-
-    resultatFinal.innerHTML = `
-      <h2>Test terminé</h2>
-
-      <p>
-        <strong>Tanticip :</strong>
-        ${
-          moyenneTanticip !== null
-            ? moyenneTanticip + " ms"
-            : "—"
         }
-      </p>
 
-      <p>
-        <strong>Tengag :</strong>
-        ${
-          moyenneTengag !== null
-            ? moyenneTengag + " ms"
-            : "—"
+
+        if (elementTengag) {
+
+          elementTengag.textContent =
+            moyenneTengag !== null
+              ? moyenneTengag + " ms"
+              : "—";
+
         }
-      </p>
 
-      <p>
-        <strong>Réponses correctes :</strong>
-        ${tempsTanticip.length} / ${NOMBRE_OFFICIEL}
-      </p>
-    `;
-  }
-}
+      }
 
-
-/* =========================================================
-   CLICS SUR LES 4 CARRÉS
-   ========================================================= */
-
-if (positions.haut) {
-
-  positions.haut.addEventListener(
-    "click",
-    function() {
-      gererClic("haut");
     }
-  );
-
-}
-
-if (positions.droite) {
-
-  positions.droite.addEventListener(
-    "click",
-    function() {
-      gererClic("droite");
-    }
-  );
-
-}
-
-if (positions.bas) {
-
-  positions.bas.addEventListener(
-    "click",
-    function() {
-      gererClic("bas");
-    }
-  );
-
-}
-
-if (positions.gauche) {
-
-  positions.gauche.addEventListener(
-    "click",
-    function() {
-      gererClic("gauche");
-    }
-  );
-
-}
 
 
-/* =========================================================
-   BOUTONS DE DÉMARRAGE
-   ========================================================= */
+    /* =========================================================
+       CLICS SUR LES 4 CARRÉS
+    ========================================================= */
 
-if (btnDemarrer) {
+    positions.haut.addEventListener(
+      "click",
+      function() {
 
-  btnDemarrer.addEventListener(
-    "click",
-    demarrerTest
-  );
+        gererClic("haut");
 
-}
+      }
+    );
 
-if (btnDemarrerOfficiel) {
 
-  btnDemarrerOfficiel.addEventListener(
-    "click",
-    commencerOfficiel
-  );
+    positions.droite.addEventListener(
+      "click",
+      function() {
 
-}
-</script>
+        gererClic("droite");
+
+      }
+    );
+
+
+    positions.bas.addEventListener(
+      "click",
+      function() {
+
+        gererClic("bas");
+
+      }
+    );
+
+
+    positions.gauche.addEventListener(
+      "click",
+      function() {
+
+        gererClic("gauche");
+
+      }
+    );
+
+
+    /* =========================================================
+       BOUTON START ENTRAÎNEMENT
+    ========================================================= */
+
+    btnDemarrer.addEventListener(
+      "click",
+      demarrerTest
+    );
+
+
+    /* =========================================================
+       BOUTON START OFFICIEL
+    ========================================================= */
+
+    btnDemarrerOfficiel.addEventListener(
+      "click",
+      commencerOfficiel
+    );
+
+  </script>
 
 </body>
 </html>
