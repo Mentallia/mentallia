@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>
+    Mentallia – NPI-10 – Apprentissage moteur
+  </title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <link
+    rel="icon"
+    href="favicon.png"
+    type="image/png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    body {
+      background: #f7f7fa;
+      color: #121449;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .npi-topbar {
+      background: white;
+      padding: 15px 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .retour-npi {
+      color: #121449;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .test-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px 80px;
+    }
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .test-number {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #777;
+    }
+
+    .test-header h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 3rem;
+      margin: 10px 0;
+    }
+
+    .test-header p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .test-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 35px rgba(18,20,73,0.08);
+    }
+
+    .instructions {
+      line-height: 1.7;
+      color: #555;
+    }
+
+    .instructions h2 {
+      color: #121449;
+      margin-top: 0;
+    }
+
+    .instruction-highlight {
+      color: #121449;
+      font-weight: 700;
+    }
+
+    .btn-principal {
+      display: block;
+      margin: 30px auto 0;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 10px;
+      background: #121449;
+      color: white;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .btn-principal:hover {
+      opacity: 0.92;
+    }
+
+    #testZone {
+      display: none;
+      text-align: center;
+    }
+
+    .test-status {
+      min-height: 30px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .phase-info {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .essai-info {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+
+    /* =========================
+       ZONE DE SÉQUENCE
+    ========================= */
+
+    .sequence-zone {
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .sequence-label {
+      font-size: 0.8rem;
+      color: #777;
+      margin-bottom: 12px;
+    }
+
+    #sequence {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: #121449;
+      min-height: 60px;
+    }
+
+    /* =========================
+       DÉCOMPTE
+    ========================= */
+
+    #compteARebours {
+      font-size: 4rem;
+      font-weight: 700;
+      min-height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #121449;
+    }
+
+    /* =========================
+       BOUTONS
+    ========================= */
+
+    .boutons-reponse {
+      max-width: 500px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .btn-chiffre {
+      min-height: 90px;
+      border: 2px solid #121449;
+      border-radius: 15px;
+      background: white;
+      color: #121449;
+      font-family: inherit;
+      font-size: 2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .btn-chiffre:hover {
+      background: #f0f1f8;
+    }
+
+    .btn-chiffre:active {
+      transform: scale(0.97);
+    }
+
+    .progression-reponse {
+      margin-top: 20px;
+      min-height: 25px;
+      color: #777;
+      font-size: 0.85rem;
+    }
+
+    /* =========================
+       ZONE DE FIN
+    ========================= */
+
+    #resultZone {
+      display: none;
+    }
+
+    .fin-message {
+      text-align: center;
+    }
+
+    .fin-message h2 {
+      margin-top: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2.2rem;
+    }
+
+    .resultats-finaux {
+      max-width: 650px;
+      margin: 30px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .resultat-item {
+      background: #f7f7fa;
+      border-radius: 14px;
+      padding: 22px 15px;
+    }
+
+    .resultat-label {
+      display: block;
+      color: #777;
+      font-size: 0.78rem;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .resultat-valeur {
+      display: block;
+      color: #121449;
+      font-size: 1.45rem;
+      font-weight: 700;
+    }
+
+    .retour-resultats {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 13px 24px;
+      background: #121449;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 650px) {
+
+      .test-page {
+        padding: 40px 18px 60px;
+      }
+
+      .test-header h1 {
+        font-size: 2.3rem;
+      }
+
+      .test-card {
+        padding: 25px 18px;
+      }
+
+      #sequence {
+        font-size: 2rem;
+        letter-spacing: 0.18em;
+      }
+
+      #compteARebours {
+        font-size: 3.2rem;
+      }
+
+      .btn-chiffre {
+        min-height: 75px;
+      }
+
+      .resultats-finaux {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="npi-topbar">
+
+    <a
+      href="NPI.html"
+      class="retour-npi"
+    >
+      ← Retour au NeuroPerformance Index
+    </a>
+
+  </div>
+
+
+  <main class="test-page">
+
+    <header class="test-header">
+
+      <span class="test-number">
+        NPI-10
+      </span>
+
+      <h1>
+        Apprentissage moteur
+      </h1>
+
+      <p>
+        Mémorisez une séquence puis reproduisez-la le plus
+        rapidement possible. La même séquence sera répétée
+        au cours des essais afin d'observer l'évolution
+        de votre vitesse d'exécution.
+      </p>
+
+    </header>
+
+
+    <section class="test-card">
+
+
+      <!-- =========================
+           INSTRUCTIONS
+      ========================= -->
+
+      <div
+        id="instructions"
+        class="instructions"
+      >
+
+        <h2>
+          Consignes
+        </h2>
+
+        <p>
+          Une séquence de
+          <strong>8 chiffres</strong>,
+          composée uniquement des chiffres
+          <strong>1, 2, 3 et 4</strong>,
+          va apparaître à l'écran.
+        </p>
+
+        <p>
+          Mémorisez cette séquence.
+          Après le décompte
+          <strong>3 – 2 – 1 – GO</strong>,
+          la séquence disparaît.
+        </p>
+
+        <p>
+          Vous devez alors reproduire la séquence
+          <strong>dans le même ordre</strong>,
+          en utilisant les quatre boutons.
+        </p>
+
+        <p>
+          Le test comprend
+          <strong>1 essai d'entraînement</strong>,
+          puis <strong>10 essais officiels</strong>.
+        </p>
+
+        <p>
+          La même séquence est utilisée pour les
+          10 essais officiels.
+        </p>
+
+        <button
+          type="button"
+          id="btnDemarrer"
+          class="btn-principal"
+        >
+          Commencer le test
+        </button>
+
+      </div>
+
+
+      <!-- =========================
+           TEST
+      ========================= -->
+
+      <div id="testZone">
+
+        <div
+          id="testStatus"
+          class="test-status"
+        >
+          Préparez-vous
+        </div>
+
+        <div
+          id="phaseInfo"
+          class="phase-info"
+        >
+          Entraînement
+        </div>
+
+        <div
+          id="essaiInfo"
+          class="essai-info"
+        >
+          Essai 1 / 1
+        </div>
+
+
+        <!-- SÉQUENCE -->
+
+        <div class="sequence-zone">
+
+          <div class="sequence-label">
+            Mémorisez la séquence
+          </div>
+
+          <div id="sequence">
+            —
+          </div>
+
+          <div id="compteARebours"></div>
+
+        </div>
+
+
+        <!-- BOUTONS -->
+
+        <div
+          id="boutonsReponse"
+          class="boutons-reponse"
+        >
+
+          <button
+            type="button"
+            class="btn-chiffre"
+            data-chiffre="1"
+          >
+            1
+          </button>
+
+          <button
+            type="button"
+            class="btn-chiffre"
+            data-chiffre="2"
+          >
+            2
+          </button>
+
+          <button
+            type="button"
+            class="btn-chiffre"
+            data-chiffre="3"
+          >
+            3
+          </button>
+
+          <button
+            type="button"
+            class="btn-chiffre"
+            data-chiffre="4"
+          >
+            4
+          </button>
+
+        </div>
+
+
+        <div
+          id="progressionReponse"
+          class="progression-reponse"
+        >
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           RÉSULTATS
+      ========================= -->
+
+      <div id="resultZone">
+
+        <div class="fin-message">
+
+          <h2>
+            Test terminé
+          </h2>
+
+          <p>
+            Voici les résultats de votre test
+            d'apprentissage moteur.
+          </p>
+
+
+          <div class="resultats-finaux">
+
+            <div class="resultat-item">
+
+              <span class="resultat-label">
+                Nombre total d'erreurs
+              </span>
+
+              <span
+                id="resultErreurs"
+                class="resultat-valeur"
+              >
+                —
+              </span>
+
+            </div>
+
+
+            <div class="resultat-item">
+
+              <span class="resultat-label">
+                Temps 1er essai officiel
+              </span>
+
+              <span
+                id="resultTempsPremier"
+                class="resultat-valeur"
+              >
+                —
+              </span>
+
+            </div>
+
+
+            <div class="resultat-item">
+
+              <span class="resultat-label">
+                Temps 10e essai officiel
+              </span>
+
+              <span
+                id="resultTempsDernier"
+                class="resultat-valeur"
+              >
+                —
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <a
+            href="NPI.html"
+            class="retour-resultats"
+          >
+            Retour au NeuroPerformance Index
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    /* =========================================================
+       NPI-10
+       APPRENTISSAGE MOTEUR
+    ========================================================= */
+
+
+    /* =========================
+       CONFIGURATION
+    ========================= */
+
+    const LONGUEUR_SEQUENCE = 8;
+
+    const NOMBRE_ENTRAINEMENT = 1;
+
+    const NOMBRE_OFFICIEL = 10;
+
+    const CHIFFRES = ["1", "2", "3", "4"];
+
+    const DUREE_AFFICHAGE_SEQUENCE = 3000;
+
+    const DUREE_DECOMPTE = 1000;
+
+
+    /* =========================
+       ÉTAT DU TEST
+    ========================= */
+
+    let sequence = [];
+
+    let phase = "entrainement";
+
+    let essaiActuel = 0;
+
+    let reponseActuelle = [];
+
+    let erreursActuelles = 0;
+
+    let tempsDebut = null;
+
+    let timerCompteARebours = null;
+
+    let timerSequence = null;
+
+    let testEnCours = false;
+
+    let resultatsOfficiels = [];
+
+
+    /* =========================
+       ÉLÉMENTS HTML
+    ========================= */
+
+    const instructions =
+      document.getElementById("instructions");
+
+    const testZone =
+      document.getElementById("testZone");
+
+    const resultZone =
+      document.getElementById("resultZone");
+
+    const btnDemarrer =
+      document.getElementById("btnDemarrer");
+
+    const testStatus =
+      document.getElementById("testStatus");
+
+    const phaseInfo =
+      document.getElementById("phaseInfo");
+
+    const essaiInfo =
+      document.getElementById("essaiInfo");
+
+    const sequenceElement =
+      document.getElementById("sequence");
+
+    const compteARebours =
+      document.getElementById("compteARebours");
+
+    const progressionReponse =
+      document.getElementById("progressionReponse");
+
+    const boutons =
+      document.querySelectorAll(".btn-chiffre");
+
+
+    /* =========================
+       GÉNÉRER LA SÉQUENCE
+    ========================= */
+
+    function genererSequence() {
+
+      sequence = [];
+
+      for (
+        let i = 0;
+        i < LONGUEUR_SEQUENCE;
+        i++
+      ) {
+
+        const index =
+          Math.floor(
+            Math.random() * CHIFFRES.length
+          );
+
+        sequence.push(
+          CHIFFRES[index]
+        );
+
+      }
+
+    }
+
+
+    /* =========================
+       AFFICHER LA SÉQUENCE
+    ========================= */
+
+    function afficherSequence() {
+
+      sequenceElement.textContent =
+        sequence.join(" ");
+
+    }
+
+
+    /* =========================
+       DÉCOMPTE
+    ========================= */
+
+    function lancerDecompte(callback) {
+
+      let valeur = 3;
+
+      compteARebours.textContent =
+        valeur;
+
+      const interval =
+        setInterval(function() {
+
+          valeur--;
+
+          if (valeur > 0) {
+
+            compteARebours.textContent =
+              valeur;
+
+          } else {
+
+            clearInterval(interval);
+
+            compteARebours.textContent =
+              "GO";
+
+            setTimeout(function() {
+
+              compteARebours.textContent =
+                "";
+
+              callback();
+
+            }, 400);
+
+          }
+
+        }, DUREE_DECOMPTE);
+
+    }
+
+
+    /* =========================
+       DÉMARRER UN ESSAI
+    ========================= */
+
+    function demarrerEssai() {
+
+      testEnCours = false;
+
+      reponseActuelle = [];
+
+      erreursActuelles = 0;
+
+      tempsDebut = null;
+
+      progressionReponse.textContent =
+        "";
+
+      boutons.forEach(function(bouton) {
+
+        bouton.disabled = true;
+
+      });
+
+
+      if (phase === "entrainement") {
+
+        phaseInfo.textContent =
+          "Entraînement";
+
+        essaiInfo.textContent =
+          "Essai 1 / 1";
+
+      } else {
+
+        phaseInfo.textContent =
+          "Essai officiel";
+
+        essaiInfo.textContent =
+          "Essai " +
+          essaiActuel +
+          " / " +
+          NOMBRE_OFFICIEL;
+
+      }
+
+
+      testStatus.textContent =
+        "Mémorisez la séquence";
+
+
+      sequenceElement.textContent =
+        sequence.join(" ");
+
+
+      compteARebours.textContent =
+        "";
+
+
+      /*
+        La séquence reste visible quelques secondes
+        avant le décompte.
+      */
+
+      clearTimeout(timerSequence);
+
+      timerSequence =
+        setTimeout(function() {
+
+          lancerDecompte(function() {
+
+            commencerReponse();
+
+          });
+
+        }, DUREE_AFFICHAGE_SEQUENCE);
+
+    }
+
+
+    /* =========================
+       COMMENCER LA RÉPONSE
+    ========================= */
+
+    function commencerReponse() {
+
+      sequenceElement.textContent =
+        "";
+
+      testStatus.textContent =
+        "Reproduisez la séquence";
+
+      testEnCours = true;
+
+      tempsDebut =
+        performance.now();
+
+      boutons.forEach(function(bouton) {
+
+        bouton.disabled = false;
+
+      });
+
+      progressionReponse.textContent =
+        "0 / " +
+        LONGUEUR_SEQUENCE;
+
+    }
+
+
+    /* =========================
+       RÉPONSE
+    ========================= */
+
+    function gererReponse(chiffre) {
+
+      if (!testEnCours) {
+        return;
+      }
+
+
+      const position =
+        reponseActuelle.length;
+
+
+      reponseActuelle.push(chiffre);
+
+
+      /*
+        On compte une erreur dès que le chiffre
+        saisi ne correspond pas au chiffre attendu
+        à cette position.
+      */
+
+      if (
+        chiffre !== sequence[position]
+      ) {
+
+        erreursActuelles++;
+
+      }
+
+
+      progressionReponse.textContent =
+        reponseActuelle.length +
+        " / " +
+        LONGUEUR_SEQUENCE;
+
+
+      /*
+        Les 8 chiffres ont été saisis.
+      */
+
+      if (
+        reponseActuelle.length ===
+        LONGUEUR_SEQUENCE
+      ) {
+
+        terminerEssai();
+
+      }
+
+    }
+
+
+    /* =========================
+       TERMINER UN ESSAI
+    ========================= */
+
+    function terminerEssai() {
+
+      testEnCours = false;
+
+      const temps =
+        performance.now() -
+        tempsDebut;
+
+
+      boutons.forEach(function(bouton) {
+
+        bouton.disabled = true;
+
+      });
+
+
+      if (phase === "entrainement") {
+
+        testStatus.textContent =
+          "Entraînement terminé.";
+
+        setTimeout(function() {
+
+          phase =
+            "officiel";
+
+          essaiActuel = 1;
+
+          demarrerEssai();
+
+        }, 1000);
+
+        return;
+
+      }
+
+
+      /*
+        ESSAI OFFICIEL
+      */
+
+      resultatsOfficiels.push({
+
+        essai: essaiActuel,
+
+        temps: Math.round(temps),
+
+        erreurs: erreursActuelles
+
+      });
+
+
+      testStatus.textContent =
+        "Réponse enregistrée.";
+
+
+      if (
+        essaiActuel <
+        NOMBRE_OFFICIEL
+      ) {
+
+        essaiActuel++;
+
+        setTimeout(function() {
+
+          demarrerEssai();
+
+        }, 800);
+
+      } else {
+
+        setTimeout(function() {
+
+          terminerTest();
+
+        }, 800);
+
+      }
+
+    }
+
+
+    /* =========================
+       TERMINER LE TEST
+    ========================= */
+
+    function terminerTest() {
+
+      testEnCours = false;
+
+
+      clearTimeout(timerSequence);
+
+      clearTimeout(timerCompteARebours);
+
+
+      testZone.style.display =
+        "none";
+
+      resultZone.style.display =
+        "block";
+
+
+      /*
+        Les 10 essais officiels existent
+        normalement toujours ici.
+      */
+
+      const premierEssai =
+        resultatsOfficiels[0] || null;
+
+      const dernierEssai =
+        resultatsOfficiels[
+          resultatsOfficiels.length - 1
+        ] || null;
+
+
+      /*
+        Nombre total d'erreurs
+        sur les 10 essais.
+      */
+
+      const nombreErreurs =
+        resultatsOfficiels.reduce(
+          function(total, resultat) {
+
+            return total +
+              resultat.erreurs;
+
+          },
+          0
+        );
+
+
+      /*
+        Affichage
+      */
+
+      document.getElementById(
+        "resultErreurs"
+      ).textContent =
+        nombreErreurs;
+
+
+      document.getElementById(
+        "resultTempsPremier"
+      ).textContent =
+        premierEssai
+          ? premierEssai.temps + " ms"
+          : "—";
+
+
+      document.getElementById(
+        "resultTempsDernier"
+      ).textContent =
+        dernierEssai
+          ? dernierEssai.temps + " ms"
+          : "—";
+
+
+      /* =========================
+         SAUVEGARDE NPI
+      ========================= */
+
+      const resultatNPI10 = {
+
+        erreurs:
+          nombreErreurs,
+
+        tempsPremier:
+          premierEssai
+            ? premierEssai.temps
+            : null,
+
+        tempsDernier:
+          dernierEssai
+            ? dernierEssai.temps
+            : null,
+
+        sequence:
+          sequence.join(""),
+
+        essais:
+          resultatsOfficiels,
+
+        date:
+          new Date().toISOString()
+
+      };
+
+
+      let resultatsNPI =
+        JSON.parse(
+          localStorage.getItem(
+            "NPI-results"
+          )
+        ) || {};
+
+
+      resultatsNPI["NPI-10"] =
+        resultatNPI10;
+
+
+      localStorage.setItem(
+        "NPI-results",
+        JSON.stringify(
+          resultatsNPI
+        )
+      );
+
+    }
+
+
+    /* =========================
+       BOUTON DÉMARRER
+    ========================= */
+
+    btnDemarrer.addEventListener(
+      "click",
+      function() {
+
+        instructions.style.display =
+          "none";
+
+        testZone.style.display =
+          "block";
+
+        resultZone.style.display =
+          "none";
+
+
+        /*
+          La séquence est générée une seule fois.
+          Elle restera identique pendant tout le test.
+        */
+
+        genererSequence();
+
+
+        phase =
+          "entrainement";
+
+        essaiActuel = 0;
+
+        resultatsOfficiels = [];
+
+
+        /*
+          Petit temps de préparation
+        */
+
+        testStatus.textContent =
+          "Préparez-vous…";
+
+
+        setTimeout(function() {
+
+          demarrerEssai();
+
+        }, 1000);
+
+      }
+    );
+
+
+    /* =========================
+       BOUTONS 1 À 4
+    ========================= */
+
+    boutons.forEach(function(bouton) {
+
+      bouton.addEventListener(
+        "click",
+        function() {
+
+          const chiffre =
+            this.dataset.chiffre;
+
+          gererReponse(chiffre);
+
+        }
+      );
+
+    });
+
+
+  </script>
+
+</body>
+
+</html>
