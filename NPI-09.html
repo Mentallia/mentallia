@@ -689,6 +689,7 @@
     let timerRotation = null;
     let timerPreparation = null;
     let timerReponse = null;
+    let prochainDelaiRotation = null;
 
     /*
       Résultats.
@@ -1350,9 +1351,11 @@
     );
 
 }
+    /*
     ---------------------------------------------------------
     CONTINUER ROTATION
     ---------------------------------------------------------
+    */
 function continuerRotationApresCible() {
 
   if (!sequenceActive) {
@@ -1413,9 +1416,10 @@ function continuerRotationApresCible() {
 
 }
 
-    ---------------------------------------------------------
+   /* ---------------------------------------------------------
    ABSENCE DE REPONSE
     ---------------------------------------------------------
+    */
     function gererAbsenceReponse() {
 
   if (!sequenceActive) {
@@ -1767,7 +1771,7 @@ function continuerRotationApresCible() {
       "#ffffff";
 
   }
-
+prochainDelaiRotation = null;
 }
 
 
