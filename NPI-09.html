@@ -1416,20 +1416,63 @@ function continuerRotationApresCible() {
 
 }
 
-   /* ---------------------------------------------------------
+   /* =========================================================
    ABSENCE DE REPONSE
-    ---------------------------------------------------------
-    */
-    function gererAbsenceReponse() {
+========================================================= */
+
+function gererAbsenceReponse() {
 
   if (!sequenceActive) {
     return;
   }
 
-
   /*
-    L'essai est manqué.
+    L'essai actuel est comptabilisé comme manqué.
   */
+
+  if (entrainement) {
+
+    /*
+      En entraînement :
+      aucun résultat officiel n'est enregistré.
+    */
+
+    arreterSequence();
+
+    if (testStatus) {
+      testStatus.textContent =
+        "Temps dépassé — essai d'entraînement manqué.";
+    }
+
+    /*
+      Cet essai est terminé.
+    */
+    essaiActuel++;
+
+    setTimeout(function() {
+
+      /*
+        On ne dépasse jamais les 3 essais d'entraînement.
+      */
+      if (essaiActuel < NOMBRE_ENTRAINEMENT) {
+
+        demarrerEssai();
+
+      } else {
+
+        terminerEntrainement();
+
+      }
+
+    }, 800);
+
+    return;
+  }
+
+
+  /* =====================================================
+     ESSAI OFFICIEL MANQUÉ
+  ====================================================== */
 
   essaisOfficiels.push({
 
@@ -1454,50 +1497,40 @@ function continuerRotationApresCible() {
 
 
   /*
-    Arrêt de l'essai actuel.
+    L'essai officiel est terminé.
   */
 
   arreterSequence();
 
-
-  /*
-    Message temporaire.
-  */
-
   if (testStatus) {
-
     testStatus.textContent =
-      "Temps dépassé — essai manqué.";
-
+      "Temps dépassé — essai officiel manqué.";
   }
 
 
   /*
-    Passage au nouvel essai.
+    Un seul essai est comptabilisé.
   */
-
   essaiActuel++;
 
 
-  setTimeout(
-    function() {
+  setTimeout(function() {
 
-      if (
-        essaiActuel <
-        NOMBRE_OFFICIEL
-      ) {
+    /*
+      On ne dépasse jamais les 30 essais officiels.
+    */
 
-        demarrerEssai();
+    if (essaiActuel < NOMBRE_OFFICIEL) {
 
-      } else {
+      demarrerEssai();
 
-        terminerTest();
+    } else {
 
-      }
+      terminerTest();
 
-    },
-    500
-  );
+    }
+
+  }, 500);
 
 }
     /* =========================================================
