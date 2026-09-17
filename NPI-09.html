@@ -703,6 +703,11 @@
     */
     let configurationCouleurs = {};
 
+    /*
+      variation de la vitesse de rotation
+    */
+    let delaiRotationEssai = null;
+    
 
     /* =========================================================
        ÉLÉMENTS HTML
@@ -847,6 +852,18 @@
 
     }
 
+    /* =========================================================
+       VARIATION DE LA VITESSE DE ROTATION
+    ========================================================= */
+    function definirVitesseEssai() {
+
+  delaiRotationEssai =
+    Math.floor(
+      Math.random() *
+      (DELAI_MAX - DELAI_MIN + 1)
+    ) + DELAI_MIN;
+
+}
 
     /* =========================================================
        AFFICHAGE DES COULEURS
@@ -997,7 +1014,10 @@
 
 
       sequenceActive = true;
-
+      /*
+        Une seule vitesse est tirée pour tout l'essai.
+      */
+      definirVitesseEssai();
 
       /*
         Sens aléatoire.
@@ -1165,10 +1185,10 @@
         */
 
         timerRotation =
-          setTimeout(
-            effectuerPas,
-            obtenirDelaiRotation()
-          );
+        setTimeout(
+          effectuerPas,
+          delaiRotationEssai
+        );
 
       }
 
@@ -1180,8 +1200,8 @@
       timerRotation =
         setTimeout(
           effectuerPas,
-          obtenirDelaiRotation()
-        );
+          delaiRotationEssai
+        );  
 
     }
 
@@ -1404,8 +1424,8 @@ function continuerRotationApresCible() {
     La rotation ne s'arrête donc jamais.
   */
 
-  const prochainDelai =
-    obtenirDelaiRotation();
+const prochainDelai =
+  delaiRotationEssai;
 
 
   timerRotation =
