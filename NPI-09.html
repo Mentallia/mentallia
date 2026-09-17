@@ -688,6 +688,7 @@
     */
     let timerRotation = null;
     let timerPreparation = null;
+    let timerReponse = null;
 
     /*
       Résultats.
@@ -1244,107 +1245,257 @@
 
     function afficherCible() {
 
-      if (!sequenceActive) {
-        return;
-      }
+  if (!sequenceActive) {
+    return;
+  }
+
+  /*
+    Moment d'apparition de la cible centrale.
+  */
+
+  t0 = performance.now();
+
+  tArriveeReelle = null;
 
 
-      /*
-        Moment d'apparition de la cible.
-      */
+  /*
+    Affichage de la couleur cible dans le cercle central.
+  */
 
-      t0 =
+  cercleCentral.style.backgroundColor =
+    cibleCouleur;
+
+  cercleCentral.style.borderColor =
+    "#121449";
+
+
+  if (testStatus) {
+
+    testStatus.textContent =
+      "Anticipez le carré d’arrivée de la couleur.";
+
+  }
+
+
+  /*
+    La bonne réponse est la prochaine position
+    de la couleur cible.
+  */
+
+  positionCorrecte =
+    trouverPositionCouleur(
+      cibleCouleur
+    );
+
+  positionAttendue =
+    positionSuivante(
+      positionCorrecte,
+      direction
+    );
+
+
+  /*
+    On calcule le moment prévu d'arrivée.
+  */
+
+  prochainDelaiRotation =
+    obtenirDelaiRotation();
+
+  tArriveePrevue =
+    performance.now() +
+    prochainDelaiRotation;
+
+
+  /*
+    IMPORTANT :
+    la rotation continue.
+  */
+
+  clearTimeout(timerRotation);
+
+  timerRotation =
+    setTimeout(
+      continuerRotationApresCible,
+      prochainDelaiRotation
+    );
+
+
+  /*
+    ---------------------------------------------------------
+    TEMPS MAXIMUM POUR RÉPONDRE
+    ---------------------------------------------------------
+
+    Le sportif dispose de 3 secondes.
+
+    S'il ne répond pas :
+    - l'essai est compté comme manqué ;
+    - la cible centrale disparaît ;
+    - un nouvel essai démarre.
+  */
+
+  clearTimeout(timerReponse);
+
+  timerReponse =
+    setTimeout(
+      function() {
+
+        if (!sequenceActive) {
+          return;
+        }
+
+        gererAbsenceReponse();
+
+      },
+      3000
+    );
+
+}
+    ---------------------------------------------------------
+    CONTINUER ROTATION
+    ---------------------------------------------------------
+function continuerRotationApresCible() {
+
+  if (!sequenceActive) {
+    return;
+  }
+
+
+  /*
+    Un mouvement de rotation.
+  */
+
+  faireUnPasRotation();
+
+
+  /*
+    Vérification de l'arrivée réelle
+    de la couleur cible.
+  */
+
+  if (
+    tArriveeReelle === null
+  ) {
+
+    const positionActuelle =
+      trouverPositionCouleur(
+        cibleCouleur
+      );
+
+    if (
+      positionActuelle ===
+      positionAttendue
+    ) {
+
+      tArriveeReelle =
         performance.now();
-
-
-      /*
-        La couleur apparaît au centre.
-      */
-
-      cercleCentral.style.backgroundColor =
-        cibleCouleur;
-
-      cercleCentral.style.borderColor =
-        "#121449";
-
-
-      if (testStatus) {
-
-        testStatus.textContent =
-          "Anticipez le carré d’arrivée de la couleur.";
-
-      }
-
-
-      /*
-        On prévoit le prochain mouvement.
-      */
-
-      const delai =
-        obtenirDelaiRotation();
-
-
-      tArriveePrevue =
-        performance.now() + delai;
-
-
-      /*
-        La rotation continue.
-      */
-
-      clearTimeout(timerRotation);
-
-
-      timerRotation =
-        setTimeout(
-          function() {
-
-            if (!sequenceActive) {
-              return;
-            }
-
-
-            /*
-              Un nouveau pas de rotation.
-            */
-
-            faireUnPasRotation();
-
-
-            /*
-              Si la couleur vient d'arriver,
-              enregistrer le temps réel.
-            */
-
-            if (
-              tArriveeReelle === null
-            ) {
-
-              const positionActuelle =
-                trouverPositionCouleur(
-                  cibleCouleur
-                );
-
-
-              if (
-                positionActuelle ===
-                positionAttendue
-              ) {
-
-                tArriveeReelle =
-                  performance.now();
-
-              }
-
-            }
-
-          },
-          delai
-        );
 
     }
 
+  }
 
+
+  /*
+    On programme immédiatement
+    le mouvement suivant.
+
+    La rotation ne s'arrête donc jamais.
+  */
+
+  const prochainDelai =
+    obtenirDelaiRotation();
+
+
+  timerRotation =
+    setTimeout(
+      continuerRotationApresCible,
+      prochainDelai
+    );
+
+}
+
+    ---------------------------------------------------------
+   ABSENCE DE REPONSE
+    ---------------------------------------------------------
+    function gererAbsenceReponse() {
+
+  if (!sequenceActive) {
+    return;
+  }
+
+
+  /*
+    L'essai est manqué.
+  */
+
+  essaisOfficiels.push({
+
+    positionCliquee: null,
+
+    positionCorrecte:
+      positionAttendue,
+
+    tempsAnticipation: null,
+
+    tempsEngagement: null,
+
+    correcte: false,
+
+    manque: true,
+
+    tAnticip: null,
+
+    tEngag: null
+
+  });
+
+
+  /*
+    Arrêt de l'essai actuel.
+  */
+
+  arreterSequence();
+
+
+  /*
+    Message temporaire.
+  */
+
+  if (testStatus) {
+
+    testStatus.textContent =
+      "Temps dépassé — essai manqué.";
+
+  }
+
+
+  /*
+    Passage au nouvel essai.
+  */
+
+  essaiActuel++;
+
+
+  setTimeout(
+    function() {
+
+      if (
+        essaiActuel <
+        NOMBRE_OFFICIEL
+      ) {
+
+        demarrerEssai();
+
+      } else {
+
+        terminerTest();
+
+      }
+
+    },
+    500
+  );
+
+}
     /* =========================================================
        CLIC SUR UN CARRÉ
     ========================================================= */
@@ -1365,6 +1516,8 @@
         return;
       }
 
+      clearTimeout(timerReponse);
+      timerReponse = null;
 
       tClic =
         performance.now();
@@ -1583,34 +1736,39 @@
 
     function arreterSequence() {
 
-      sequenceActive = false;
+  sequenceActive = false;
 
 
-      clearTimeout(
-        timerRotation
-      );
+  clearTimeout(
+    timerRotation
+  );
 
-      clearTimeout(
-        timerPreparation
-      );
+  clearTimeout(
+    timerPreparation
+  );
+
+  clearTimeout(
+    timerReponse
+  );
 
 
-      timerRotation = null;
-      timerPreparation = null;
+  timerRotation = null;
+  timerPreparation = null;
+  timerReponse = null;
 
 
-      /*
-        On remet le cercle central à blanc.
-      */
+  /*
+    On remet le cercle central à blanc.
+  */
 
-      if (cercleCentral) {
+  if (cercleCentral) {
 
-        cercleCentral.style.backgroundColor =
-          "#ffffff";
+    cercleCentral.style.backgroundColor =
+      "#ffffff";
 
-      }
+  }
 
-    }
+}
 
 
     /* =========================================================
