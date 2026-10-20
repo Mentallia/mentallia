@@ -329,6 +329,59 @@
         transition: none !important;
       }
     }
+
+  
+/* Lien Outils centré dans l'en-tête */
+.site-header .navbar {
+  position: relative;
+}
+
+.site-header .nav-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+
+.site-header .nav-links a,
+.site-header .nav-links a.active {
+  color: #ffd700 !important;
+}
+
+    
+/* Bouton de réinitialisation sous les résultats */
+.zone-reinitialisation {
+  display: flex;
+  justify-content: center;
+  margin: 24px auto 10px;
+}
+
+.zone-reinitialisation .bouton-reset {
+  border: 1px solid #121449;
+  background: #121449;
+  color: white;
+  padding: 13px 22px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.zone-reinitialisation .bouton-reset:hover {
+  background: #25296b;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .zone-reinitialisation .bouton-reset {
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 16px;
+  }
+}
+
   </style>
 </head>
 
@@ -356,15 +409,6 @@
           <a href="outils.html">Outils</a>
         </li>
       </ul>
-
-      <!-- Réinitialisation -->
-      <button
-        type="button"
-        class="bouton-reset"
-        id="btnReinitialiser"
-      >
-        ↻ Réinitialiser la moyenne
-      </button>
 
     </nav>
   </header>
@@ -511,6 +555,15 @@
 
     </section>
 
+    <!-- Réinitialisation -->
+      <button
+        type="button"
+        class="bouton-reset"
+        id="btnReinitialiser"
+      >
+        ↻ Réinitialiser la moyenne
+      </button>
+    
     <p
       class="message"
       id="messageConfirmation"
