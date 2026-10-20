@@ -1,0 +1,648 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mentallia – Cible du plaisir</title>
+  <meta name="description" content="Un outil simple pour mesurer et partager le niveau de plaisir ressenti après un entraînement.">
+
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bleu: #121449;
+      --bleu-clair: #2866ad;
+      --vert: #2fa879;
+      --jaune: #ffcc3e;
+      --orange: #f58227;
+      --rouge: #ed4141;
+      --fond: #f7f7fa;
+      --texte: #252a46;
+      --gris: #71809c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--fond);
+      color: var(--texte);
+    }
+
+    .entete {
+      background: var(--bleu);
+      color: white;
+      padding: 16px 5%;
+    }
+
+    .entete-interieur {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      text-decoration: none;
+      font-size: 27px;
+      font-weight: 700;
+    }
+
+    .logo img {
+      display: block;
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .bouton-reset {
+      border: 1px solid rgba(255,255,255,0.8);
+      background: transparent;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .bouton-reset:hover {
+      background: rgba(255,255,255,0.13);
+    }
+
+    .contenu {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 34px 24px 55px;
+    }
+
+    .introduction {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    h1 {
+      color: var(--bleu);
+      font-size: clamp(24px, 4vw, 36px);
+      line-height: 1.3;
+      margin: 0 0 12px;
+      font-weight: 800;
+    }
+
+    .sous-titre {
+      margin: 0 auto;
+      max-width: 680px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #596783;
+    }
+
+    .consigne {
+      margin-top: 10px;
+      color: var(--bleu);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .cible-conteneur {
+      display: flex;
+      justify-content: center;
+      margin: 26px auto 34px;
+    }
+
+    .cible {
+      display: block;
+      width: min(100%, 460px);
+      height: auto;
+      overflow: visible;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .anneau {
+      cursor: crosshair;
+      stroke: white;
+      stroke-width: 2.5;
+      transition: filter 0.15s;
+    }
+
+    .anneau:hover {
+      filter: brightness(1.06);
+    }
+
+    .numero-niveau {
+      pointer-events: none;
+      fill: white;
+      font-size: 23px;
+      font-weight: 800;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .resultats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .carte {
+      border-radius: 16px;
+      padding: 25px 20px;
+      text-align: center;
+      min-width: 0;
+    }
+
+    .carte-individuelle {
+      background: #edf4fc;
+    }
+
+    .carte-moyenne {
+      background: #eaf7f0;
+    }
+
+    .libelle {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .carte-individuelle .libelle,
+    .carte-individuelle .valeur {
+      color: var(--bleu-clair);
+    }
+
+    .carte-moyenne .libelle,
+    .carte-moyenne .valeur {
+      color: #168158;
+    }
+
+    .valeur {
+      font-size: clamp(34px, 6vw, 54px);
+      font-weight: 800;
+      line-height: 1.2;
+      min-height: 1.3em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .description {
+      color: var(--gris);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    .carte-moyenne .description {
+      color: #596783;
+    }
+
+    .message {
+      min-height: 24px;
+      margin: 20px 0 0;
+      text-align: center;
+      color: var(--bleu);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .pied {
+      text-align: center;
+      padding: 22px 16px;
+      color: #8593ac;
+      background: #f0f3f8;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+      .entete {
+        padding: 13px 16px;
+      }
+
+      .entete-interieur {
+        gap: 8px;
+      }
+
+      .logo {
+        font-size: 20px;
+        gap: 7px;
+      }
+
+      .logo img {
+        width: 34px;
+        height: 34px;
+      }
+
+      .bouton-reset {
+        padding: 10px 11px;
+        font-size: 11px;
+      }
+
+      .contenu {
+        padding: 28px 16px 38px;
+      }
+
+      .introduction {
+        margin-bottom: 18px;
+      }
+
+      .sous-titre {
+        font-size: 13px;
+      }
+
+      .consigne {
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .cible-conteneur {
+        margin: 20px auto 26px;
+      }
+
+      .resultats {
+        grid-template-columns: 1fr;
+        gap: 13px;
+      }
+
+      .carte {
+        padding: 20px 16px;
+      }
+
+      .valeur {
+        font-size: 40px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="entete">
+    <div class="entete-interieur">
+
+      <a href="index.html" class="logo" aria-label="Retour à l'accueil Mentallia">
+        <img
+          src="images/logo-mentallia-blanc.png"
+          alt=""
+        >
+        <span>Mentallia</span>
+      </a>
+
+      <button
+        type="button"
+        class="bouton-reset"
+        id="btnReinitialiser"
+      >
+        ↻ Réinitialiser la moyenne
+      </button>
+
+    </div>
+  </header>
+
+  <main class="contenu">
+
+    <section class="introduction">
+      <h1>Quel niveau de plaisir avez-vous ressenti ?</h1>
+
+      <p class="sous-titre">
+        Pensez à l'entraînement que vous venez de réaliser.
+        Touchez la cible au niveau qui correspond à votre ressenti.
+        Il n'y a ni bonne ni mauvaise réponse.
+      </p>
+
+      <p class="consigne">
+        1 = plaisir faible · 5 = plaisir très élevé
+      </p>
+    </section>
+
+    <section
+      class="cible-conteneur"
+      aria-label="Cible de notation du plaisir, de 1 à 5"
+    >
+
+      <svg
+        class="cible"
+        id="ciblePlaisir"
+        viewBox="0 0 400 400"
+        role="group"
+        aria-label="Cliquez sur un des cinq niveaux de la cible"
+      >
+
+        <!-- Niveau 1 : anneau extérieur -->
+        <circle
+          class="anneau"
+          cx="200" cy="200" r="190"
+          fill="#2866ad"
+          data-score="1"
+          tabindex="0"
+          role="button"
+          aria-label="Niveau 1 : plaisir faible"
+        />
+
+        <!-- Niveau 2 -->
+        <circle
+          class="anneau"
+          cx="200" cy="200" r="150"
+          fill="#2fa879"
+          data-score="2"
+          tabindex="0"
+          role="button"
+          aria-label="Niveau 2"
+        />
+
+        <!-- Niveau 3 -->
+        <circle
+          class="anneau"
+          cx="200" cy="200" r="110"
+          fill="#ffcc3e"
+          data-score="3"
+          tabindex="0"
+          role="button"
+          aria-label="Niveau 3"
+        />
+
+        <!-- Niveau 4 -->
+        <circle
+          class="anneau"
+          cx="200" cy="200" r="70"
+          fill="#f58227"
+          data-score="4"
+          tabindex="0"
+          role="button"
+          aria-label="Niveau 4"
+        />
+
+        <!-- Niveau 5 -->
+        <circle
+          class="anneau"
+          cx="200" cy="200" r="30"
+          fill="#ed4141"
+          data-score="5"
+          tabindex="0"
+          role="button"
+          aria-label="Niveau 5 : plaisir très élevé"
+        />
+
+        <!-- Numéros des anneaux -->
+        <text class="numero-niveau" x="200" y="31">1</text>
+        <text class="numero-niveau" x="200" y="72">2</text>
+        <text class="numero-niveau" x="200" y="112">3</text>
+        <text class="numero-niveau" x="200" y="152">4</text>
+        <text class="numero-niveau" x="200" y="200">5</text>
+
+      </svg>
+
+    </section>
+
+    <section class="resultats" aria-label="Résultats des scores">
+
+      <article class="carte carte-individuelle">
+        <div class="libelle">VOTRE SCORE</div>
+
+        <div class="valeur" id="scoreIndividuel" aria-live="polite">
+          —
+        </div>
+
+        <div class="description" id="descriptionIndividuelle">
+          Touchez la cible pour enregistrer votre score.
+        </div>
+      </article>
+
+      <article class="carte carte-moyenne">
+        <div class="libelle">MOYENNE DES SCORES</div>
+
+        <div class="valeur" id="scoreMoyen" aria-live="polite">
+          0,0
+        </div>
+
+        <div class="description" id="nombreParticipants">
+          Sur 0 participant
+        </div>
+      </article>
+
+    </section>
+
+    <p class="message" id="messageConfirmation" aria-live="polite"></p>
+
+  </main>
+
+  <footer class="pied">
+    Mentallia &nbsp; • &nbsp;
+    Outil d'évaluation et de développement de la performance mentale
+  </footer>
+
+  <script>
+    const CLE_STOCKAGE = "mentallia-cible-plaisir";
+
+    const cible = document.getElementById("ciblePlaisir");
+    const scoreIndividuel = document.getElementById("scoreIndividuel");
+    const descriptionIndividuelle =
+      document.getElementById("descriptionIndividuelle");
+    const scoreMoyen = document.getElementById("scoreMoyen");
+    const nombreParticipants =
+      document.getElementById("nombreParticipants");
+    const messageConfirmation =
+      document.getElementById("messageConfirmation");
+    const btnReinitialiser =
+      document.getElementById("btnReinitialiser");
+
+    // Les scores sont conservés si la page est actualisée.
+    function chargerScores() {
+      try {
+        const donnees = JSON.parse(
+          localStorage.getItem(CLE_STOCKAGE)
+        );
+
+        if (
+          Array.isArray(donnees) &&
+          donnees.every(
+            score =>
+              Number.isInteger(score) &&
+              score >= 1 &&
+              score <= 5
+          )
+        ) {
+          return donnees;
+        }
+      } catch (erreur) {
+        console.warn("Impossible de charger les scores.", erreur);
+      }
+
+      return [];
+    }
+
+    let scores = chargerScores();
+
+    function sauvegarderScores() {
+      try {
+        localStorage.setItem(
+          CLE_STOCKAGE,
+          JSON.stringify(scores)
+        );
+      } catch (erreur) {
+        console.warn("Impossible de sauvegarder les scores.", erreur);
+      }
+    }
+
+    function afficherResultats() {
+      const nombre = scores.length;
+
+      if (nombre === 0) {
+        scoreIndividuel.textContent = "—";
+        descriptionIndividuelle.textContent =
+          "Touchez la cible pour enregistrer votre score.";
+        scoreMoyen.textContent = "0,0";
+        nombreParticipants.textContent = "Sur 0 participant";
+        return;
+      }
+
+      const total = scores.reduce(
+        (somme, score) => somme + score,
+        0
+      );
+
+      const moyenne = total / nombre;
+
+      scoreMoyen.textContent = moyenne.toLocaleString(
+        "fr-FR",
+        {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 2
+        }
+      );
+
+      nombreParticipants.textContent =
+        "Sur " + nombre + " participant" +
+        (nombre > 1 ? "s" : "");
+    }
+
+    function enregistrerScore(score) {
+      if (!Number.isInteger(score) || score < 1 || score > 5) {
+        return;
+      }
+
+      // Chaque clic correspond à un nouveau participant.
+      scores.push(score);
+
+      scoreIndividuel.textContent = score + " / 5";
+
+      const descriptions = {
+        1: "Plaisir faible",
+        2: "Plaisir modéré",
+        3: "Plaisir moyen",
+        4: "Plaisir élevé",
+        5: "Plaisir très élevé"
+      };
+
+      descriptionIndividuelle.textContent = descriptions[score];
+
+      messageConfirmation.textContent =
+        "Score enregistré. Au participant suivant !";
+
+      sauvegarderScores();
+      afficherResultats();
+    }
+
+    // Détermine le niveau en fonction de l'endroit touché,
+    // et non uniquement du cercle SVG qui a reçu le clic.
+    function obtenirScoreDepuisEvenement(evenement) {
+      const limites = cible.getBoundingClientRect();
+
+      const x = (evenement.clientX - limites.left)
+        * (400 / limites.width);
+
+      const y = (evenement.clientY - limites.top)
+        * (400 / limites.height);
+
+      const dx = x - 200;
+      const dy = y - 200;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance > 190) {
+        return null;
+      }
+
+      if (distance <= 30) return 5;
+      if (distance <= 70) return 4;
+      if (distance <= 110) return 3;
+      if (distance <= 150) return 2;
+
+      return 1;
+    }
+
+    cible.addEventListener("click", function(evenement) {
+      const score = obtenirScoreDepuisEvenement(evenement);
+
+      if (score !== null) {
+        enregistrerScore(score);
+      }
+    });
+
+    // Permet également de sélectionner un anneau au clavier.
+    cible.querySelectorAll(".anneau").forEach(function(anneau) {
+      anneau.addEventListener("keydown", function(evenement) {
+        if (evenement.key === "Enter" || evenement.key === " ") {
+          evenement.preventDefault();
+          enregistrerScore(Number(anneau.dataset.score));
+        }
+      });
+    });
+
+    btnReinitialiser.addEventListener("click", function() {
+      if (scores.length > 0) {
+        const confirmation = confirm(
+          "Réinitialiser les scores de cette séance ?\n\n" +
+          "Tous les scores enregistrés sur cet appareil seront effacés."
+        );
+
+        if (!confirmation) {
+          return;
+        }
+      }
+
+      scores = [];
+
+      sauvegarderScores();
+
+      scoreIndividuel.textContent = "—";
+      descriptionIndividuelle.textContent =
+        "Touchez la cible pour enregistrer votre score.";
+
+      scoreMoyen.textContent = "0,0";
+      nombreParticipants.textContent = "Sur 0 participant";
+      messageConfirmation.textContent =
+        "Nouvelle séance : vous pouvez recommencer.";
+
+    });
+
+    // Affichage initial des résultats sauvegardés.
+    afficherResultats();
+  </script>
+
+</body>
+</html>
