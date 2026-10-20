@@ -297,32 +297,92 @@
         transition: none !important;
       }
     }
+
+    
+/* En-tête de la cible plaisir */
+.site-header .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.site-header .nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.site-header .nav-links li {
+  list-style: none;
+}
+
+.site-header .nav-links a {
+  white-space: nowrap;
+}
+
+.site-header .bouton-reset {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .site-header .navbar {
+    gap: 12px;
+  }
+
+  .site-header .nav-links {
+    margin-left: auto;
+  }
+
+  .site-header .bouton-reset {
+    padding: 9px 10px;
+    font-size: 10px;
+  }
+}
+
   </style>
 </head>
 
 <body>
 
-  <header class="entete">
-    <div class="entete-interieur">
+  
+<header class="site-header">
+  <nav class="navbar">
 
-      <a href="index.html" class="logo" aria-label="Retour à l'accueil Mentallia">
+    <!-- Logo à gauche -->
+    <div class="nav-logo">
+      <a href="index.html">
         <img
           src="images/logo-mentallia-blanc.png"
-          alt=""
+          alt="Mentallia"
+          class="logo-navbar"
         >
-        <span>Mentallia</span>
       </a>
-
-      <button
-        type="button"
-        class="bouton-reset"
-        id="btnReinitialiser"
-      >
-        ↻ Réinitialiser la moyenne
-      </button>
-
     </div>
-  </header>
+
+    <!-- Lien Outils et bouton de réinitialisation -->
+    <ul class="nav-links">
+      <li>
+        <a href="outils.html">Outils</a>
+      </li>
+    </ul>
+
+    <button
+      type="button"
+      class="bouton-reset"
+      id="btnReinitialiser"
+    >
+      ↻ Réinitialiser la moyenne
+    </button>
+
+  </nav>
+</header>
+
+<br>
+
 
   <main class="contenu">
 
