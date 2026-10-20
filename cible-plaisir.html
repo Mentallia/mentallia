@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Mentallia – Cible du plaisir</title>
-  <meta name="description" content="Un outil simple pour mesurer et partager le niveau de plaisir ressenti après un entraînement.">
+  <meta name="description" content="Un outil pour mesurer le niveau de plaisir ressenti après un entraînement.">
 
   <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -38,54 +39,57 @@
       color: var(--texte);
     }
 
-    .entete {
-      background: var(--bleu);
-      color: white;
-      padding: 16px 5%;
-    }
+    /* EN-TÊTE MENTALLIA */
 
-    .entete-interieur {
-      max-width: 1200px;
-      margin: auto;
+    .site-header .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .logo {
-      display: inline-flex;
+    .site-header .nav-logo {
+      flex: 0 0 auto;
+    }
+
+    .site-header .nav-links {
+      display: flex;
       align-items: center;
-      gap: 12px;
-      color: white;
-      text-decoration: none;
-      font-size: 27px;
-      font-weight: 700;
+      justify-content: center;
+      flex: 0 0 auto;
+      margin-left: auto;
+      margin-right: 0;
+      padding: 0;
     }
 
-    .logo img {
-      display: block;
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
+    .site-header .nav-links li {
+      list-style: none;
     }
 
-    .bouton-reset {
-      border: 1px solid rgba(255,255,255,0.8);
+    .site-header .nav-links a {
+      white-space: nowrap;
+    }
+
+    .site-header .bouton-reset {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.8);
       background: transparent;
       color: white;
-      padding: 12px 18px;
-      border-radius: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
       font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
     }
 
-    .bouton-reset:hover {
-      background: rgba(255,255,255,0.13);
+    .site-header .bouton-reset:hover {
+      background: rgba(255, 255, 255, 0.12);
     }
+
+    /* CONTENU */
 
     .contenu {
       max-width: 1100px;
@@ -98,7 +102,7 @@
       margin-bottom: 26px;
     }
 
-    h1 {
+    .introduction h1 {
       color: var(--bleu);
       font-size: clamp(24px, 4vw, 36px);
       line-height: 1.3;
@@ -121,6 +125,8 @@
       font-weight: 600;
     }
 
+    /* CIBLE À CINQ NIVEAUX */
+
     .cible-conteneur {
       display: flex;
       justify-content: center;
@@ -138,7 +144,7 @@
     }
 
     .anneau {
-      cursor: crosshair;
+      cursor: pointer;
       stroke: white;
       stroke-width: 2.5;
       transition: filter 0.15s;
@@ -146,6 +152,12 @@
 
     .anneau:hover {
       filter: brightness(1.06);
+    }
+
+    .anneau:focus-visible {
+      outline: none;
+      stroke: var(--bleu);
+      stroke-width: 5;
     }
 
     .numero-niveau {
@@ -156,6 +168,8 @@
       text-anchor: middle;
       dominant-baseline: middle;
     }
+
+    /* RÉSULTATS */
 
     .resultats {
       display: grid;
@@ -222,6 +236,8 @@
       font-weight: 600;
     }
 
+    /* PIED DE PAGE */
+
     .pied {
       text-align: center;
       padding: 22px 16px;
@@ -231,28 +247,24 @@
       line-height: 1.7;
     }
 
+    /* RESPONSIVE */
+
     @media (max-width: 600px) {
-      .entete {
-        padding: 13px 16px;
+      .site-header .navbar {
+        gap: 10px;
       }
 
-      .entete-interieur {
-        gap: 8px;
+      .site-header .nav-links {
+        margin-left: auto;
       }
 
-      .logo {
-        font-size: 20px;
-        gap: 7px;
+      .site-header .nav-links a {
+        font-size: 12px;
       }
 
-      .logo img {
-        width: 34px;
-        height: 34px;
-      }
-
-      .bouton-reset {
-        padding: 10px 11px;
-        font-size: 11px;
+      .site-header .bouton-reset {
+        padding: 9px 10px;
+        font-size: 10px;
       }
 
       .contenu {
@@ -290,6 +302,26 @@
       }
     }
 
+    @media (max-width: 380px) {
+      .site-header .navbar {
+        gap: 7px;
+      }
+
+      .site-header .logo-navbar {
+        max-width: 105px;
+        height: auto;
+      }
+
+      .site-header .nav-links a {
+        font-size: 11px;
+      }
+
+      .site-header .bouton-reset {
+        padding: 8px;
+        font-size: 9px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -297,126 +329,47 @@
         transition: none !important;
       }
     }
-
-    
-
-/* En-tête Mentallia : logo, Outils et réinitialisation */
-.site-header .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.site-header .nav-logo {
-  flex: 0 0 auto;
-}
-
-.site-header .nav-links {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  margin-left: auto;
-  margin-right: 0;
-  padding: 0;
-}
-
-.site-header .nav-links li {
-  list-style: none;
-}
-
-.site-header .nav-links a {
-  white-space: nowrap;
-}
-
-.site-header .bouton-reset {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: transparent;
-  color: white;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.site-header .bouton-reset:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-@media (max-width: 600px) {
-  .site-header .navbar {
-    gap: 10px;
-  }
-
-  .site-header .nav-links {
-    margin-left: auto;
-  }
-
-  .site-header .nav-links a {
-    font-size: 12px;
-  }
-
-  .site-header .bouton-reset {
-    padding: 9px 10px;
-    font-size: 10px;
-  }
-}
-
-  .site-header .nav-links {
-    margin-left: auto;
-  }
-
-  .site-header .bouton-reset {
-    padding: 9px 10px;
-    font-size: 10px;
-  }
-}
-
   </style>
 </head>
 
 <body>
 
-  
-<header class="site-header">
-  <nav class="navbar">
+  <!-- EN-TÊTE MENTALLIA -->
 
-    <!-- Logo à gauche -->
-    <div class="nav-logo">
-      <a href="index.html">
-        <img
-          src="images/logo-mentallia-blanc.png"
-          alt="Mentallia"
-          class="logo-navbar"
-        >
-      </a>
-    </div>
+  <header class="site-header">
+    <nav class="navbar">
 
-    <!-- Lien Outils et bouton de réinitialisation -->
-    <ul class="nav-links">
-      <li>
-        <a href="outils.html">Outils</a>
-      </li>
-    </ul>
+      <!-- Logo à gauche -->
+      <div class="nav-logo">
+        <a href="index.html">
+          <img
+            src="images/logo-mentallia-blanc.png"
+            alt="Mentallia"
+            class="logo-navbar"
+          >
+        </a>
+      </div>
 
-    <button
-      type="button"
-      class="bouton-reset"
-      id="btnReinitialiser"
-    >
-      ↻ Réinitialiser la moyenne
-    </button>
+      <!-- Seul lien de navigation -->
+      <ul class="nav-links">
+        <li>
+          <a href="outils.html">Outils</a>
+        </li>
+      </ul>
 
-  </nav>
-</header>
+      <!-- Réinitialisation -->
+      <button
+        type="button"
+        class="bouton-reset"
+        id="btnReinitialiser"
+      >
+        ↻ Réinitialiser la moyenne
+      </button>
 
-<br>
+    </nav>
+  </header>
 
+  <!-- CONTENU PRINCIPAL -->
 
   <main class="contenu">
 
@@ -433,6 +386,8 @@
       </p>
     </section>
 
+    <!-- CIBLE -->
+
     <section
       class="cible-conteneur"
       aria-label="Cible de notation du plaisir, de 1 à 5"
@@ -443,7 +398,7 @@
         id="ciblePlaisir"
         viewBox="0 0 400 400"
         role="group"
-        aria-label="Cliquez sur un des cinq niveaux de la cible"
+        aria-label="Choisir un niveau de plaisir"
       >
 
         <!-- Niveau 1 : anneau extérieur -->
@@ -501,7 +456,7 @@
           aria-label="Niveau 5 : plaisir très élevé"
         />
 
-        <!-- Numéros des anneaux -->
+        <!-- Numéros des niveaux -->
         <text class="numero-niveau" x="200" y="31">1</text>
         <text class="numero-niveau" x="200" y="72">2</text>
         <text class="numero-niveau" x="200" y="112">3</text>
@@ -512,16 +467,25 @@
 
     </section>
 
+    <!-- AFFICHAGE DES SCORES -->
+
     <section class="resultats" aria-label="Résultats des scores">
 
       <article class="carte carte-individuelle">
         <div class="libelle">VOTRE SCORE</div>
 
-        <div class="valeur" id="scoreIndividuel" aria-live="polite">
+        <div
+          class="valeur"
+          id="scoreIndividuel"
+          aria-live="polite"
+        >
           —
         </div>
 
-        <div class="description" id="descriptionIndividuelle">
+        <div
+          class="description"
+          id="descriptionIndividuelle"
+        >
           Touchez la cible pour enregistrer votre score.
         </div>
       </article>
@@ -529,18 +493,29 @@
       <article class="carte carte-moyenne">
         <div class="libelle">MOYENNE DES SCORES</div>
 
-        <div class="valeur" id="scoreMoyen" aria-live="polite">
+        <div
+          class="valeur"
+          id="scoreMoyen"
+          aria-live="polite"
+        >
           0,0
         </div>
 
-        <div class="description" id="nombreParticipants">
+        <div
+          class="description"
+          id="nombreParticipants"
+        >
           Sur 0 participant
         </div>
       </article>
 
     </section>
 
-    <p class="message" id="messageConfirmation" aria-live="polite"></p>
+    <p
+      class="message"
+      id="messageConfirmation"
+      aria-live="polite"
+    ></p>
 
   </main>
 
@@ -553,10 +528,12 @@
     const CLE_STOCKAGE = "mentallia-cible-plaisir";
 
     const cible = document.getElementById("ciblePlaisir");
-    const scoreIndividuel = document.getElementById("scoreIndividuel");
+    const scoreIndividuel =
+      document.getElementById("scoreIndividuel");
     const descriptionIndividuelle =
       document.getElementById("descriptionIndividuelle");
-    const scoreMoyen = document.getElementById("scoreMoyen");
+    const scoreMoyen =
+      document.getElementById("scoreMoyen");
     const nombreParticipants =
       document.getElementById("nombreParticipants");
     const messageConfirmation =
@@ -564,7 +541,7 @@
     const btnReinitialiser =
       document.getElementById("btnReinitialiser");
 
-    // Les scores sont conservés si la page est actualisée.
+    // Charger les scores enregistrés sur cet appareil.
     function chargerScores() {
       try {
         const donnees = JSON.parse(
@@ -583,7 +560,10 @@
           return donnees;
         }
       } catch (erreur) {
-        console.warn("Impossible de charger les scores.", erreur);
+        console.warn(
+          "Impossible de charger les scores.",
+          erreur
+        );
       }
 
       return [];
@@ -591,6 +571,7 @@
 
     let scores = chargerScores();
 
+    // Sauvegarder les scores sur cet appareil.
     function sauvegarderScores() {
       try {
         localStorage.setItem(
@@ -598,17 +579,18 @@
           JSON.stringify(scores)
         );
       } catch (erreur) {
-        console.warn("Impossible de sauvegarder les scores.", erreur);
+        console.warn(
+          "Impossible de sauvegarder les scores.",
+          erreur
+        );
       }
     }
 
+    // Mettre à jour la moyenne et le nombre de participants.
     function afficherResultats() {
       const nombre = scores.length;
 
       if (nombre === 0) {
-        scoreIndividuel.textContent = "—";
-        descriptionIndividuelle.textContent =
-          "Touchez la cible pour enregistrer votre score.";
         scoreMoyen.textContent = "0,0";
         nombreParticipants.textContent = "Sur 0 participant";
         return;
@@ -634,12 +616,16 @@
         (nombre > 1 ? "s" : "");
     }
 
+    // Enregistrer le score d'un participant.
     function enregistrerScore(score) {
-      if (!Number.isInteger(score) || score < 1 || score > 5) {
+      if (
+        !Number.isInteger(score) ||
+        score < 1 ||
+        score > 5
+      ) {
         return;
       }
 
-      // Chaque clic correspond à un nouveau participant.
       scores.push(score);
 
       scoreIndividuel.textContent = score + " / 5";
@@ -652,7 +638,8 @@
         5: "Plaisir très élevé"
       };
 
-      descriptionIndividuelle.textContent = descriptions[score];
+      descriptionIndividuelle.textContent =
+        descriptions[score];
 
       messageConfirmation.textContent =
         "Score enregistré. Au participant suivant !";
@@ -661,25 +648,30 @@
       afficherResultats();
     }
 
-    // Détermine le niveau en fonction de l'endroit touché,
-    // et non uniquement du cercle SVG qui a reçu le clic.
+    // Calculer le niveau d'après l'endroit touché.
     function obtenirScoreDepuisEvenement(evenement) {
       const limites = cible.getBoundingClientRect();
 
-      const x = (evenement.clientX - limites.left)
-        * (400 / limites.width);
-
-      const y = (evenement.clientY - limites.top)
-        * (400 / limites.height);
-
-      const dx = x - 200;
-      const dy = y - 200;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance > 190) {
+      if (limites.width === 0 || limites.height === 0) {
         return null;
       }
 
+      const x =
+        (evenement.clientX - limites.left) *
+        (400 / limites.width);
+
+      const y =
+        (evenement.clientY - limites.top) *
+        (400 / limites.height);
+
+      const dx = x - 200;
+      const dy = y - 200;
+
+      const distance = Math.sqrt(
+        dx * dx + dy * dy
+      );
+
+      if (distance > 190) return null;
       if (distance <= 30) return 5;
       if (distance <= 70) return 4;
       if (distance <= 110) return 3;
@@ -688,52 +680,75 @@
       return 1;
     }
 
+    // Clic ou toucher sur la cible.
     cible.addEventListener("click", function(evenement) {
-      const score = obtenirScoreDepuisEvenement(evenement);
+      // Les touches du clavier sont gérées séparément.
+      if (evenement.detail === 0) return;
+
+      const score =
+        obtenirScoreDepuisEvenement(evenement);
 
       if (score !== null) {
         enregistrerScore(score);
       }
     });
 
-    // Permet également de sélectionner un anneau au clavier.
-    cible.querySelectorAll(".anneau").forEach(function(anneau) {
-      anneau.addEventListener("keydown", function(evenement) {
-        if (evenement.key === "Enter" || evenement.key === " ") {
-          evenement.preventDefault();
-          enregistrerScore(Number(anneau.dataset.score));
-        }
-      });
-    });
+    // Navigation au clavier : Entrée ou Espace.
+    cible.querySelectorAll(".anneau").forEach(
+      function(anneau) {
+        anneau.addEventListener(
+          "keydown",
+          function(evenement) {
+            if (
+              evenement.key === "Enter" ||
+              evenement.key === " "
+            ) {
+              evenement.preventDefault();
 
-    btnReinitialiser.addEventListener("click", function() {
-      if (scores.length > 0) {
-        const confirmation = confirm(
-          "Réinitialiser les scores de cette séance ?\n\n" +
-          "Tous les scores enregistrés sur cet appareil seront effacés."
+              enregistrerScore(
+                Number(anneau.dataset.score)
+              );
+            }
+          }
         );
-
-        if (!confirmation) {
-          return;
-        }
       }
+    );
 
-      scores = [];
+    // Réinitialiser la séance.
+    btnReinitialiser.addEventListener(
+      "click",
+      function() {
+        if (scores.length > 0) {
+          const confirmation = confirm(
+            "Réinitialiser les scores de cette séance ?\n\n" +
+            "Tous les scores enregistrés sur cet appareil seront effacés."
+          );
 
-      sauvegarderScores();
+          if (!confirmation) {
+            return;
+          }
+        }
 
-      scoreIndividuel.textContent = "—";
-      descriptionIndividuelle.textContent =
-        "Touchez la cible pour enregistrer votre score.";
+        scores = [];
 
-      scoreMoyen.textContent = "0,0";
-      nombreParticipants.textContent = "Sur 0 participant";
-      messageConfirmation.textContent =
-        "Nouvelle séance : vous pouvez recommencer.";
+        sauvegarderScores();
 
-    });
+        scoreIndividuel.textContent = "—";
 
-    // Affichage initial des résultats sauvegardés.
+        descriptionIndividuelle.textContent =
+          "Touchez la cible pour enregistrer votre score.";
+
+        scoreMoyen.textContent = "0,0";
+
+        nombreParticipants.textContent =
+          "Sur 0 participant";
+
+        messageConfirmation.textContent =
+          "Nouvelle séance : vous pouvez recommencer.";
+      }
+    );
+
+    // Affichage initial.
     afficherResultats();
   </script>
 
