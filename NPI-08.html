@@ -777,8 +777,7 @@
 
 function afficherStimulus() {
 
-  const chiffre =
-    obtenirEssaiActuel();
+  const chiffre = obtenirEssaiActuel();
 
   if (!chiffre) {
     terminerTest();
@@ -788,47 +787,34 @@ function afficherStimulus() {
   stimulusActuel = chiffre;
 
   mettreAJourInfos();
-
   activerCercle(chiffre);
 
-  tempsDebutStimulus =
-    performance.now();
+  tempsDebutStimulus = performance.now();
 
-  testStatus.textContent =
-    "Répondez !";
+  testStatus.textContent = "Répondez !";
 
-
-  /*
-    Le stimulus reste visible pendant 500 ms.
-  */
+  // Le stimulus disparaît après 500 ms,
+  // mais la réponse reste possible jusqu'à 1500 ms.
 
   timerStimulus = setTimeout(function() {
 
     desactiverTousLesCercles();
 
-    /*
-      Le stimulus n'est plus actif.
-      Une réponse donnée après les 500 ms
-      ne sera donc pas prise en compte.
-    */
+  }, 500);
 
-    stimulusActuel = null;
-    tempsDebutStimulus = null;
+  // Fin du délai de réponse après 1500 ms.
 
-    timerStimulus = null;
+  setTimeout(function() {
+
+    if (stimulusActuel === chiffre) {
+      stimulusActuel = null;
+      tempsDebutStimulus = null;
+      testStatus.textContent = "Pas de réponse";
+    }
 
   }, DUREE_STIMULUS);
 
-
-  /*
-    Le prochain essai est programmé dès maintenant.
-    Il apparaîtra 2 secondes après le début
-    du stimulus actuel, qu'il y ait eu une réponse
-    ou non.
-  */
-
   programmerEssaiSuivant();
-
 }
 
 
